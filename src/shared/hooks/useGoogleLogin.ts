@@ -37,7 +37,8 @@ export const useGoogleLogin = () => {
   // !isStandalone
     // ? 
     AuthSession.makeRedirectUri({ 
-          native: 'foodiexapp://redirect',
+      // path: 'oauthredirect'
+          native: 'com.syena.foodiexapp:/oauthredirect',
       }) // → foodiex:/oauthredirect
     // : AuthSession.makeRedirectUri({ scheme: 'foodiex' }) // → foodiex:/oauthredirect
     // : localRedirectUri
@@ -51,8 +52,8 @@ export const useGoogleLogin = () => {
   //     });
   const request = Google.useAuthRequest(
     {
-      iosClientId: googleIOsClientId,
-      // clientId,
+      // iosClientId: googleIOsClientId,
+      clientId,
       scopes: ['openid', 'profile', 'email'],
       // redirectUri,
       responseType: 'code',

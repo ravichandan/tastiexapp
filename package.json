@@ -5,8 +5,11 @@
   "scripts": {
     "start": "expo start -c",
     "start-tunnel": "expo start -c --tunnel",
-    "android": "expo run:android",
+    "android": "expo run:android ",
     "ios": "expo run:ios",
+    "clean:android": "rm -rf android .expo .gradle",
+    "clean:ios": "rm -rf ios Podfile.lock Pods",
+    "prebuild": "npx expo prebuild --clean",
     "web": "expo start --web",
     "format": "prettier --write .",
     "build:ios": "eas build -p ios --profile production",
