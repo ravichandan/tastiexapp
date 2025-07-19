@@ -16,6 +16,7 @@
     "prebuild": "npx expo prebuild --clean",
     "web": "expo start --web",
     "format": "prettier --write .",
+    "build:configure": "eas build:configure",
     "build:ios": "eas build -p ios --profile production",
     "build:android": "eas build -p android --profile production",
     "submit:ios": "eas submit -p ios --profile production",

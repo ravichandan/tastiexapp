@@ -30,7 +30,6 @@ export const useGoogleLogin = () => {
 
   const setUser = useAuthStore((state) => state.login);
 
-  //   const [authRequest, promptAsync, authResult] = AuthSession.useAuthRequest(config, discovery);
 
   // const result =  // ✅ Works
   const localRedirectUri = 'https://auth.expo.io/@chans/foodiexapp';
@@ -38,20 +37,11 @@ export const useGoogleLogin = () => {
   const isStandalone = Constants.executionEnvironment === ExecutionEnvironment.Standalone;
 
   const redirectUri =
-    // !isStandalone
-    // ?
     AuthSession.makeRedirectUri({
       // path: 'oauthredirect'
       native: 'com.syena.foodiexapp:/oauthredirect',
     }); // → foodiex:/oauthredirect
-  // : AuthSession.makeRedirectUri({ scheme: 'foodiex' }) // → foodiex:/oauthredirect
-  // : localRedirectUri
-  // const redirectUri = AuthSession.makeRedirectUri({
-  //       // preferLocalhost: true, // for Expo Go; disable in productionr
-  //       scheme: 'foodiex', // matches app.config.ts
 
-  //       // native: 'com.foodiex:/oauthredirect',
-  //     });
   const request = AuthSession.useAuthRequest(
     {
       // iosClientId: googleIOsClientId,
@@ -64,12 +54,8 @@ export const useGoogleLogin = () => {
 
     discovery,
   );
-  // console.log('AuthSession.makeRedirectUri():: ', AuthSession.makeRedirectUri());
   const login = async () => {
-    console.log('debug:: clientId: ', clientId);
-    console.log('debug:: redirectUri: ', redirectUri);
-    console.log('debug:: request[0]: ', request[0]);
-    console.log('debug:: request[1]: ', request[1]);
+    
     const result = await request[2](); // request[2] is the `promptAsync` function
     console.log('OAuth result:', result);
 
@@ -79,24 +65,11 @@ export const useGoogleLogin = () => {
       const platform = Platform.OS;
       const loginUrl = `${Constants.expoConfig?.extra?.apiBaseUrl}/customers/code-login`;
       console.log(`code: ${code}, codeVerifier: ${codeVerifier}, platform: ${platform}, loginUrl: ${loginUrl}`);
-      // console.log('in success, Constants.expoConfig?.extra?.apiBaseUrl ', Constants.expoConfig?.extra?.apiBaseUrl);
-
-      // const res = await fetch(discovery.userInfoEndpoint, {
-      //   headers: { Authorization: `Bearer ${result.authentication?.accessToken}` },
-      // });
-      // const profile = await res.json();
-      // console.log('profile:', profile);
-
+      
+      // 🔐 Send to backend for session/JWT creation
       const loginResponse =  await oidcLoginUser({ code, codeVerifier, platform });
       console.log('login Response:: ', loginResponse);
-      // 🔐 Send to backend for session/JWT creation
-      // const loginRes = await fetch(loginUrl, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ code, codeVerifier, platform }),
-      // });
-
-      // const data = await loginRes.json();
+      
       console.log('setting, customer and token: ', loginResponse.token);
       setUser({ ...loginResponse.user }, loginResponse.token);
     }

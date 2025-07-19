@@ -9,25 +9,25 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		AF61F76E74539842FF903F08 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB36E1189207DFA9350D6B /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		BDD193D62032A82254B6D573 /* libPods-foodiexapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5DD837A4A3AED141822951 /* libPods-foodiexapp.a */; };
-		BFE195CB667EC9DAC334BAB8 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F036E88A8AE23989B4656E /* ExpoModulesProvider.swift */; };
+		CD7C8549DD7B36EC2CA57EE7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8AF9C89FCB1146B2D33BCD99 /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
-		F14B4EAB5304A1ED7AD6C766 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EF450B0A188E25C0440B2C42 /* PrivacyInfo.xcprivacy */; };
+		F3FCFEEF792EA8C243A6A829 /* libPods-foodiexapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF866FCD25C8D454A140EE45 /* libPods-foodiexapp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C4514C564BD422126717681 /* Pods-foodiexapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodiexapp.debug.xcconfig"; path = "Target Support Files/Pods-foodiexapp/Pods-foodiexapp.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* foodiexapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = foodiexapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = foodiexapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = foodiexapp/Info.plist; sourceTree = "<group>"; };
-		292234278D060A2DC89FC23C /* Pods-foodiexapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodiexapp.debug.xcconfig"; path = "Target Support Files/Pods-foodiexapp/Pods-foodiexapp.debug.xcconfig"; sourceTree = "<group>"; };
-		84F036E88A8AE23989B4656E /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-foodiexapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		A6DC2DB6B87111FD6C0D0F99 /* Pods-foodiexapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodiexapp.release.xcconfig"; path = "Target Support Files/Pods-foodiexapp/Pods-foodiexapp.release.xcconfig"; sourceTree = "<group>"; };
+		8AF9C89FCB1146B2D33BCD99 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = foodiexapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		98EB36E1189207DFA9350D6B /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-foodiexapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = foodiexapp/SplashScreen.storyboard; sourceTree = "<group>"; };
-		AA5DD837A4A3AED141822951 /* libPods-foodiexapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-foodiexapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF866FCD25C8D454A140EE45 /* libPods-foodiexapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-foodiexapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EF450B0A188E25C0440B2C42 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = foodiexapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		EE33CEC964DD9184BF90692C /* Pods-foodiexapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-foodiexapp.release.xcconfig"; path = "Target Support Files/Pods-foodiexapp/Pods-foodiexapp.release.xcconfig"; sourceTree = "<group>"; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = foodiexapp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* foodiexapp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "foodiexapp-Bridging-Header.h"; path = "foodiexapp/foodiexapp-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -37,21 +37,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDD193D62032A82254B6D573 /* libPods-foodiexapp.a in Frameworks */,
+				F3FCFEEF792EA8C243A6A829 /* libPods-foodiexapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0467BC17A5F013C27F964F67 /* foodiexapp */ = {
-			isa = PBXGroup;
-			children = (
-				84F036E88A8AE23989B4656E /* ExpoModulesProvider.swift */,
-			);
-			name = foodiexapp;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* foodiexapp */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				EF450B0A188E25C0440B2C42 /* PrivacyInfo.xcprivacy */,
+				8AF9C89FCB1146B2D33BCD99 /* PrivacyInfo.xcprivacy */,
 			);
 			name = foodiexapp;
 			sourceTree = "<group>";
@@ -70,9 +62,19 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				AA5DD837A4A3AED141822951 /* libPods-foodiexapp.a */,
+				AF866FCD25C8D454A140EE45 /* libPods-foodiexapp.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5DD241DD89108901BDC1CC67 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0C4514C564BD422126717681 /* Pods-foodiexapp.debug.xcconfig */,
+				EE33CEC964DD9184BF90692C /* Pods-foodiexapp.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -89,8 +91,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				DDCA77DAEA44A04E26F275BD /* Pods */,
-				F7BDD41E4943518C0A8059FF /* ExpoModulesProviders */,
+				5DD241DD89108901BDC1CC67 /* Pods */,
+				921EA52F494185B5AD8BA923 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -105,6 +107,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		921EA52F494185B5AD8BA923 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				BB8F94BE85D55559E540F58C /* foodiexapp */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,22 +124,12 @@
 			path = foodiexapp/Supporting;
 			sourceTree = "<group>";
 		};
-		DDCA77DAEA44A04E26F275BD /* Pods */ = {
+		BB8F94BE85D55559E540F58C /* foodiexapp */ = {
 			isa = PBXGroup;
 			children = (
-				292234278D060A2DC89FC23C /* Pods-foodiexapp.debug.xcconfig */,
-				A6DC2DB6B87111FD6C0D0F99 /* Pods-foodiexapp.release.xcconfig */,
+				98EB36E1189207DFA9350D6B /* ExpoModulesProvider.swift */,
 			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		F7BDD41E4943518C0A8059FF /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				0467BC17A5F013C27F964F67 /* foodiexapp */,
-			);
-			name = ExpoModulesProviders;
+			name = foodiexapp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "foodiexapp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				E2717F4338BC2475E6DA1821 /* [Expo] Configure project */,
+				6BB0C5A2DB8C8AAE1CBD788F /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				F41EC39FDA33698734A5B8A0 /* [CP] Embed Pods Frameworks */,
+				74D6D9677B63461FF6507B5D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				F14B4EAB5304A1ED7AD6C766 /* PrivacyInfo.xcprivacy in Resources */,
+				CD7C8549DD7B36EC2CA57EE7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +238,43 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6BB0C5A2DB8C8AAE1CBD788F /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-foodiexapp/expo-configure-project.sh\"\n";
+		};
+		74D6D9677B63461FF6507B5D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-foodiexapp/Pods-foodiexapp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-foodiexapp/Pods-foodiexapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
@@ -312,43 +349,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-foodiexapp/Pods-foodiexapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E2717F4338BC2475E6DA1821 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-foodiexapp/expo-configure-project.sh\"\n";
-		};
-		F41EC39FDA33698734A5B8A0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-foodiexapp/Pods-foodiexapp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-foodiexapp/Pods-foodiexapp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -357,7 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				BFE195CB667EC9DAC334BAB8 /* ExpoModulesProvider.swift in Sources */,
+				AF61F76E74539842FF903F08 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +366,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 292234278D060A2DC89FC23C /* Pods-foodiexapp.debug.xcconfig */;
+			baseConfigurationReference = 0C4514C564BD422126717681 /* Pods-foodiexapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -402,7 +402,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A6DC2DB6B87111FD6C0D0F99 /* Pods-foodiexapp.release.xcconfig */;
+			baseConfigurationReference = EE33CEC964DD9184BF90692C /* Pods-foodiexapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
