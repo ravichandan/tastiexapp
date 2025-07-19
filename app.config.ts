@@ -1,12 +1,12 @@
 import 'dotenv/config';
 
 export default ({ config }) => {
-  const apiBaseUrl = process.env.API_URL || 'https://fallback-api.foodiex.com';
+  const apiBaseUrl = process.env.API_URL!;
   const env = process.env.APP_ENV || 'development';
-  const googleClientId = process.env.googleClientId || '7360139281-qbgics3laaps2sapu417fhkfmgcc4bja.apps.googleusercontent.com';
-  const googleIOsClientId = process.env.googleIOsClientId || '7360139281-jd3rpql56du2pbfs835p5g05rg9curj6.apps.googleusercontent.com';
-  const googleAndroidClientId = process.env.googleAndroidClientId || '7360139281-7ol77clankiqub9h6e3t4ru8d9smdjgl.apps.googleusercontent.com';
-  const googleSecret = process.env.googleSecret || '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';
+  const googleClientId = process.env.googleClientId!;
+  const googleIOsClientId = process.env.googleIOsClientId! ;
+  const googleAndroidClientId = process.env.googleAndroidClientId!;
+  const googleSecret = process.env.googleSecret!;
 
   return {
     ...config,
@@ -29,19 +29,19 @@ export default ({ config }) => {
     android: {
       package: 'com.syena.foodiexapp',
       intentFilters: [
-      {
-        action: 'VIEW',
-        data: {
-          scheme: 'com.syena.foodiexapp',
-          path: '/oauthredirect',
+        {
+          action: 'VIEW',
+          data: {
+            scheme: 'com.syena.foodiexapp',
+            path: '/oauthredirect',
+          },
+          category: ['BROWSABLE', 'DEFAULT'],
         },
-        category: ['BROWSABLE', 'DEFAULT'],
-      },
-    ],
+      ],
     },
     web: {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      favicon: './assets/favicon.png',
+      bundler: 'metro',
     },
     extra: {
       apiBaseUrl,
@@ -54,9 +54,7 @@ export default ({ config }) => {
       googleAndroidClientId,
       googleSecret,
     },
-    plugins: [
-      "expo-secure-store"
-    ]
+    plugins: ['expo-secure-store'],
   };
 };
 

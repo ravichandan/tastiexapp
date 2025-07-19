@@ -22,7 +22,7 @@
 //   },
 // });
 
-import "../../global.css";
+import '../../global.css';
 import Navigation from '../navigation/AppNavigator';
 // import { useDishStore } from '../state/useDishStore';
 

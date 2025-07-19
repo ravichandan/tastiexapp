@@ -59,3 +59,10 @@ useAuthStore.subscribe(
     console.log('[Auth] User changed:', user);
   },
 );
+
+useAuthStore.subscribe(
+  (state) => state,
+  (state: any) => {
+    console.log('[Auth] state changed:', state);
+  },
+);

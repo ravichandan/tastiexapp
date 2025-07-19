@@ -16,7 +16,7 @@ export default function LoginForm() {
 
   return (
     <View className="p-4">
-        <Button
+      <Button
         title="Sign in with Google"
         onPress={googleLogin.login}
         disabled={!googleLogin.request} // disable button if login request is not ready
@@ -38,11 +38,7 @@ export default function LoginForm() {
       />
 
       {error && <Text className="text-red-500 mb-2">{error}</Text>}
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Button title="Login" onPress={onSubmit} />
-      )}
+      {loading ? <ActivityIndicator /> : <Button title="Login" onPress={onSubmit} />}
     </View>
   );
 }

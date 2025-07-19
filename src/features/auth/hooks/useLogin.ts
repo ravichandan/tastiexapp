@@ -9,6 +9,7 @@ export function useLogin() {
   const login = useAuthStore((s) => s.login);
 
   const handleLogin = async (payload: LoginPayload) => {
+    console.log('in handleLoging');;
     setLoading(true);
     setError(null);
     try {

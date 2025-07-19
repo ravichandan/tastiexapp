@@ -1,5 +1,15 @@
 {
   "build": {
+    "android": {
+      "env": {
+        "ENV_FILE": ".env.android"
+      }
+    },
+    "ios": {
+      "env": {
+        "ENV_FILE": ".env.ios"
+      }
+    },
     "preview": {
       "developmentClient": false,
       "distribution": "internal",
@@ -15,12 +25,11 @@
       }
     },
     "production": {
-
       "developmentClient": false,
       "distribution": "store",
       "env": {
         "APP_ENV": "production",
-        "API_URL": "https://api.foodiex.com/api"
+        "API_URL": "http://api.foodiex.com/api"
       }
     }
   },

@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 
 // src/shared/utils/handleApiError.ts
 export function handleApiError(error: unknown): string {
+  console.log('in handleApiError, error: ', error);
   if (error instanceof AxiosError) {
     console.error('Error in Axios: ', '' + error.config?.baseURL + error.config?.url);
     return 'Error: ' + error.config?.method + ' ' + error.config?.baseURL + error.config?.url + '. ' + error.message;

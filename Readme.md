@@ -36,3 +36,10 @@
     ├── tsconfig.json
     ├── app.config.ts
     └── package.json
+
+## AUTH Flow working plan
+
+Expo app ──► Google (auth) ──► auth code + codeVerifier ──► Your API
+Your API ──► Google (token endpoint) ──► id_token + access_token
+Your API verifies id_token, creates user, issues own JWT
+Your API ⇦── Mobile app (JWT + user data)

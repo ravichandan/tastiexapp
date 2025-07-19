@@ -9,10 +9,5 @@
     "noEmit": true,
     "jsx": "react-native"
   },
-  "include": [
-    "src",
-    "types",
-    "global.d.ts",
-    "nativewind-env.d.ts"
-  ]
+  "include": ["src", "types", "global.d.ts", "nativewind-env.d.ts"]
 }

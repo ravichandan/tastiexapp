@@ -1,4 +1,3 @@
-
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
@@ -6,10 +5,7 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: 'module',
   },
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier'],
   plugins: ['@typescript-eslint'],
   rules: {
     // optional custom rules
