@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, ActivityIndicator } from 'react-native';
 import { useLogin } from '../hooks/useLogin';
-import { useGoogleLogin } from '@/shared/hooks/useGoogleLogin';
+import { useGoogleLogin } from '@/features/auth/hooks/useGoogleLogin';
 
 export default function LoginForm() {
   const { login, loading, error } = useLogin();

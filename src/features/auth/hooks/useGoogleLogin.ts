@@ -4,7 +4,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { useAuthStore } from '@/state/useAuthStore';
 import { Linking, Platform } from 'react-native';
-import { loginUser } from '@/features/auth/api/authApi';
+import { oidcLoginUser } from '@/features/auth/api/authApi';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -87,18 +87,18 @@ export const useGoogleLogin = () => {
       // const profile = await res.json();
       // console.log('profile:', profile);
 
-      const loginResponse =  loginUser({ code, codeVerifier, platform });
+      const loginResponse =  await oidcLoginUser({ code, codeVerifier, platform });
       console.log('login Response:: ', loginResponse);
       // 🔐 Send to backend for session/JWT creation
-      const loginRes = await fetch(loginUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, codeVerifier, platform }),
-      });
+      // const loginRes = await fetch(loginUrl, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ code, codeVerifier, platform }),
+      // });
 
-      const data = await loginRes.json();
-      console.log('setting, user and token: ', data.token);
-      setUser({ ...data.user }, data.token);
+      // const data = await loginRes.json();
+      console.log('setting, customer and token: ', loginResponse.token);
+      setUser({ ...loginResponse.user }, loginResponse.token);
     }
   };
 

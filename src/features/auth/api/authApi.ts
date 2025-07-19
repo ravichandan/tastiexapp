@@ -13,13 +13,29 @@ export interface LoginResponse {
     id: string;
     name: string;
     email: string;
-  };
+  } | any;
   token: string;
 }
 
-export async function loginUser(payload: any): Promise<LoginResponse> {
+export interface OidcLoginPayload {
+  code: string;
+  codeVerifier?: string;
+  platform: string;
+}
+
+export async function loginUser(payload: LoginPayload): Promise<LoginResponse> {
   try {
     const res = await axiosInstance.post<LoginResponse>(API_ENDPOINTS.LOGIN, payload);
+    return res.data;
+  } catch (err) {
+    throw new Error(handleApiError(err));
+  }
+}
+
+
+export async function oidcLoginUser(payload: OidcLoginPayload): Promise<LoginResponse> {
+  try {
+    const res = await axiosInstance.post<LoginResponse>(API_ENDPOINTS.OIDC_LOGIN, payload);
     return res.data;
   } catch (err) {
     throw new Error(handleApiError(err));
