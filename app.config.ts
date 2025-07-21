@@ -13,7 +13,7 @@ export default ({ config }) => {
     name: 'foodiexapp',
     slug: 'foodiexapp',
     owner: 'chans',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -28,6 +28,7 @@ export default ({ config }) => {
     },
     android: {
       package: 'com.syena.foodiexapp',
+      versionCode: 3,
       intentFilters: [
         {
           action: 'VIEW',
