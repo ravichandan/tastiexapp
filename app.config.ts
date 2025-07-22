@@ -28,7 +28,7 @@ export default ({ config }) => {
     },
     android: {
       package: 'com.syena.foodiexapp',
-      versionCode: 3,
+      versionCode: 4,
       intentFilters: [
         {
           action: 'VIEW',
