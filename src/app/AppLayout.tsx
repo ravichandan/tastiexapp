@@ -31,7 +31,7 @@ const theme =
   return (
     <View className="flex-1 bg-white">
       {/* ✅ Persistent Header */}
-      <View className="bg-dark flex-row items-center justify-between px-4 py-4" >
+      <View className="bg-black flex-row items-center justify-between px-4 py-4" >
         <Image source={require('@/assets/logo1.png')} resizeMode="contain" style={{ height: 40, width: 150 }} />
         {/* 🍔 Burger Menu icon (can hook to drawer later) */}
         <TouchableOpacity onPress={openMenu}>

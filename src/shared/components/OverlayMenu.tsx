@@ -6,9 +6,10 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/navigation/types';
 import { MENU_ITEMS } from '../config/menuConfig';
 import { useOverlayMenuStore } from '@/state/useOverlayMenuStore';
-import { useEffect } from 'react';
+import { ComponentType, useEffect } from 'react';
 import { useAuthStore } from '@/state';
 import TxButton from './TxButton';
+import { LucideProps } from 'lucide-react-native';
 
 export default function OverlayMenu() {
   const { isOpen, closeMenu } = useOverlayMenuStore();
@@ -18,7 +19,7 @@ export default function OverlayMenu() {
 
   // Animate open/close
   useEffect(() => {
-    translateX.value = isOpen ? withTiming(0, { duration: 300 }) : withTiming(-300, { duration: 200 });
+    translateX.value = isOpen ? withTiming(0, { duration: 100 }) : withTiming(-300, { duration: 100 });
   }, [isOpen]);
 
   // Animated style
@@ -61,16 +62,28 @@ export default function OverlayMenu() {
               )}
               
             </View>
-            {MENU_ITEMS.map((item) => (
+            {MENU_ITEMS.map((item) => {
+              const IconComponent = item.icon  as ComponentType<LucideProps>;
+              return (
+                <TouchableOpacity key={item.label} className="py-7 my-3 ps-9 border-b border-neutral-6900 bg-white/5  flex-row items-center shadow-sm"
+                onPress={() => navigateTo(item.screen as keyof RootStackParamList)}>
+                  <IconComponent size={20} color="white" className="mr-2" />
+                  <Text className="text-lg text-white mx-2 px-3">{item.label}</Text>
+                </TouchableOpacity>
+              );
+            })}
+            {/* {MENU_ITEMS.map((item) => {
+              const a =1;
               <TouchableOpacity
                 className="py-7 my-3 ps-9 border-b border-neutral-6900 bg-white/5   shadow-sm "
                 key={item.label}
                 onPress={() => navigateTo(item.screen as keyof RootStackParamList)}>
                 <Text className="text-lg  text-white">
-                  {item.icon} {item.label}
+                                const IconComponent = item.icon;
+ {item.label}
                 </Text>
-              </TouchableOpacity>
-            ))}
+              </TouchableOpacity> */}
+            {/* })} */}
           </ScrollView>
         </Animated.View>
       </View>

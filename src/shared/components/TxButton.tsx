@@ -25,11 +25,9 @@ export default function TxButton({
   fullWidth = true,
 }: TxButtonProps) {
   const surfaceClass = getSurfaceStyle(variant === 'ghost' ? 'light' : variant);
-  const outlineClass = variant.includes('outline') ? 'bg-transparent border border-gray-400 text-blackk' : '';
-  const ghostClass = variant === 'ghost' ? 'bg-transparent text-blackk' : '';
-    console.log('surfaceClass: ', surfaceClass);
-    console.log('outlineClass: ', outlineClass);
-    console.log('ghostClass: ', ghostClass);
+  const outlineClass = variant.includes('outline') ? 'bg-transparent border border-gray-400 del-text-blackk' : '';
+  const ghostClass = variant === 'ghost' ? 'bg-transparent del-text-blackk' : '';
+
   return (
     <Pressable
       onPress={onPress}
