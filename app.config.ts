@@ -4,7 +4,7 @@ export default ({ config }) => {
   const apiBaseUrl = process.env.API_URL!;
   const env = process.env.APP_ENV || 'development';
   const googleClientId = process.env.googleClientId!;
-  const googleIOsClientId = process.env.googleIOsClientId! ;
+  const googleIOsClientId = process.env.googleIOsClientId!;
   const googleAndroidClientId = process.env.googleAndroidClientId!;
   const googleSecret = process.env.googleSecret!;
 
@@ -15,10 +15,10 @@ export default ({ config }) => {
     owner: 'chans',
     version: '1.0.1',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: './src/assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      image: './src/assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },

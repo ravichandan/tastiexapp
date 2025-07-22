@@ -9,11 +9,13 @@ export interface LoginPayload {
 }
 
 export interface LoginResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  } | any;
+  user:
+    | {
+        id: string;
+        name: string;
+        email: string;
+      }
+    | any;
   token: string;
 }
 
@@ -31,7 +33,6 @@ export async function loginUser(payload: LoginPayload): Promise<LoginResponse> {
     throw new Error(handleApiError(err));
   }
 }
-
 
 export async function oidcLoginUser(payload: OidcLoginPayload): Promise<LoginResponse> {
   try {
