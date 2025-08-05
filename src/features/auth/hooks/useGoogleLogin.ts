@@ -25,7 +25,7 @@ const googleIOsClientId = Constants.expoConfig?.extra?.googleIOsClientId!;
 // const googleAndroidClientId = Constants.expoConfig?.extra?.googleAndroidClientId!;
 // const clientSecret = Constants.expoConfig?.extra?.googleSecret!;
 
-export const useGoogleLogin = () => {
+export const useGoogleLogin = (onSuccess?: () => void) => {
   // console.log('HermesInternal' in global); // should be false
 
   const setUser = useAuthStore((state) => state.login);
@@ -69,6 +69,9 @@ export const useGoogleLogin = () => {
 
       console.log('setting, customer and token: ', loginResponse.token);
       setUser({ ...loginResponse.user }, loginResponse.token);
+      if (onSuccess) {
+        onSuccess();
+      }
     }
   };
 

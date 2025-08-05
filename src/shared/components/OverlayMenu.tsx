@@ -52,7 +52,7 @@ export default function OverlayMenu() {
                   <Text className="text-xl font-semibold">Hi, Chandan 👋</Text>
                 </>
               ) : (
-                <TxButton label="Login" variant="dark-outline" ></TxButton>
+                <TxButton label="Login" variant="dark-outline" onPress={() => {navigation.navigate('Login'); closeMenu();}}></TxButton>
                 // <TouchableOpacity onPress={() => {
                 //   closeMenu();
                 //   navigateTo('Login' as keyof RootStackParamList);
@@ -66,7 +66,7 @@ export default function OverlayMenu() {
               const IconComponent = item.icon  as ComponentType<LucideProps>;
               return (
                 <TouchableOpacity key={item.label} className="py-7 my-3 ps-9 border-b border-neutral-6900 bg-white/5  flex-row items-center shadow-sm"
-                onPress={() => navigateTo(item.screen as keyof RootStackParamList)}>
+                onPress={() => {navigateTo(item.screen as keyof RootStackParamList); closeMenu}}>
                   <IconComponent size={20} color="white" className="mr-2" />
                   <Text className="text-lg text-white mx-2 px-3">{item.label}</Text>
                 </TouchableOpacity>

@@ -8,5 +8,7 @@ export const API_ENDPOINTS = {
   SIGNUP: '/signup',
   DISHES: '/dishes',
   REVIEWS: '/reviews',
+  CUISINES: '/cuisines',
+  DIETARIES: '/dietaries',
   MY_PROFILE: '/users/me',
 };

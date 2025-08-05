@@ -12,6 +12,7 @@ import { useOverlayMenuStore } from '@/state/useOverlayMenuStore';
 import OverlayMenu from '@/shared/components/OverlayMenu';
 import { useAuthStore } from '@/state';
 import { lightTheme } from '@/shared/theme';
+import LoginForm from '@/features/auth/components/LoginForm';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -43,6 +44,7 @@ const theme =
       <View className="flex-1">
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Login" component={LoginForm} />
           <Stack.Screen name="Search" component={SearchScreen} />
         </Stack.Navigator>
 

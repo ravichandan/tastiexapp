@@ -1,5 +1,5 @@
 // src/features/auth/api/authApi.ts
-import { axiosInstance } from '@/shared/api/axiosInstance';
+import { axiosInstance } from '@/services/axiosInstance';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
 
