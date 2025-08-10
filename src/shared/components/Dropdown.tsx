@@ -5,9 +5,10 @@ import { ChevronDown } from 'lucide-react-native';
 type Props = {
   label: string;
   options: string[];
+  onSelect: (item: any) => void;
 };
 
-export default function Dropdown({ label, options }: Props) {
+export default function Dropdown({ label, options, onSelect }: Props) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -45,6 +46,7 @@ export default function Dropdown({ label, options }: Props) {
               className="px-3 py-2"
               onPress={() => {
                 setSelected(item);
+                onSelect(item);
                 setOpen(false);
               }}
             >

@@ -1,13 +1,19 @@
-import { View, Text, Button, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, Button, ScrollView, ActivityIndicator, Keyboard } from 'react-native';
 import { RootStackParamList } from '../../../navigation/types'; // adjust path if needed
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // import { useAuthStore } from '../../../state/useAuthStore';
 // import LoginForm from '@/features/auth/components/LoginForm';
 import SearchBar from '@/features/search/screens/SearchBar';
 import { useEffect, useState } from 'react';
-import { useFilters } from '../hooks/useFilters';
+// import { useFilters } from '../hooks/useFilters';
 import SearchButton from '@/features/search/screens/SearchButton';
 import FilterAccordion from '@/features/search/screens/FilterAccordion';
+import { useSearch } from '@/features/search/hooks/useSearch';
+import { useSearchStore } from '@/state/useSearchStore';
+import { SearchIcon, X } from 'lucide-react-native';
+import { useFiltersStore } from '@/state/useFiltersStore';
+import { CuisineType, DietaryType } from '@/types/Types';
+
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -17,25 +23,83 @@ export default function HomeScreen({ }: Props) {
   // const logout = useAuthStore((state) => state.logout);
   
   const [showFilters, setShowFilters] = useState(false);
-  const { cuisines, dietaryOptions, loading, error } = useFilters();
+  
+  const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
+  const { performSearch, optionsError } = useSearch();
+  const { searchKey, clear, isLoading: searchLoading, error: searchError } = useSearchStore();
+  // const { cuisinesOptions, dietaryOptions, isLoading, error: } = useFiltersStore();
+  const [query, setQuery] = useState(searchKey);
 
 
-
-  // useEffect(() => {
-  //   // fetchFilterData();
-  // }, []);
+  useEffect(() => {
+    if(searchKey){
+      setQuery(searchKey);
+      performSearch(searchKey);
+    }
+  }, []);
   console.log('in home screen');
+
+  useEffect(() => {
+    fetchFilterOptions();
+  },[]);
+
+  const handleSearch = () => {
+    const trimmed = query.trim();
+    if (trimmed) {
+      Keyboard.dismiss();
+      performSearch(trimmed);
+    } else {
+      clear();
+      console.warn('Please enter a search query');
+    }
+  };
+
+  const handleChange = (text: string) => {
+    setQuery(text);
+    if (text.trim() === '') clear();
+  };
+
+  const handleClear = () => {
+    setQuery('');
+    clear();
+    // Keyboard.dismiss();
+  };
+
+  const onSelectCuisine = (cuisine: CuisineType | null): void => {
+    console.log('Selected cuisine:', cuisine);
+    // If you want to trigger a search immediately:
+    // if (cuisine) {
+    //   performSearch(cuisine.name); // or use cuisine.id if needed
+    //   setShowFilters(false); // Optionally close filters after selection
+    // } else {
+    //   clear();
+    // }
+  }
+
+  const onSelectDietary = (dietary: DietaryType | null): void => {
+    console.log('Selected dietary:', dietary);
+    // If you want to trigger a search immediately:
+    // if (dietary) {
+    //   performSearch(dietary); // or use dietary.id if needed
+    //   setShowFilters(false); // Optionally close filters after selection
+    // } else {
+    //   clear();
+    // }
+  }; 
+
 //   if (loading) return <ActivityIndicator />;
 // if (error) return <Text>{error}</Text>;
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} />
-      
+      <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} value={query} onChange={handleChange} onSearch={handleSearch} onClear={handleClear} />
+
       {showFilters && (
-        <FilterAccordion cuisines={cuisines} dietaryOptions={dietaryOptions} />
+        <FilterAccordion cuisines={cuisinesOptions} dietaryOptions={dietaryOptions} onSelectCuisine={onSelectCuisine} onSelectDietary={onSelectDietary} />
       )}
 
-      <SearchButton />
+      <SearchButton onClick={handleSearch} />
+      {searchLoading && <ActivityIndicator />}
+      {searchError && <Text className='text-red-500'>{searchError}</Text>}
     </ScrollView>
     // <View className="flex-1 items-center justify-center bg-white">
     //   <View

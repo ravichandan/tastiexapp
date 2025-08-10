@@ -6,13 +6,15 @@ import { Cuisine, DietaryType } from '@/types/Types';
 type Props = {
   cuisines: Cuisine[];
   dietaryOptions: DietaryType[];
+  onSelectDietary: (dietary: DietaryType | null) => void;
+  onSelectCuisine: (cuisine: Cuisine | null) => void;
 };
 
-export default function FilterAccordion({ cuisines, dietaryOptions }: Props) {
+export default function FilterAccordion({ cuisines, dietaryOptions, onSelectDietary, onSelectCuisine }: Props) {
   return (
     <View className="mt-4 space-y-4">
-      <Dropdown label="Cuisine" options={cuisines} />
-      <Dropdown label="Dietary" options={dietaryOptions.map(option => option.name)} />
+      <Dropdown label="Cuisine" options={cuisines} onSelect={onSelectCuisine} />
+      <Dropdown label="Dietary" options={dietaryOptions.map(option => option.name)} onSelect={onSelectDietary} />
     </View>
   );
 }

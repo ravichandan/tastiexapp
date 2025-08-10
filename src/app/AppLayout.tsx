@@ -32,12 +32,13 @@ const theme =
   return (
     <View className="flex-1 bg-white">
       {/* ✅ Persistent Header */}
-      <View className="bg-black flex-row items-center justify-between px-4 py-4" >
-        <Image source={require('@/assets/logo1.png')} resizeMode="contain" style={{ height: 40, width: 150 }} />
-        {/* 🍔 Burger Menu icon (can hook to drawer later) */}
-        <TouchableOpacity onPress={openMenu}>
+      <View className="bg-black flex-row items-center  px-4 py-4" >
+        <TouchableOpacity onPress={openMenu} className="mx-3">
           <BurgerIcon width={24} height={24} fill="white" />
         </TouchableOpacity>
+        <Image source={require('@/assets/fontspace1.png')} resizeMode="contain" className="mx-5" style={{ height: 40, width: 150 }} />
+        {/* 🍔 Burger Menu icon (can hook to drawer later) */}
+        
       </View>
 
       {/* ✅ Stack Navigator Content */}
