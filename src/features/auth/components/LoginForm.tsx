@@ -3,12 +3,20 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, ActivityIndicator } from 'react-native';
 import { useLogin } from '../hooks/useLogin';
 import { useGoogleLogin } from '@/features/auth/hooks/useGoogleLogin';
+import OAuthButton from '@/shared/components/OAuthButton';
+import { useNavigation } from '@react-navigation/native';
 
 export default function LoginForm() {
-  const { login, loading, error } = useLogin();
+  const navigation = useNavigation();
+
+  const navigateBack = () => {
+    navigation.goBack();
+  };
+
+  const { login, loading, error } = useLogin(navigateBack);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const googleLogin = useGoogleLogin();
+  const googleLogin = useGoogleLogin(navigateBack);
 
   const onSubmit = () => {
     login({ email, password });
@@ -16,10 +24,18 @@ export default function LoginForm() {
 
   return (
     <View className="p-4">
-      <Button
-        title="Sign in with Google"
+
+      <OAuthButton
+        provider="google"
         onPress={googleLogin.login}
-        disabled={!googleLogin.request} // disable button if login request is not ready
+        loading={loading}
+        disabled={!googleLogin.request} 
+      />
+      <OAuthButton
+        provider="facebook"
+        onPress={() => {}}
+        loading={loading}
+        disabled={true} // Placeholder for Facebook login
       />
       <TextInput
         placeholder="Email"
@@ -37,7 +53,7 @@ export default function LoginForm() {
         secureTextEntry
       />
 
-      {error && <Text className="text-red-500 mb-2">{error}</Text>}
+      {error && <SmoothText className="text-red-500 mb-2">{error}</SmoothText>}
       {loading ? <ActivityIndicator /> : <Button title="Login" onPress={onSubmit} />}
     </View>
   );

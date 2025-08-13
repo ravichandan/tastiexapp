@@ -25,22 +25,20 @@ const googleIOsClientId = Constants.expoConfig?.extra?.googleIOsClientId!;
 // const googleAndroidClientId = Constants.expoConfig?.extra?.googleAndroidClientId!;
 // const clientSecret = Constants.expoConfig?.extra?.googleSecret!;
 
-export const useGoogleLogin = () => {
+export const useGoogleLogin = (onSuccess?: () => void) => {
   // console.log('HermesInternal' in global); // should be false
 
   const setUser = useAuthStore((state) => state.login);
-
 
   // const result =  // ✅ Works
   const localRedirectUri = 'https://auth.expo.io/@chans/foodiexapp';
 
   const isStandalone = Constants.executionEnvironment === ExecutionEnvironment.Standalone;
 
-  const redirectUri =
-    AuthSession.makeRedirectUri({
-      // path: 'oauthredirect'
-      native: 'com.syena.foodiexapp:/oauthredirect',
-    }); // → foodiex:/oauthredirect
+  const redirectUri = AuthSession.makeRedirectUri({
+    // path: 'oauthredirect'
+    native: 'com.syena.foodiexapp:/oauthredirect',
+  }); // → foodiex:/oauthredirect
 
   const request = AuthSession.useAuthRequest(
     {
@@ -55,7 +53,6 @@ export const useGoogleLogin = () => {
     discovery,
   );
   const login = async () => {
-    
     const result = await request[2](); // request[2] is the `promptAsync` function
     console.log('OAuth result:', result);
 
@@ -65,13 +62,16 @@ export const useGoogleLogin = () => {
       const platform = Platform.OS;
       const loginUrl = `${Constants.expoConfig?.extra?.apiBaseUrl}/customers/code-login`;
       console.log(`code: ${code}, codeVerifier: ${codeVerifier}, platform: ${platform}, loginUrl: ${loginUrl}`);
-      
+
       // 🔐 Send to backend for session/JWT creation
-      const loginResponse =  await oidcLoginUser({ code, codeVerifier, platform });
+      const loginResponse = await oidcLoginUser({ code, codeVerifier, platform });
       console.log('login Response:: ', loginResponse);
-      
+
       console.log('setting, customer and token: ', loginResponse.token);
       setUser({ ...loginResponse.user }, loginResponse.token);
+      if (onSuccess) {
+        onSuccess();
+      }
     }
   };
 

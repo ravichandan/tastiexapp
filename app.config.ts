@@ -1,24 +1,30 @@
 import 'dotenv/config';
 
 export default ({ config }) => {
+  const envFile =
+  process.env.APP_ENV === 'production'
+    ? require('dotenv').config({ path: '.env.production' })
+    : require('dotenv').config({ path: '.env' });
+    
   const apiBaseUrl = process.env.API_URL!;
   const env = process.env.APP_ENV || 'development';
   const googleClientId = process.env.googleClientId!;
-  const googleIOsClientId = process.env.googleIOsClientId! ;
+  const googleIOsClientId = process.env.googleIOsClientId!;
   const googleAndroidClientId = process.env.googleAndroidClientId!;
   const googleSecret = process.env.googleSecret!;
+  const bucketAccessEndpoint = process.env.bucketAccessEndpoint || "https://img.foodiex.com.au";
 
   return {
     ...config,
     name: 'foodiexapp',
     slug: 'foodiexapp',
     owner: 'chans',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: './src/assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      image: './src/assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -28,6 +34,7 @@ export default ({ config }) => {
     },
     android: {
       package: 'com.syena.foodiexapp',
+      versionCode: 4,
       intentFilters: [
         {
           action: 'VIEW',
@@ -53,6 +60,7 @@ export default ({ config }) => {
       googleIOsClientId,
       googleAndroidClientId,
       googleSecret,
+      bucketAccessEndpoint,
     },
     plugins: ['expo-secure-store'],
   };

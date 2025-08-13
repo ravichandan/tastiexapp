@@ -1,4 +1,4 @@
-# Foodiex mobile app
+# Tastiex mobile app
 
 ## Folder structure
 

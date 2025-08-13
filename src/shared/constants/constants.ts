@@ -6,7 +6,10 @@ export const API_ENDPOINTS = {
   LOGIN: '/login',
   OIDC_LOGIN: '/customers/code-login',
   SIGNUP: '/signup',
-  DISHES: '/dishes',
+  ITEMS: '/items',
+  PLACES: '/places',
   REVIEWS: '/reviews',
+  CUISINES: '/cuisines',
+  DIETARIES: '/dietaries',
   MY_PROFILE: '/users/me',
 };
