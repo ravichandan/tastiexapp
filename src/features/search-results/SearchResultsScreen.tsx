@@ -9,6 +9,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Place, PlaceItem } from '@/types/Types';
 import SearchPlaceCard from './SearchPlaceCard';
 import SmoothText from '@/shared/components/SmoothText';
+import { theme } from '@/shared/theme';
 
 /**
  * NOTE:
@@ -40,7 +41,9 @@ export default function SearchResultsScreen() {
     //   <SmoothText style={styles.itemTitle}>{place.placeName}</SmoothText>
     //   {/* {place.subtitle ? <SmoothText style={styles.itemSubtitle}>{place.subtitle}</SmoothText> : null} */}
     // </View>
-    <SearchPlaceCard place={place} />
+    <View style={styles.item}>
+      <SearchPlaceCard place={place} />
+    </View>
   );
 
   const renderDish = ({ item }: { item: PlaceItem }) => (
@@ -76,8 +79,8 @@ export default function SearchResultsScreen() {
                 <ActivityIndicator style={{ marginTop: 24 }} />
               ) : places && places.length > 0 ? (
                 <FlashList
-                  data={places.slice(1, 2)} // Limit to first 10 for performance
-                  keyExtractor={(item) => item.id}
+                  data={places} 
+                  keyExtractor={(item) => item._id}
                   renderItem={renderPlace}
                 />
 
@@ -101,7 +104,7 @@ export default function SearchResultsScreen() {
               ) : dishes && dishes.length > 0 ? (
                 <FlashList
                   data={dishes}
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item) => item._id}
                   renderItem={renderDish}
                   contentContainerStyle={{ paddingBottom: 24 }}
                   
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   item: {
-    paddingVertical: 12,
+    paddingVertical: theme.spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },

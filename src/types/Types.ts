@@ -29,6 +29,7 @@ export type Media = {
   id: string;
   url: string;
   type: 'image' | 'video';
+  key: string; // S3 key or similar identifier
 };
 
 export type PlaceItem = {

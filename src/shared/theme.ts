@@ -47,7 +47,8 @@ const radius = {
 
 const card = {
   card: {
-    // marginBottom: spacing.sm,
+    // marginBottom: spacing.md,
+    paddingBottom: spacing.sm,
     flex: 1,
     // height: 2000,
     // backgroundColor: colors.surface,
@@ -75,18 +76,11 @@ const card = {
     // borderTopWidth: 1,
     flexDirection: "row" as const,
     justifyContent: "space-between" as const,
-    borderColor: '#000',
+    // borderColor: '#000',
     // marginBottom: spacing.sm,
   },
   title: { color: colors.textLight, fontSize: 16, fontWeight: "bold"  as const, includeFontPadding: false},
-  location: { color: colors.textLight, flexDirection: "row" as const, alignItems: "center" as const },
-  locationText: { color: colors.textLight, marginLeft: 4 },
-  locationIcon: { color: colors.textLight, marginRight: 4 },
-  rating: { color: colors.textLight, fontSize: 12, },
-  dishRow: { flexDirection: "row" as const, marginTop: 8 },
-  dishImage: { width: 50, height: 50, borderRadius: 4, marginRight: 8 },
-  dishName: { fontWeight: "600" as const },
-  dishRating: { fontSize: 12, color: "#555" },
+  
 }
 export const theme = {
   colors,

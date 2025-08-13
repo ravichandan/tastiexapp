@@ -10,6 +10,7 @@ import { ComponentType, useEffect } from 'react';
 import { useAuthStore } from '@/state';
 import TxButton from './TxButton';
 import { LucideProps } from 'lucide-react-native';
+import SmoothText from './SmoothText';
 
 export default function OverlayMenu() {
   const { isOpen, closeMenu } = useOverlayMenuStore();

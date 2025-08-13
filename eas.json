@@ -28,8 +28,7 @@
       "developmentClient": false,
       "distribution": "store",
       "env": {
-        "APP_ENV": "production",
-        "API_URL": "http://api.foodiex.com/api"
+        "APP_ENV": "production"
       }
     }
   },
