@@ -1,11 +1,12 @@
 import 'dotenv/config';
 
 export default ({ config }) => {
+  const currentVersionCode = config.android.versionCode || 1;
   const envFile =
   process.env.APP_ENV === 'production'
     ? require('dotenv').config({ path: '.env.production' })
     : require('dotenv').config({ path: '.env' });
-    
+
   const apiBaseUrl = process.env.API_URL!;
   const env = process.env.APP_ENV || 'development';
   const googleClientId = process.env.googleClientId!;
@@ -34,7 +35,7 @@ export default ({ config }) => {
     },
     android: {
       package: 'com.syena.foodiexapp',
-      versionCode: 4,
+      versionCode: currentVersionCode + 1,
       intentFilters: [
         {
           action: 'VIEW',
