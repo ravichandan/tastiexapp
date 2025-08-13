@@ -31,6 +31,7 @@ export const useSearch = () => {
     setSearchData, // convenience method to write snapshot
     setLoading: setSearchLoading,
     setError: setSearchError,
+    setSearchPerformed
   } = useSearchStore();
 
   // UI state for loading options
@@ -63,6 +64,9 @@ export const useSearch = () => {
     }
   }, [setCuisinesOptions, setDietaryOptions]);
 
+  /** returns true if there are search results */
+  const hasSearchResults = useSearchStore((state) => state.searchPerformed);
+
   /**
    * performSearch:
    * - reads current selected filters from useFiltersStore (latest values)
@@ -91,6 +95,7 @@ export const useSearch = () => {
 
       try {
         setSearchLoading(true);
+        setSearchPerformed(true);
         setSearchError(null);
         // places/?placeName=biryani&itemName=biryani&distance=50&city=sydney
         // /items/?itemName=biryani&distance=50&city=Sydney
@@ -100,18 +105,22 @@ export const useSearch = () => {
           params: {
             placeName: currentSearchKey,
             itemName: currentSearchKey,
+            distance: 50,
+            city: 'sydney',
             cuisines: filters.cuisines.join(',') || undefined,
             dietary: filters.dietary.join(',') || undefined,
           },
         });
 
         const results = data?.places ?? data; // adapt to your API
-        console.log('Search results:', data.size);
+        console.log('Search results:', JSON.stringify(data.places?.length));
+        console.log('Search results:', Object.keys(data));
         // Save snapshot to search store (so results + filters + key persist)
         setSearchData({
           searchKey: currentSearchKey,
           filters,
-          results,
+          placesResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
+          itemsResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
         });
       } catch (err: any) {
         console.error('Search failed', err);

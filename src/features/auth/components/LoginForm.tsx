@@ -53,7 +53,7 @@ export default function LoginForm() {
         secureTextEntry
       />
 
-      {error && <Text className="text-red-500 mb-2">{error}</Text>}
+      {error && <SmoothText className="text-red-500 mb-2">{error}</SmoothText>}
       {loading ? <ActivityIndicator /> : <Button title="Login" onPress={onSubmit} />}
     </View>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { ChevronDown } from 'lucide-react-native';
+import SmoothText from './SmoothText';
 
 type Props = {
   label: string;
@@ -18,7 +19,7 @@ export default function Dropdown({ label, options, onSelect }: Props) {
         className="flex-row justify-between items-center px-3 py-2"
         onPress={() => setOpen((prev) => !prev)}
       >
-        <Text>{selected || `Select ${label}`}</Text>
+        <SmoothText>{selected || `Select ${label}`}</SmoothText>
         <ChevronDown size={20} />
       </TouchableOpacity>
 
@@ -35,7 +36,7 @@ export default function Dropdown({ label, options, onSelect }: Props) {
         //         setOpen(false);
         //       }}
         //     >
-        //       <Text>{item}</Text>
+        //       <SmoothText>{item}</SmoothText>
         //     </TouchableOpacity>
         //   )}
         // />
@@ -50,7 +51,7 @@ export default function Dropdown({ label, options, onSelect }: Props) {
                 setOpen(false);
               }}
             >
-              <Text>{item}</Text>
+              <SmoothText>{item}</SmoothText>
             </TouchableOpacity>
           ))}
         </View>

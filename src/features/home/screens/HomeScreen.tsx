@@ -13,7 +13,9 @@ import { useSearchStore } from '@/state/useSearchStore';
 import { SearchIcon, X } from 'lucide-react-native';
 import { useFiltersStore } from '@/state/useFiltersStore';
 import { CuisineType, DietaryType } from '@/types/Types';
-
+import SearchResultsScreen from '@/features/search-results/SearchResultsScreen';
+import { theme } from "@/shared/theme";
+import SmoothText from '@/shared/components/SmoothText';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -25,8 +27,8 @@ export default function HomeScreen({ }: Props) {
   const [showFilters, setShowFilters] = useState(false);
   
   const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
-  const { performSearch, optionsError } = useSearch();
-  const { searchKey, clear, isLoading: searchLoading, error: searchError } = useSearchStore();
+  const { performSearch, optionsError,  } = useSearch();
+  const { searchKey, clear, isLoading: searchLoading, error: searchError, searchPerformed, setSearchPerformed } = useSearchStore();
   // const { cuisinesOptions, dietaryOptions, isLoading, error: } = useFiltersStore();
   const [query, setQuery] = useState(searchKey);
 
@@ -62,6 +64,7 @@ export default function HomeScreen({ }: Props) {
   const handleClear = () => {
     setQuery('');
     clear();
+    setSearchPerformed(false);
     // Keyboard.dismiss();
   };
 
@@ -88,29 +91,32 @@ export default function HomeScreen({ }: Props) {
   }; 
 
 //   if (loading) return <ActivityIndicator />;
-// if (error) return <Text>{error}</Text>;
+// if (error) return <SmoothText>{error}</SmoothText>;
   return (
-    <ScrollView contentContainerStyle={{ padding: 16 }}>
-      <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} value={query} onChange={handleChange} onSearch={handleSearch} onClear={handleClear} />
+    <View style={{ flex: 1 }}>
+      <View style={{ padding: 16 }}>
+        <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} value={query} onChange={handleChange} onSearch={handleSearch} onClear={handleClear} />
 
-      {showFilters && (
-        <FilterAccordion cuisines={cuisinesOptions} dietaryOptions={dietaryOptions} onSelectCuisine={onSelectCuisine} onSelectDietary={onSelectDietary} />
-      )}
-
-      <SearchButton onClick={handleSearch} />
+        {showFilters && (
+          <FilterAccordion cuisines={cuisinesOptions} dietaryOptions={dietaryOptions} onSelectCuisine={onSelectCuisine} onSelectDietary={onSelectDietary} />
+        )}
+        <SearchButton style={{backgroundColor: theme.colors.buttonPrimary}} onClick={handleSearch} />
+      </View>
+      
+      {searchPerformed && searchKey && <SearchResultsScreen />}
       {searchLoading && <ActivityIndicator />}
-      {searchError && <Text className='text-red-500'>{searchError}</Text>}
-    </ScrollView>
+      {searchError && <SmoothText className='text-red-500'>{searchError}</SmoothText>}
+    </View>
     // <View className="flex-1 items-center justify-center bg-white">
     //   <View
     //     className="flex-1 items-center justify-center bg-white"
     //     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //     <Text>Welcome to Tastiex! 🍽️</Text>
+    //     <SmoothText>Welcome to Tastiex! 🍽️</SmoothText>
     //     <Button title="Search Dishes" onPress={() => navigation.navigate('Search')} />
 
     //   </View>
 
-    //   <Text className="text-xl mb-4">{user ? `Welcome, ${user.name}!` : 'You are not logged in.'}</Text>
+    //   <SmoothText className="text-xl mb-4">{user ? `Welcome, ${user.name}!` : 'You are not logged in.'}</SmoothText>
 
     //   {!user ? (
     //     <Button title="Login" onPress={() => login({ id: '123', name: 'Chandan' }, 'token_abc')} />

@@ -41,7 +41,7 @@ export default function OverlayMenu() {
       <View className="absolute top-0 left-0 bottom-0 w-3/4 bg-black  shadow-lg">
         <Animated.View style={[menuStyle]} className="absolute left-0 top-0 bottom-0 w-full  bg-black">
           <ScrollView contentContainerStyle={{ padding: 20 }}>
-            {/* <Text className="text-xl font-bold mb-4">🍽️ Menu</Text> */}
+            {/* <SmoothText className="text-xl font-bold mb-4">🍽️ Menu</SmoothText> */}
             <View className="items-center mb-6">
               {user ? (
                 <>
@@ -49,7 +49,7 @@ export default function OverlayMenu() {
                     source={{ uri: 'https://i.pravatar.cc/100' }} // or your user's profile pic
                     className="w-20 h-20 rounded-full mb-2"
                   />
-                  <Text className="text-xl font-semibold">Hi, Chandan 👋</Text>
+                  <SmoothText className="text-xl font-semibold">Hi, Chandan 👋</SmoothText>
                 </>
               ) : (
                 <TxButton label="Login" variant="dark-outline" onPress={() => {navigation.navigate('Login'); closeMenu();}}></TxButton>
@@ -57,7 +57,7 @@ export default function OverlayMenu() {
                 //   closeMenu();
                 //   navigateTo('Login' as keyof RootStackParamList);
                 // }}>
-                //   <Text className="text-white text-base font-medium">Log in</Text>
+                //   <SmoothText className="text-white text-base font-medium">Log in</SmoothText>
                 // </TouchableOpacity>
               )}
               
@@ -68,7 +68,7 @@ export default function OverlayMenu() {
                 <TouchableOpacity key={item.label} className="py-7 my-3 ps-9 border-b border-neutral-6900 bg-white/5  flex-row items-center shadow-sm"
                 onPress={() => {navigateTo(item.screen as keyof RootStackParamList); closeMenu}}>
                   <IconComponent size={20} color="white" className="mr-2" />
-                  <Text className="text-lg text-white mx-2 px-3">{item.label}</Text>
+                  <SmoothText className="text-lg text-white mx-2 px-3">{item.label}</SmoothText>
                 </TouchableOpacity>
               );
             })}
@@ -78,10 +78,10 @@ export default function OverlayMenu() {
                 className="py-7 my-3 ps-9 border-b border-neutral-6900 bg-white/5   shadow-sm "
                 key={item.label}
                 onPress={() => navigateTo(item.screen as keyof RootStackParamList)}>
-                <Text className="text-lg  text-white">
+                <SmoothText className="text-lg  text-white">
                                 const IconComponent = item.icon;
  {item.label}
-                </Text>
+                </SmoothText>
               </TouchableOpacity> */}
             {/* })} */}
           </ScrollView>

@@ -41,7 +41,7 @@ export default function TxButton({
         disabled && 'opacity-50'
       )}
     >
-      <Text className={clsx(getTextStyle('button'), 'text-white')}>{label}</Text>
+      <SmoothText className={clsx(getTextStyle('button'), 'text-white')}>{label}</SmoothText>
     </Pressable>
   );
 }
