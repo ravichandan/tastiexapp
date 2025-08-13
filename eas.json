@@ -25,6 +25,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "developmentClient": false,
       "distribution": "store",
       "env": {
@@ -41,5 +42,8 @@
         "appleId": "your-apple-id@example.com"
       }
     }
+  },
+  "cli": {
+    "appVersionSource": "remote"
   }
 }

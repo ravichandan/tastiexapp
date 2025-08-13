@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 export default ({ config }) => {
-  const currentVersionCode = config.android.versionCode || 1;
+  const currentVersionCode = config.android?.versionCode || 1;
   const envFile =
   process.env.APP_ENV === 'production'
     ? require('dotenv').config({ path: '.env.production' })
@@ -35,7 +35,6 @@ export default ({ config }) => {
     },
     android: {
       package: 'com.syena.foodiexapp',
-      versionCode: currentVersionCode + 1,
       intentFilters: [
         {
           action: 'VIEW',
