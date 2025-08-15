@@ -6,6 +6,7 @@ import { useSearchStore } from '@/state/useSearchStore';
 import { CUISINES, DIETARIES } from '@/shared/config/menuConfig';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
 import { SuburbType } from '@/types/Types';
+import { doGetItems, doGetPlaces } from '@/services/searchApi';
 
 /**
  * Hook responsibilities:
@@ -34,6 +35,8 @@ export const useSearch = () => {
   // search store methods
   const {
     setSearchData, // convenience method to write snapshot
+    setItems,
+    setPlaces,
     setLoading: setSearchLoading,
     setError: setSearchError,
     setSearchPerformed,
@@ -96,6 +99,10 @@ export const useSearch = () => {
         location: useFiltersStore.getState().location,
         distance: useFiltersStore.getState().radius,
       };
+      setSearchData({
+          searchKey: currentSearchKey,
+          filters
+        });
 
       try {
         setSearchLoading(true);
@@ -103,41 +110,22 @@ export const useSearch = () => {
         setSearchError(null);
         // places/?placeName=biryani&itemName=biryani&distance=50&city=sydney
         // /items/?itemName=biryani&distance=50&city=Sydney
-        const placesEndpoint = API_ENDPOINTS.PLACES;
-        // call search endpoint — adapt the params shape to your backend
-        console.log('Performing search with params:', {
-          placeName: currentSearchKey,
-          itemName: currentSearchKey,
-          distance: filters.distance || 50,
-          city: 'sydney',
-          cuisines: filters.cuisines.join(',') || undefined,
-          dietary: filters.dietary.join(',') || undefined,
-          suburbs: filters.location?.name || undefined,
-          includeSurroundingSuburbs: true,
-        });
-        const { data } = await axiosInstance.get(placesEndpoint, {
-          params: {
-            placeName: currentSearchKey,
-            itemName: currentSearchKey,
-            distance: 50,
-            city: 'sydney',
-            suburbs: filters.location?.name || undefined,
-            includeSurroundingSuburbs: true,
-            cuisines: filters.cuisines.join(',') || undefined,
-            dietary: filters.dietary.join(',') || undefined,
-          },
-        });
-
-        const results = data?.places ?? data; // adapt to your API
-        console.log('Search results:', JSON.stringify(data.places?.length));
-        console.log('Search results:', Object.keys(data));
-        // Save snapshot to search store (so results + filters + key persist)
         setSearchData({
           searchKey: currentSearchKey,
           filters,
-          placesResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size },
-          itemsResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size },
         });
+
+        // call places endpoint
+        const { data } = await doGetPlaces(currentSearchKey, filters);
+        // save it into search store
+        setPlaces({pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size });
+
+        // call items endpoint
+        const { data:itemsData } = await doGetItems(currentSearchKey, filters);
+        console.log('Items data:', itemsData.items?.length);
+        // save it into search store
+        setItems({pageNumber: itemsData.page, pageSize: itemsData.pageSize, results: itemsData.items, total: itemsData.size});
+
       } catch (err: any) {
         console.error('Search failed', err);
         setSearchError(err?.message || 'Search failed');

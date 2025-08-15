@@ -6,10 +6,11 @@ import { Tabs, TabScreen, TabsProvider } from 'react-native-paper-tabs';
 import { useSearchStore } from '@/state/useSearchStore';
 import { useFiltersStore } from '@/state/useFiltersStore';
 import { FlashList } from '@shopify/flash-list';
-import { Place, PlaceItem } from '@/types/Types';
+import { Item, Place, PlaceItem } from '@/types/Types';
 import SearchPlaceCard from './SearchPlaceCard';
 import SmoothText from '@/shared/components/SmoothText';
 import { theme } from '@/shared/theme';
+import SearchItemCard from './SearchItemCard';
 
 /**
  * NOTE:
@@ -34,7 +35,7 @@ export default function SearchResultsScreen() {
   // Normalize results shape to get two arrays
   // Adapt this to match your backend (this is defensive)
   const places = (placesResponse.results ?? []) as Place[];
-  const dishes = (items?.results ?? []) as PlaceItem[];
+  const dishes = (items?.results ?? []) as Item[];
 
   const renderPlace = ({ item: place }: { item: Place }) => (
     // <View style={styles.item}>
@@ -46,9 +47,10 @@ export default function SearchResultsScreen() {
     </View>
   );
 
-  const renderDish = ({ item }: { item: PlaceItem }) => (
+  const renderDish = ({ item }: { item: Item }) => (
     <View style={styles.item}>
-      <SmoothText style={styles.itemTitle}>{item.name}</SmoothText>
+      {/* <SmoothText style={styles.itemTitle}>{item.name}</SmoothText> */}
+      <SearchItemCard item={item} />
       {/* {item.restaurant ? <SmoothText style={styles.itemSubtitle}>{item.restaurant}</SmoothText> : null} */}
     </View>
   );

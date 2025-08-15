@@ -44,6 +44,7 @@ export type Item = {
   _id: string;
   name: string;
   medias: Array<Media>;
+  places?: Place[];
   placeItem?: PlaceItem;
 };
 
@@ -61,6 +62,8 @@ export type Place = {
   };
   ratingInfo?: RatingInfo;
   items: Array<Item>;
+  placeItems: Array<PlaceItem>;
+  placeItem: PlaceItem;
 }
 
 export type SuburbType = {
