@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { Platform } from 'react-native';
 
 export default ({ config }) => {
   const currentVersionCode = config.android?.versionCode || 1;
@@ -14,6 +15,15 @@ export default ({ config }) => {
   const googleAndroidClientId = process.env.googleAndroidClientId!;
   const googleSecret = process.env.googleSecret!;
   const bucketAccessEndpoint = process.env.bucketAccessEndpoint || "https://img.foodiex.com.au";
+
+  let googleMapsApiKey;
+  if (Platform.OS === 'android') {
+    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_ANDROID!;
+  } else if (Platform.OS === 'ios') {
+    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_IOS!;
+  } else {
+    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_WEB!;
+  }
 
   return {
     ...config,
@@ -32,6 +42,9 @@ export default ({ config }) => {
     scheme: 'com.syena.foodiexapp',
     ios: {
       bundleIdentifier: 'com.syena.foodiexapp',
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription: "We use your location to show nearby places and dishes.",
+      },
     },
     android: {
       package: 'com.syena.foodiexapp',
@@ -45,6 +58,8 @@ export default ({ config }) => {
           category: ['BROWSABLE', 'DEFAULT'],
         },
       ],
+      permissions: ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+
     },
     web: {
       favicon: './assets/favicon.png',
@@ -61,6 +76,7 @@ export default ({ config }) => {
       googleAndroidClientId,
       googleSecret,
       bucketAccessEndpoint,
+      googleMapsApiKey,
     },
     plugins: ['expo-secure-store'],
   };

@@ -16,21 +16,19 @@ import { CuisineType, DietaryType } from '@/types/Types';
 import SearchResultsScreen from '@/features/search-results/SearchResultsScreen';
 import { theme } from "@/shared/theme";
 import SmoothText from '@/shared/components/SmoothText';
+import SearchToolbar from '@/features/search/SearchToolbar';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ }: Props) {
-  // const user = useAuthStore((state) => state.user);
-  // const login = useAuthStore((state) => state.login);
-  // const logout = useAuthStore((state) => state.logout);
   
   const [showFilters, setShowFilters] = useState(false);
   
   const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
-  const { performSearch, optionsError,  } = useSearch();
+  const { performSearch, optionsError } = useSearch();
   const { searchKey, clear, isLoading: searchLoading, error: searchError, searchPerformed, setSearchPerformed } = useSearchStore();
-  // const { cuisinesOptions, dietaryOptions, isLoading, error: } = useFiltersStore();
   const [query, setQuery] = useState(searchKey);
+  const { location, radius } = useFiltersStore();
 
 
   useEffect(() => {
@@ -90,11 +88,15 @@ export default function HomeScreen({ }: Props) {
     // }
   }; 
 
-//   if (loading) return <ActivityIndicator />;
-// if (error) return <SmoothText>{error}</SmoothText>;
+    const handleShare = () => {
+    // Use Share API or your flow
+    console.log("Share:", { location, radius });
+  };
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }} className='bg-white'>
       <View style={{ padding: 16 }}>
+        <SearchToolbar onShare={handleShare} ></SearchToolbar>
         <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} value={query} onChange={handleChange} onSearch={handleSearch} onClear={handleClear} />
 
         {showFilters && (

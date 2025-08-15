@@ -10,3 +10,10 @@ export const fetchDietaryOptions = async () => {
   const response = await axios.get(API_ENDPOINTS.DIETARIES);
   return response.data;
 };
+
+export const fetchSuburbName = async (query: string) => {
+  const response = await axios.get(API_ENDPOINTS.SUBURB_NAME, {
+    params: { q: query },
+  });
+  return response.data;
+};

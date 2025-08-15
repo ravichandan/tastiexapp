@@ -20,13 +20,9 @@ const clientId =
   Platform.OS === 'ios'
     ? Constants.expoConfig?.extra?.googleIOsClientId
     : Constants.expoConfig?.extra?.googleAndroidClientId;
-//     Constants.expoConfig?.extra?.googleClientId!;
 const googleIOsClientId = Constants.expoConfig?.extra?.googleIOsClientId!;
-// const googleAndroidClientId = Constants.expoConfig?.extra?.googleAndroidClientId!;
-// const clientSecret = Constants.expoConfig?.extra?.googleSecret!;
 
 export const useGoogleLogin = (onSuccess?: () => void) => {
-  // console.log('HermesInternal' in global); // should be false
 
   const setUser = useAuthStore((state) => state.login);
 

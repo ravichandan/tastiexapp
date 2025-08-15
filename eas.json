@@ -29,7 +29,8 @@
       "developmentClient": false,
       "distribution": "store",
       "env": {
-        "APP_ENV": "production"
+        "APP_ENV": "production",
+        "googleMapsApiKey": "AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo"
       }
     }
   },

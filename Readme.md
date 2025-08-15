@@ -43,3 +43,14 @@ Expo app ──► Google (auth) ──► auth code + codeVerifier ──► Yo
 Your API ──► Google (token endpoint) ──► id_token + access_token
 Your API verifies id_token, creates user, issues own JWT
 Your API ⇦── Mobile app (JWT + user data)
+
+## How to access/change SHA-1 key
+- npx eas credentials
+- select a platform, ex: Android
+- Select Keystore: Manage everything needed to build your project
+- then you have options to create a new , or download existing keystore.
+
+## API keys for maps
+maps javascript api key for android AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo
+maps javascript api key for ios     AIzaSyDOVlczZ1RztKwCKJkc1IWDQT65YzmgRyI
+maps javascript api key for web     AIzaSyDosbJvra6VSMMvWQZjHRlO-vG1v601Oic

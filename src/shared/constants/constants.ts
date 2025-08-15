@@ -11,5 +11,7 @@ export const API_ENDPOINTS = {
   REVIEWS: '/reviews',
   CUISINES: '/cuisines',
   DIETARIES: '/dietaries',
+  SUBURB_NAME: '/suburbName',
+  SUBURBS: '/suburbs',
   MY_PROFILE: '/users/me',
 };

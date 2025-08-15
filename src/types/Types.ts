@@ -62,3 +62,9 @@ export type Place = {
   ratingInfo?: RatingInfo;
   items: Array<Item>;
 }
+
+export type SuburbType = {
+  id?: number;
+  name: string;
+  postcode: string;
+};
