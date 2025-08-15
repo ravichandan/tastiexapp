@@ -6,7 +6,6 @@ import { Picker } from "@react-native-picker/picker";
 import { theme } from "@/shared/theme";
 import { useFiltersStore } from "@/state/useFiltersStore";
 import LocationPickerModal from "./LocationPickerModal";
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 interface Props {
   onShare: () => void;

@@ -26,9 +26,9 @@ export default function HomeScreen({ }: Props) {
   
   const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
   const { performSearch, optionsError } = useSearch();
-  const { searchKey, clear, isLoading: searchLoading, error: searchError, searchPerformed, setSearchPerformed } = useSearchStore();
+  const { searchKey, clear, isLoading: searchLoading, error: searchError, searchPerformed, setSearchPerformed,  } = useSearchStore();
   const [query, setQuery] = useState(searchKey);
-  const { location, radius } = useFiltersStore();
+  const { location, radius, setSelectedCuisines, setSelectedDietary} = useFiltersStore();
 
 
   useEffect(() => {
@@ -68,6 +68,11 @@ export default function HomeScreen({ }: Props) {
 
   const onSelectCuisine = (cuisine: CuisineType | null): void => {
     console.log('Selected cuisine:', cuisine);
+    if (cuisine) {
+      setSelectedCuisines([cuisine]);
+    } else {
+      setSelectedCuisines([]);
+    }
     // If you want to trigger a search immediately:
     // if (cuisine) {
     //   performSearch(cuisine.name); // or use cuisine.id if needed
@@ -79,6 +84,11 @@ export default function HomeScreen({ }: Props) {
 
   const onSelectDietary = (dietary: DietaryType | null): void => {
     console.log('Selected dietary:', dietary);
+    if (dietary) {
+      setSelectedDietary([dietary]);
+    } else {
+      setSelectedDietary([]);
+    }
     // If you want to trigger a search immediately:
     // if (dietary) {
     //   performSearch(dietary); // or use dietary.id if needed

@@ -118,7 +118,7 @@ export default function LocationPickerModal({ visible, onClose }: Props) {
               keyExtractor={(i) => i.postcode}
               renderItem={({ item }) => (
                 <TouchableOpacity className="py-3 border-b border-gray-200" onPress={() => handlePickPrediction(item)}>
-                  <Text className="text-black">{item.name}</Text>
+                  <Text className="text-black capitalize">{item.name}</Text>
                 </TouchableOpacity>
               )}
               contentContainerStyle={{ paddingTop: 8, paddingBottom: 12 }}

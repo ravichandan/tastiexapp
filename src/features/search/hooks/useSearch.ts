@@ -93,6 +93,8 @@ export const useSearch = () => {
       const filters = {
         cuisines: useFiltersStore.getState().selectedCuisines,
         dietary: useFiltersStore.getState().selectedDietary,
+        location: useFiltersStore.getState().location,
+        distance: useFiltersStore.getState().radius,
       };
 
       try {
@@ -106,10 +108,12 @@ export const useSearch = () => {
         console.log('Performing search with params:', {
           placeName: currentSearchKey,
           itemName: currentSearchKey,
-          distance: 50,
+          distance: filters.distance || 50,
           city: 'sydney',
           cuisines: filters.cuisines.join(',') || undefined,
           dietary: filters.dietary.join(',') || undefined,
+          suburbs: filters.location?.name || undefined,
+          includeSurroundingSuburbs: true,
         });
         const { data } = await axiosInstance.get(placesEndpoint, {
           params: {
@@ -117,6 +121,8 @@ export const useSearch = () => {
             itemName: currentSearchKey,
             distance: 50,
             city: 'sydney',
+            suburbs: filters.location?.name || undefined,
+            includeSurroundingSuburbs: true,
             cuisines: filters.cuisines.join(',') || undefined,
             dietary: filters.dietary.join(',') || undefined,
           },

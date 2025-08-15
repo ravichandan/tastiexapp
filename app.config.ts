@@ -17,13 +17,13 @@ export default ({ config }) => {
   const bucketAccessEndpoint = process.env.bucketAccessEndpoint || "https://img.foodiex.com.au";
 
   let googleMapsApiKey;
-  if (Platform.OS === 'android') {
+  // if (Platform.OS === 'android') {
     googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_ANDROID!;
-  } else if (Platform.OS === 'ios') {
-    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_IOS!;
-  } else {
-    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_WEB!;
-  }
+  // } else if (Platform.OS === 'ios') {
+  //   googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_IOS!;
+  // } else {
+  //   googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_WEB!;
+  // }
 
   return {
     ...config,

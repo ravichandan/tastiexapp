@@ -3,9 +3,9 @@ import { CuisineType, DietaryType, SuburbType } from '@/types/Types';
 import { create } from 'zustand';
 
 export interface LocationData {
-  lat: number;
-  lng: number;
-  label: string;
+  lat?: number;
+  lng?: number;
+  label?: string;
   name?: string; // optional, for better UX
   postcode?: string; // optional, for better UX
 }
@@ -46,16 +46,16 @@ export const useFiltersStore = create<FiltersState>((set) => ({
   selectedDietary: [],
 
   location: null,
-  radius: "1",
+  radius: "50",
   setLocation: (location) => set({ location }),
   setLocationName: (name: string, postcode?: string) => set((state) => ({
-    location: state.location ? { ...state.location, name, postcode } : null,
+    location:  { ...state.location, name, postcode },
   })),
   setRadius: (radius) => set({ radius }),
   
   setCuisinesOptions: (items: CuisineType[]) => set({ cuisinesOptions: items }),
   setDietaryOptions: (items: DietaryType[]) => set({ dietaryOptions: items }),
-  setSuburbsOptions: (items: SuburbType[]) => { console.log('setting setSuburbsOptions:: ', items); return set({ suburbsOptions: items })},
+  setSuburbsOptions: (items: SuburbType[]) => set({ suburbsOptions: items }),
 
 //   isLoading: false,
 //   error: null,
