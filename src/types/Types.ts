@@ -38,6 +38,7 @@ export type PlaceItem = {
   name: string;
   medias: Array<Media>;
   ratingInfo?: RatingInfo;
+  places?: Place[];
 };
 export type Item = {
   id: string;

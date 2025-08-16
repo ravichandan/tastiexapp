@@ -13,5 +13,7 @@ export const API_ENDPOINTS = {
   DIETARIES: '/dietaries',
   SUBURB_NAME: '/suburbName',
   SUBURBS: '/suburbs',
+  POPULAR_PLACES: '/popular-places',
+  POPULAR_ITEMS: '/popular-items',
   MY_PROFILE: '/users/me',
 };

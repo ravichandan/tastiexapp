@@ -16,6 +16,7 @@
     },
     "preview": {
       "developmentClient": false,
+      "local": true,
       "distribution": "internal",
       "android": {
         "buildType": "apk"

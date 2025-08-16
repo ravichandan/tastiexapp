@@ -17,6 +17,7 @@ import SearchResultsScreen from '@/features/search-results/SearchResultsScreen';
 import { theme } from "@/shared/theme";
 import SmoothText from '@/shared/components/SmoothText';
 import SearchToolbar from '@/features/search/SearchToolbar';
+import PopularsScreen from './PopularsScreen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -114,8 +115,9 @@ export default function HomeScreen({ }: Props) {
         )}
         <SearchButton style={{backgroundColor: theme.colors.buttonPrimary}} onClick={handleSearch} />
       </View>
+
       
-      {searchPerformed && searchKey && <SearchResultsScreen />}
+      {searchPerformed && searchKey ?  <SearchResultsScreen /> : <PopularsScreen />}
       {searchLoading && <ActivityIndicator />}
       {searchError && <SmoothText className='text-red-500'>{searchError}</SmoothText>}
     </View>
