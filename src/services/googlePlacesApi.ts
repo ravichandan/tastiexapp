@@ -1,7 +1,17 @@
 // services/places.ts
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 
-const API_KEY = undefined ;//Constants.expoConfig?.extra?.googleMapsApiKey;
+let API_KEY: string;
+
+if (Platform.OS === "android") {
+  API_KEY = Constants.expoConfig?.extra?.GOOGLE_MAPS_API_KEY_ANDROID!;
+} else if (Platform.OS === "ios") {
+  API_KEY = Constants.expoConfig?.extra?.GOOGLE_MAPS_API_KEY_IOS!;
+} else {
+  API_KEY = Constants.expoConfig?.extra?.GOOGLE_MAPS_API_KEY_WEB!;
+}
+// const API_KEY = Constants.expoConfig?.extra?.GOOGLE_MAPS_API_KEY_IOS;
 
 export interface PlacePrediction {
   place_id: string;
@@ -15,6 +25,7 @@ export interface PlaceDetails {
 }
 
 const BASE = "https://maps.googleapis.com/maps/api";
+console.log("Google Maps API Key:", API_KEY);
 
 export async function fetchAutocomplete(
   input: string,

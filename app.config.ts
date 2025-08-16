@@ -16,9 +16,9 @@ export default ({ config }) => {
   const googleSecret = process.env.googleSecret!;
   const bucketAccessEndpoint = process.env.bucketAccessEndpoint || "https://img.foodiex.com.au";
 
-  let googleMapsApiKey;
+  // let googleMapsApiKey;
   // if (Platform.OS === 'android') {
-    googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_ANDROID!;
+    // googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_ANDROID!;
   // } else if (Platform.OS === 'ios') {
   //   googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY_IOS!;
   // } else {
@@ -45,6 +45,9 @@ export default ({ config }) => {
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "We use your location to show nearby places and dishes.",
       },
+      config: {
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
+      },
     },
     android: {
       package: 'com.syena.foodiexapp',
@@ -59,11 +62,21 @@ export default ({ config }) => {
         },
       ],
       permissions: ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      config: {
+        googleMaps: {
+          apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
+        },
+      },
 
     },
     web: {
       favicon: './assets/favicon.png',
       bundler: 'metro',
+      config: {
+        googleMaps: {
+          apiKey: process.env.GOOGLE_MAPS_API_KEY_WEB,
+        },
+      },
     },
     extra: {
       apiBaseUrl,
@@ -76,7 +89,9 @@ export default ({ config }) => {
       googleAndroidClientId,
       googleSecret,
       bucketAccessEndpoint,
-      googleMapsApiKey,
+      GOOGLE_MAPS_API_KEY_IOS: process.env.GOOGLE_MAPS_API_KEY_IOS,
+      GOOGLE_MAPS_API_KEY_ANDROID: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
+      GOOGLE_MAPS_API_KEY_WEB: process.env.GOOGLE_MAPS_API_KEY_WEB,
     },
     plugins: ['expo-secure-store'],
   };

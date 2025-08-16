@@ -51,6 +51,42 @@ Your API ⇦── Mobile app (JWT + user data)
 - then you have options to create a new , or download existing keystore.
 
 ## API keys for maps
-maps javascript api key for android AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo
-maps javascript api key for ios     AIzaSyDOVlczZ1RztKwCKJkc1IWDQT65YzmgRyI
-maps javascript api key for web     AIzaSyDosbJvra6VSMMvWQZjHRlO-vG1v601Oic
+
+### Create new keys
+
+Run the commands in the following format to create new keys
+
+`eas secret:create --name GOOGLE_MAPS_API_KEY_ANDROID --value "key"`
+eas secret:create --name GOOGLE_MAPS_API_KEY_IOS --value "key"
+eas secret:create --name GOOGLE_MAPS_API_KEY_WEB --value "key"
+
+Then navigate to the app in expo to see the env variables (you can't see the values though)
+https://expo.dev/accounts/chans/projects/foodiexapp/environment-variables
+
+### Edit existing keys
+We cannot edit existing keys. We delete old keys and create new ones
+1. List keys
+
+    `eas secret:list`
+
+2. Delete a secret
+
+    `eas secret:delete <SECRET_ID>`
+    
+    Eg: `eas secret:delete --name googleSecret`
+
+3. Recreate using new value
+
+    `eas secret:create --name googleSecret --value "NEW_VALUE"`
+
+Note: Secrets are tied to project scope or account scope. If you created it at the account level, you may need --scope account.
+
+After updating, rebuild your app (eas build) so that the new secret is embedded in your environment.
+
+## Test preview build in local
+1. Create a preview build using following commands
+`npm run build:preview`
+or
+`eas build --profile preview --platform android`
+2. Then run this in local console to check the logs 
+`adb logcat | grep ReactNativeJS`

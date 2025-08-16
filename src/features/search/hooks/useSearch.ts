@@ -128,7 +128,7 @@ export const useSearch = () => {
 
       } catch (err: any) {
         console.error('Search failed', err);
-        setSearchError(err?.message || 'Search failed');
+        setSearchError(err.message+'. '+ JSON.stringify(err.error) || 'Search failed');
       } finally {
         setSearchLoading(false);
       }
@@ -182,7 +182,7 @@ export const useSearch = () => {
         // });
       } catch (err: any) {
         console.error('Search failed', err);
-        setSearchError(err?.message || 'Search failed');
+        setSearchError(err.message+'. '+ JSON.stringify(err.error) || 'Search failed');
       } finally {
         setSearchLoading(false);
       }

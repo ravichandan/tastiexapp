@@ -16,6 +16,8 @@
     "prebuild": "npx expo prebuild --clean ",
     "web": "expo start --web",
     "format": "prettier --write .",
+    "build:dev": "eas build --profile development --platform android",
+    "build:preview": "eas build --profile preview --platform android",
     "build:configure": "eas build:configure",
     "build:ios": "eas build -p ios --profile production",
     "build:android": "eas build -p android --profile production",
@@ -55,7 +57,8 @@
     "react-native-vector-icons": "10.2.0",
     "react-native-web": "0.20.0",
     "zustand": "5.0.6",
-    "expo-location": "~18.1.6"
+    "expo-location": "~18.1.6",
+    "expo-dev-client": "~5.2.4"
   },
   "devDependencies": {
     "@babel/core": "7.25.2",

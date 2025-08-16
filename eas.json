@@ -10,6 +10,10 @@
         "ENV_FILE": ".env.ios"
       }
     },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
       "developmentClient": false,
       "distribution": "internal",
@@ -30,7 +34,9 @@
       "distribution": "store",
       "env": {
         "APP_ENV": "production",
-        "googleMapsApiKey": "AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo"
+        "GOOGLE_MAPS_API_KEY_ANDROID": "AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo",
+        "GOOGLE_MAPS_API_KEY_IOS": "AIzaSyDOVlczZ1RztKwCKJkc1IWDQT65YzmgRyI",
+        "GOOGLE_MAPS_API_KEY_WEB": "AIzaSyDosbJvra6VSMMvWQZjHRlO-vG1v601Oic"
       }
     }
   },
