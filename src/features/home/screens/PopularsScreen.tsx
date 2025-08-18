@@ -1,7 +1,7 @@
 // src/features/home/screens/PopularPlacesScreen.tsx
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem, ScrollView } from 'react-native';
 import { Tabs, TabScreen, TabsProvider } from 'react-native-paper-tabs';
 import { useSearchStore } from '@/state/useSearchStore';
 import { useFiltersStore } from '@/state/useFiltersStore';
@@ -15,6 +15,7 @@ import { usePopularsStore } from '@/state/usePopularsStore';
 import { useHomeHook } from '../hooks/home.hook';
 import PopularPlaceCard from './PopularPlaceCard';
 import PopularItemCard from './PopularItemCard';
+import TxButton from '@/shared/components/TxButton';
 
 /**
  * NOTE:
@@ -26,21 +27,32 @@ import PopularItemCard from './PopularItemCard';
  */
 
 export default function PopularsScreen() {
-  const { popularPlaces, popularItems, isLoading,searchPerformed } = usePopularsStore();
-  const { fetchPopulars, itemsLoading, placesLoading,  error } = useHomeHook();
+  const { popularPlaces, popularItems, isLoading, itemsSearchPerformed, placesSearchPerformed } = usePopularsStore();
+  const { fetchPopularPlaces, fetchPopularItems, itemsLoading, placesLoading, error } = useHomeHook();
+
+  const [tabIndex, setTabIndex] = useState(0);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+  const [hasMorePlaces, setHasMorePlaces] = useState(true);
+  const [page, setPage] = useState(1);
+
   // const { selectedCuisines, selectedDietary } = useFiltersStore();
 
   // runSearch will use the stores' searchKey and selected filters internally
   // Optionally re-run search when searchKey or filters change:
   useEffect(() => {
     // Do not auto-run on every mount if you don't want that — uncomment if desired
-    if (!searchPerformed && !isLoading) fetchPopulars();
+    if (!itemsSearchPerformed && !itemsLoading) {
+      fetchPopularItems();
+    }
+    if (!placesSearchPerformed && !placesLoading) {
+      fetchPopularPlaces();
+    }
   }, []);
 
   // Normalize results shape to get two arrays
   // Adapt this to match your backend (this is defensive)
   const places = (popularPlaces.results ?? []) as Place[];
-  const dishes = (popularItems?.results ?? []) as Item[];
+  const dishes = (popularItems?.results ?? []) as PlaceItem[];
 
   const renderPlace = ({ item: place }: { item: Place }) => (
     // <View style={styles.item}>
@@ -60,64 +72,82 @@ export default function PopularsScreen() {
     </View>
   );
 
-  // const renderDish: ListRenderItem<any> = ({ item }) => (
-  //   <View style={styles.item}>
-  //     <SmoothText style={styles.itemTitle}>{item.name}</SmoothText>
-  //     {item.restaurant ? <SmoothText style={styles.itemSubtitle}>{item.restaurant}</SmoothText> : null}
-  //   </View>
-  // );
 
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const loadMorePlaces = () => {
+    if (!isLoading && hasMorePlaces) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchPopularPlaces(nextPage);
+    }
+  };
+
+  const loadMoreDishes = () => {
+    if (!isLoading && hasMoreItems) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchPopularItems(nextPage);
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      {/* popular items */}
-      <Text style={{ fontSize: 18, fontWeight: "600", marginVertical: 10 }}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Popular items */}
+      <SmoothText style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>
         Popular items near you
+      </SmoothText>
+
+      <View style={{ marginBottom: 20 }}>
+        <FlashList
+          data={dishes}
+          keyExtractor={(item) => item._id}
+          renderItem={renderDish}
+          numColumns={2}
+          scrollEnabled={false}     // 👈 expand list fully inside ScrollView
+          contentContainerStyle={{ paddingBottom: 16 }}
+          ListFooterComponent={
+            itemsLoading ? (
+              <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
+            ) : hasMoreItems ? (
+              <TxButton label="Load more" onPress={loadMoreDishes} />
+            ) : (
+              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>
+                No more items
+              </SmoothText>
+            )
+          }
+        />
+      </View>
+
+      {/* Popular places */}
+      <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>
+        Popular places near you
       </Text>
-            <View style={styles.tabContent}>
-              {/* <SmoothText style={styles.itemTitle}>hello places</SmoothText> */}
-              {isLoading ? (
-                <ActivityIndicator style={{ marginTop: 24 }} />
-              ) : places && places.length > 0 ? (
-                <FlashList
-                  data={places} 
-                  keyExtractor={(item) => item._id}
-                  renderItem={renderPlace}
-                />
 
-                // <FlatList
-                //   data={places.slice(1, 2)} // Limit to first 10 for performance
-                //   keyExtractor={(item, idx) => (item.id ?? idx).toString()}
-                //   renderItem={renderPlace}
-                //   contentContainerStyle={{ paddingBottom: 24 }}
-                // />
-              ) : (
-                <SmoothText style={styles.emptyText}>No places found</SmoothText>
-              )}
-            </View>
-
-
-            <View style={styles.tabContent}>
-              {/* <SmoothText style={styles.itemTitle}>hello dishes</SmoothText> */}
-              {isLoading ? (
-                <ActivityIndicator style={{ marginTop: 24 }} />
-              ) : dishes && dishes.length > 0 ? (
-                <FlashList
-                  data={dishes}
-                  keyExtractor={(item) => item._id}
-                  renderItem={renderDish}
-                  contentContainerStyle={{ paddingBottom: 24 }}
-                  
-                  
-                />
-              ) : (
-                <SmoothText style={styles.emptyText}>No dishes found</SmoothText>
-              )}
-            </View>
-
-
-
-    </View>
+      <View>
+        <FlashList
+          data={places}
+          keyExtractor={(item) => item._id}
+          renderItem={renderPlace}
+          numColumns={2}
+          scrollEnabled={false}     // 👈 same here
+          contentContainerStyle={{ paddingBottom: 16 }}
+          ListFooterComponent={
+            placesLoading ? (
+              <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
+            ) : hasMorePlaces ? (
+              <TxButton label="Load more" onPress={loadMorePlaces} />
+            ) : (
+              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>
+                No more places
+              </SmoothText>
+            )
+          }
+        />
+      </View>
+    </ScrollView>
   );
 }
 

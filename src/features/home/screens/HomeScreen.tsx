@@ -107,6 +107,8 @@ export default function HomeScreen({ }: Props) {
   return (
     <View style={{ flex: 1 }} className='bg-white'>
       <View style={{ padding: 16 }}>
+        <SmoothText style={{fontSize: 16}} className="capitalize">This is smooth text</SmoothText>
+        <Text style={{fontSize: 16}} className="capitalize">This is not smooth text</Text>
         <SearchToolbar onShare={handleShare} ></SearchToolbar>
         <SearchBar onToggleFilters={() => setShowFilters((prev) => !prev)} value={query} onChange={handleChange} onSearch={handleSearch} onClear={handleClear} />
 

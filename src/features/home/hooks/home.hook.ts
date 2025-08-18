@@ -4,10 +4,12 @@ import { useFiltersStore } from '@/state/useFiltersStore';
 import { usePopularsStore } from '@/state/usePopularsStore';
 import { doGetPopularPlaces } from '@/services/placesApi';
 import { doGetPopularItems } from '@/services/itemsApi';
+import { setItem } from 'expo-secure-store';
 
 export const useHomeHook = () => {
   const {
-    setSearchPerformed,
+    setItemsSearchPerformed,
+    setPlacesSearchPerformed,
     setPopularItems,
     setPopularPlaces,
     setLoading: setPopularLoading,
@@ -26,17 +28,17 @@ export const useHomeHook = () => {
    *
    * @param
    */
-  const fetchPopulars: () => Promise<void> = useCallback(async () => {
-    setPopularLoading(true);
-    setItemsLoading(true);
+  const fetchPopularPlaces: (pageNumber?: number) => Promise<void> = useCallback(async (pageNumber = 1) => {
     setPlacesLoading(true);
-
+    setPlacesSearchPerformed(true);
     // Read the latest selected filters (guaranteed up-to-date)
     const filters = {
       cuisines: selectedCuisines,
       dietary: selectedDietary,
       location,
       distance: radius,
+      pageNum: pageNumber,
+      pageSize: 12,
     };
     try {
       // call popular-places endpoint
@@ -44,6 +46,55 @@ export const useHomeHook = () => {
       // save it into popular store
       setPopularPlaces({ pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size });
       setPlacesLoading(false);
+
+    } catch (err: any) {
+      console.error('Search failed', err);
+      setError(err.message + '. ' + JSON.stringify(err.error) || 'Search failed');
+      setPopularError(err.message + '. ' + JSON.stringify(err.error) || 'Search failed');
+    } finally {
+      
+      // setPopularLoading(false);
+    }
+  }, [
+    selectedCuisines,
+    selectedDietary,
+    location,
+    radius,
+    setPopularPlaces,
+    doGetPopularPlaces,
+    setPlacesLoading,
+    setError,
+  ]);
+
+  /**
+   * Fetches popular places and items based on current filter selections.
+   * - Calls the popular places and items endpoints with selected cuisines, dietary options, location, and radius.
+   * - Updates the populars store with the fetched results.
+   * - Handles loading and error states for both places and items.
+   *
+   * @param
+   */
+  const fetchPopularItems: (pageNumber?: number) => Promise<void> = useCallback(async (pageNumber = 1) => {
+    // setPopularLoading(true);
+    setItemsLoading(true);
+    setItemsSearchPerformed(false);
+    // setPlacesLoading(true);
+
+    // Read the latest selected filters (guaranteed up-to-date)
+    const filters = {
+      cuisines: selectedCuisines,
+      dietary: selectedDietary,
+      location,
+      distance: radius,
+      pageNum: pageNumber,
+      pageSize: 12,
+    };
+    try {
+      // // call popular-places endpoint
+      // const { data } = await doGetPopularPlaces(filters);
+      // // save it into popular store
+      // setPopularPlaces({ pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size });
+      // setPlacesLoading(false);
 
       // call popular-items endpoint
       const { data: items } = await doGetPopularItems(filters);
@@ -55,24 +106,25 @@ export const useHomeHook = () => {
       setError(err.message + '. ' + JSON.stringify(err.error) || 'Search failed');
       setPopularError(err.message + '. ' + JSON.stringify(err.error) || 'Search failed');
     } finally {
-      setSearchPerformed(false);
-      setPopularLoading(false);
+      
+      // setPopularLoading(false);
     }
   }, [
     selectedCuisines,
     selectedDietary,
     location,
     radius,
-    setPopularPlaces,
+    // setPopularPlaces,
     setPopularItems,
-    doGetPopularPlaces,
+    doGetPopularItems,
     setItemsLoading,
-    setPlacesLoading,
+    // setPlacesLoading,
     setError,
   ]);
 
   return {
-    fetchPopulars,
+    fetchPopularItems,
+    fetchPopularPlaces,
     itemsLoading,
     placesLoading,
     error,

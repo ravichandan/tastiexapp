@@ -22,14 +22,16 @@ interface PopularsState {
   filters: FiltersSnapshot;
   popularPlaces: SearchResult;
   popularItems: SearchResult;
-  searchPerformed: boolean;
+  placesSearchPerformed: boolean;
+  itemsSearchPerformed: boolean;
   isLoading: boolean;
   error: string | null;
   setFilters: (filters: FiltersSnapshot) => void;
   setPopularPlaces: (data: SearchResult) => void;
   setPopularItems: (data: SearchResult) => void;
   setLoading: (loading: boolean) => void;
-  setSearchPerformed: (searchPerformed: boolean) => void;
+  setPlacesSearchPerformed: (searchPerformed: boolean) => void;
+  setItemsSearchPerformed: (searchPerformed: boolean) => void;
   setError: (error: string | null) => void;
   // convenience method to set all at once
   setPopularsData: (payload: {
@@ -46,13 +48,15 @@ export const usePopularsStore = create<PopularsState>((set) => ({
   popularPlaces: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
   popularItems: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
   isLoading: false,
-  searchPerformed: false,
+  placesSearchPerformed: false,
+  itemsSearchPerformed: false,
   error: null,
   setFilters: (filters) => set({ filters }),
   setPopularPlaces: (data) => set({ popularPlaces: data }),
   setPopularItems: (data) => set({ popularItems: data }),
   setLoading: (loading) => set({ isLoading: loading }),
-  setSearchPerformed: (searchPerformed) => set({ searchPerformed }),
+  setPlacesSearchPerformed: (searchPerformed) => set({ placesSearchPerformed: searchPerformed }),
+  setItemsSearchPerformed: (searchPerformed) => set({ itemsSearchPerformed: searchPerformed }),
   setError: (error) => set({ error }),
   clear: () =>
     set({

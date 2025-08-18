@@ -66,7 +66,7 @@ export default function SearchResultsScreen() {
   return (
     <View style={styles.container}>
       {/* top search bar - it should update store.searchKey and call runSearch via onSubmit */}
-      <TabsProvider defaultIndex={tabIndex} onChangeIndex={setTabIndex}>
+      {/* <TabsProvider defaultIndex={tabIndex} onChangeIndex={setTabIndex}>
         <Tabs
           // simple appearance options:
           uppercase={false}
@@ -74,7 +74,7 @@ export default function SearchResultsScreen() {
           style={styles.tabs}
           // set primary color via theme prop if needed:
           theme={{ colors: { primary: '#00bcd4' } }}>
-          <TabScreen label="Places">
+          <TabScreen label="Places"> */}
             <View style={styles.tabContent}>
               {/* <SmoothText style={styles.itemTitle}>hello places</SmoothText> */}
               {isLoading ? (
@@ -96,9 +96,9 @@ export default function SearchResultsScreen() {
                 <SmoothText style={styles.emptyText}>No places found</SmoothText>
               )}
             </View>
-          </TabScreen>
+          {/* </TabScreen>
 
-          <TabScreen label="Dishes">
+          <TabScreen label="Dishes"> */}
             <View style={styles.tabContent}>
               {/* <SmoothText style={styles.itemTitle}>hello dishes</SmoothText> */}
               {isLoading ? (
@@ -116,9 +116,9 @@ export default function SearchResultsScreen() {
                 <SmoothText style={styles.emptyText}>No dishes found</SmoothText>
               )}
             </View>
-          </TabScreen>
+          {/* </TabScreen>
         </Tabs>
-      </TabsProvider>
+      </TabsProvider> */}
     </View>
   );
 }

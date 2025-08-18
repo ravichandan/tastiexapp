@@ -21,13 +21,14 @@ const secondaryColor = '#ff9800';
 
 const colors = {
   backgroundColor: primaryColor,
-  primaryDark: "#0097a7",
+  primaryDark: '#0097a7',
   secondary: secondaryColor,
-  background: "#ffffff",
-  surface: "#f5f5f5",
-  textPrimary: "#212121",
-  textSecondary: "#757575",
-  textLight: "#ffffff",
+  background: '#ffffff',
+  backgroundDark: '#000000',
+  surface: '#f5f5f5',
+  textPrimary: '#212121',
+  textSecondary: '#757575',
+  textLight: '#ffffff',
   buttonPrimary: primaryColor,
 };
 
@@ -50,6 +51,7 @@ const card = {
     // marginBottom: spacing.md,
     paddingBottom: spacing.sm,
     flex: 1,
+    flexDirection: 'column' as const,
     // height: 2000,
     // backgroundColor: colors.surface,
     // borderBottomEndRadius: radius.sm,
@@ -57,9 +59,10 @@ const card = {
     borderColor: colors.textSecondary,
     borderWidth: 0.5,
     color: colors.buttonPrimary,
+    margin: 5,
     // borderColor: colors.buttonPrimary,
     // padding: spacing.sm,
-        // shadow for iOS
+    // shadow for iOS
     // shadowColor: "#000",
     // shadowOpacity: 0.1,
     // shadowRadius: 4,
@@ -74,14 +77,35 @@ const card = {
     borderTopRightRadius: radius.sm,
     padding: spacing.sm,
     // borderTopWidth: 1,
-    flexDirection: "row" as const,
-    justifyContent: "space-between" as const,
+    flexDirection: 'row' as const,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    // textAlign: "center" as const,
     // borderColor: '#000',
     // marginBottom: spacing.sm,
   },
-  title: { color: colors.textLight, fontSize: 16, fontWeight: "bold"  as const, includeFontPadding: false},
-  
-}
+  headerText: {
+    color: colors.textLight,
+    fontSize: 16,
+    fontWeight: 'bold' as const,
+    includeFontPadding: false,
+    textAlign: 'center' as const,
+    textTransform: 'capitalize' as const,
+  },
+  imageContainer: {
+    width: '100%' as const,
+    height: 160,
+  },
+  image: {
+    width: '100%' as const,
+    height: '100%' as const,
+  },
+  body: {
+    padding: 8,
+  },
+  content: { flexDirection: 'row' as const, alignItems: 'center' as const, marginVertical: 3 },
+  title: { color: colors.textLight, fontSize: 16, fontWeight: 'bold' as const, includeFontPadding: false },
+};
 export const theme = {
   colors,
   spacing,

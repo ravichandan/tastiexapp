@@ -3,6 +3,7 @@ import { Pressable, Text } from 'react-native';
 import { getSurfaceStyle } from '@/shared/utils/getSurfaceStyle';
 import clsx from 'clsx';
 import { getTextStyle } from '@/shared/utils/getTextStyle';
+import SmoothText from './SmoothText';
 // import { Pressable } from 'react-native';
 
 // const StyledPressable = styled(Pressable);

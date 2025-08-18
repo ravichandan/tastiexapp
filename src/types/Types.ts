@@ -37,8 +37,10 @@ export type PlaceItem = {
   _id: string;
   name: string;
   medias: Array<Media>;
+  media: Media;
   ratingInfo?: RatingInfo;
   places?: Place[];
+  place?: Place;
 };
 export type Item = {
   id: string;
