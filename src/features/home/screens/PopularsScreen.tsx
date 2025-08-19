@@ -1,7 +1,16 @@
 // src/features/home/screens/PopularPlacesScreen.tsx
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+  ListRenderItem,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { Tabs, TabScreen, TabsProvider } from 'react-native-paper-tabs';
 import { useSearchStore } from '@/state/useSearchStore';
 import { useFiltersStore } from '@/state/useFiltersStore';
@@ -73,7 +82,6 @@ export default function PopularsScreen() {
     </View>
   );
 
-
   const loadMorePlaces = () => {
     if (!isLoading && hasMorePlaces) {
       const nextPage = page + 1;
@@ -92,74 +100,58 @@ export default function PopularsScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16, flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-    >
+      contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: theme.spacing.sm, flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}>
       {/* Popular items */}
-      <SmoothText style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>
-        Popular items near you
-      </SmoothText>
+      <SmoothText style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>Popular items near you</SmoothText>
 
-      <View style={{ marginBottom: 20 }}  className="flex-1">
+      <View style={{ marginBottom: 20 }}>
+        {/* Items grid */}
+        <View className="flex-row flex-wrap justify-between">
+          {dishes.map((item) => (
+            <View key={item._id} style={{ width: '49%', marginBottom: 12 }}>
+              {renderDish({ item })}
+            </View>
+          ))}
+        </View>
 
-        <FlashList
-          data={dishes}
-          keyExtractor={(item) => item._id}
-          renderItem={renderDish}
-          numColumns={2}
-          scrollEnabled={false}     // 👈 expand list fully inside ScrollView
-          contentContainerStyle={{ paddingBottom: 16 }}
-          removeClippedSubviews={false} 
-          ItemSeparatorComponent={null}
-          ListFooterComponent={
-            itemsLoading ? (
-              <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
-            ) : hasMoreItems ? (
-              // <TxButton label="Load more" onPress={loadMoreDishes} />
-              <TouchableOpacity
-                  onPress={loadMoreDishes}
-                  className="flex-row items-center my-1">
-                <Text className="text-blue-500">Load more</Text><ChevronDown className='text-blue-500'/>
-              </TouchableOpacity>
-            ) : (
-              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>
-                No more items
-              </SmoothText>
-            )
-          }
-        />
+        {/* Footer */}
+        {itemsLoading ? (
+          <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
+        ) : hasMoreItems ? (
+          <TouchableOpacity onPress={loadMoreDishes} className="flex-row items-center my-1">
+            <Text className="text-blue-500">Load more</Text>
+            <ChevronDown className="text-blue-500 " />
+          </TouchableOpacity>
+        ) : (
+          <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>No more items</SmoothText>
+        )}
       </View>
 
       {/* Popular places */}
-      <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>
-        Popular places near you
-      </Text>
+      <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>Popular places near you</Text>
 
-      <View className="flex-1">
-        <FlashList
-          data={places}
-          keyExtractor={(item) => item._id}
-          renderItem={renderPlace}
-          numColumns={2}
-          scrollEnabled={false}     // 👈 same here
-          removeClippedSubviews={false} 
-          contentContainerStyle={{ paddingBottom: 16 }}
-          ListFooterComponent={
-            placesLoading ? (
-              <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
-            ) : hasMorePlaces ? (
-              <TouchableOpacity
-                  onPress={loadMorePlaces}
-                  className="flex-row items-center my-1">
-                <Text className="text-blue-500">Load more</Text><ChevronDown className='text-blue-500'/>
-              </TouchableOpacity>
-            ) : (
-              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666'  }}>
-                No more places
-              </SmoothText>
-            )
-          }
-        />
+      <View style={{ marginBottom: 20 }}>
+        {/* Items grid */}
+        <View className="flex-row flex-wrap justify-between">
+          {places.map((place) => (
+            <View key={place._id} style={{ width: '48%', marginBottom: 12 }}>
+              {renderPlace({ item: place })}
+            </View>
+          ))}
+        </View>
+
+        {/* Footer */}
+        {placesLoading ? (
+          <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
+        ) : hasMorePlaces ? (
+          <TouchableOpacity onPress={loadMorePlaces} className="flex-row items-center my-1">
+            <Text className="text-blue-500">Load more</Text>
+            <ChevronDown className="text-blue-500" />
+          </TouchableOpacity>
+        ) : (
+          <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>No more items</SmoothText>
+        )}
       </View>
     </ScrollView>
   );
