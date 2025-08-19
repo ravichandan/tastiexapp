@@ -1,7 +1,7 @@
 // src/features/home/screens/PopularPlacesScreen.tsx
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem, ScrollView } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem, ScrollView, TouchableOpacity } from 'react-native';
 import { Tabs, TabScreen, TabsProvider } from 'react-native-paper-tabs';
 import { useSearchStore } from '@/state/useSearchStore';
 import { useFiltersStore } from '@/state/useFiltersStore';
@@ -16,6 +16,7 @@ import { useHomeHook } from '../hooks/home.hook';
 import PopularPlaceCard from './PopularPlaceCard';
 import PopularItemCard from './PopularItemCard';
 import TxButton from '@/shared/components/TxButton';
+import { ChevronDown } from 'lucide-react-native';
 
 /**
  * NOTE:
@@ -91,7 +92,7 @@ export default function PopularsScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}
+      contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16, flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
       {/* Popular items */}
@@ -99,7 +100,8 @@ export default function PopularsScreen() {
         Popular items near you
       </SmoothText>
 
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 20 }}  className="flex-1">
+
         <FlashList
           data={dishes}
           keyExtractor={(item) => item._id}
@@ -107,11 +109,18 @@ export default function PopularsScreen() {
           numColumns={2}
           scrollEnabled={false}     // 👈 expand list fully inside ScrollView
           contentContainerStyle={{ paddingBottom: 16 }}
+          removeClippedSubviews={false} 
+          ItemSeparatorComponent={null}
           ListFooterComponent={
             itemsLoading ? (
               <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
             ) : hasMoreItems ? (
-              <TxButton label="Load more" onPress={loadMoreDishes} />
+              // <TxButton label="Load more" onPress={loadMoreDishes} />
+              <TouchableOpacity
+                  onPress={loadMoreDishes}
+                  className="flex-row items-center my-1">
+                <Text className="text-blue-500">Load more</Text><ChevronDown className='text-blue-500'/>
+              </TouchableOpacity>
             ) : (
               <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>
                 No more items
@@ -126,21 +135,26 @@ export default function PopularsScreen() {
         Popular places near you
       </Text>
 
-      <View>
+      <View className="flex-1">
         <FlashList
           data={places}
           keyExtractor={(item) => item._id}
           renderItem={renderPlace}
           numColumns={2}
           scrollEnabled={false}     // 👈 same here
+          removeClippedSubviews={false} 
           contentContainerStyle={{ paddingBottom: 16 }}
           ListFooterComponent={
             placesLoading ? (
               <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
             ) : hasMorePlaces ? (
-              <TxButton label="Load more" onPress={loadMorePlaces} />
+              <TouchableOpacity
+                  onPress={loadMorePlaces}
+                  className="flex-row items-center my-1">
+                <Text className="text-blue-500">Load more</Text><ChevronDown className='text-blue-500'/>
+              </TouchableOpacity>
             ) : (
-              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>
+              <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666'  }}>
                 No more places
               </SmoothText>
             )

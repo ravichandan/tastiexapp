@@ -6,6 +6,7 @@ export const doGetPopularPlaces = async (filters: any) => {
   const popularPlacesEndpoint = API_ENDPOINTS.POPULAR_PLACES;
   return axios.get(popularPlacesEndpoint, {
     params: {
+      ...filters,
       distance: 50,
       city: 'sydney',
       suburbs: filters.location?.name || undefined,

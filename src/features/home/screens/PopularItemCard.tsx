@@ -43,7 +43,7 @@ export default function PopularItemCard({ item }: { item: PlaceItem }) {
         </View>
         <View style={styles.content}>
           <Store size={14} style={styles.locationIcon} />
-          <SmoothText className="capitalize">{item.place?.placeName}</SmoothText>
+          <SmoothText className="capitalize truncate w-40">{item.place?.placeName}</SmoothText>
         </View>
         <View style={styles.content}>
           <MapPin size={14} style={styles.locationIcon} />
@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
   card: {
     ...theme.card.card,
     height: 325,
+    maxHeight: 325,
+    marginVertical: theme.spacing.sm,
   },
   header: {
     ...theme.card.header,

@@ -52,8 +52,20 @@ export const usePopularsStore = create<PopularsState>((set) => ({
   itemsSearchPerformed: false,
   error: null,
   setFilters: (filters) => set({ filters }),
-  setPopularPlaces: (data) => set({ popularPlaces: data }),
-  setPopularItems: (data) => set({ popularItems: data }),
+  setPopularPlaces: (data) =>
+    set((state) => ({
+      popularPlaces: {
+        ...data,
+        results: [...(state.popularPlaces?.results ?? []), ...(data.results ?? [])] as Place[],
+      },
+    })),
+  setPopularItems: (data) =>
+    set((state) => ({
+      popularItems: {
+        ...data,
+        results: [...(state.popularItems?.results ?? []), ...(data.results ?? [])] as PlaceItem[],
+      },
+    })),
   setLoading: (loading) => set({ isLoading: loading }),
   setPlacesSearchPerformed: (searchPerformed) => set({ placesSearchPerformed: searchPerformed }),
   setItemsSearchPerformed: (searchPerformed) => set({ itemsSearchPerformed: searchPerformed }),
@@ -67,11 +79,11 @@ export const usePopularsStore = create<PopularsState>((set) => ({
       error: undefined,
     }),
   setPopularsData: ({ filters, popularPlaces, popularItems }) =>
-    set({
+    set((state) => ({
       filters,
-      popularPlaces: popularPlaces || { pageNumber: 0, pageSize: 10, results: [], total: 0 },
-      popularItems: popularItems || { pageNumber: 0, pageSize: 10, results: [], total: 0 },
+      popularPlaces: {pageSize: popularPlaces?.pageSize || 0, results: [...(state.popularPlaces?.results ?? []), ...(popularPlaces?.results ?? [])] as Place[], pageNumber: popularPlaces?.pageNumber || 0, total: popularPlaces?.total || 0},
+      popularItems: {pageSize: popularItems?.pageSize || 0, results: [...(state.popularItems?.results ?? []), ...(popularItems?.results ?? [])] as Place[], pageNumber: popularItems?.pageNumber || 0, total: popularItems?.total || 0},
       isLoading: false,
       error: undefined,
-    }),
+    })),
 }));
