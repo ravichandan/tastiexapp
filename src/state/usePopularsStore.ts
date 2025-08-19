@@ -56,14 +56,20 @@ export const usePopularsStore = create<PopularsState>((set) => ({
     set((state) => ({
       popularPlaces: {
         ...data,
-        results: [...(state.popularPlaces?.results ?? []), ...(data.results ?? [])] as Place[],
+        results: [
+          ...state.popularPlaces?.results,
+          ...data.results.filter((item) => !state.popularPlaces?.results.some((existing) => existing._id === item._id)),
+        ] as Place[],
       },
     })),
   setPopularItems: (data) =>
     set((state) => ({
       popularItems: {
         ...data,
-        results: [...(state.popularItems?.results ?? []), ...(data.results ?? [])] as PlaceItem[],
+        results: [
+          ...state.popularItems?.results,
+          ...data.results.filter((item) => !state.popularItems?.results.some((existing) => existing._id === item._id)),
+        ] as PlaceItem[],
       },
     })),
   setLoading: (loading) => set({ isLoading: loading }),
@@ -81,8 +87,24 @@ export const usePopularsStore = create<PopularsState>((set) => ({
   setPopularsData: ({ filters, popularPlaces, popularItems }) =>
     set((state) => ({
       filters,
-      popularPlaces: {pageSize: popularPlaces?.pageSize || 0, results: [...(state.popularPlaces?.results ?? []), ...(popularPlaces?.results ?? [])] as Place[], pageNumber: popularPlaces?.pageNumber || 0, total: popularPlaces?.total || 0},
-      popularItems: {pageSize: popularItems?.pageSize || 0, results: [...(state.popularItems?.results ?? []), ...(popularItems?.results ?? [])] as Place[], pageNumber: popularItems?.pageNumber || 0, total: popularItems?.total || 0},
+      popularPlaces: {
+        pageSize: popularPlaces?.pageSize || 0,
+        results: [
+          ...state.popularPlaces?.results,
+          ...(popularPlaces?.results || []).filter((item) => !state.popularPlaces?.results.some((existing) => existing._id === item._id)),
+        ] as Place[],
+        pageNumber: popularPlaces?.pageNumber || 0,
+        total: popularPlaces?.total || 0,
+      },
+      popularItems: {
+        pageSize: popularItems?.pageSize || 0,
+        results: [
+          ...state.popularItems?.results,
+          ...(popularItems?.results || []).filter((item) => !state.popularItems?.results.some((existing) => existing._id === item._id)),
+        ] as PlaceItem[],
+        pageNumber: popularItems?.pageNumber || 0,
+        total: popularItems?.total || 0,
+      },
       isLoading: false,
       error: undefined,
     })),

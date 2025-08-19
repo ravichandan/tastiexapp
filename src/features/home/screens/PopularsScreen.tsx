@@ -26,6 +26,7 @@ import PopularPlaceCard from './PopularPlaceCard';
 import PopularItemCard from './PopularItemCard';
 import TxButton from '@/shared/components/TxButton';
 import { ChevronDown } from 'lucide-react-native';
+import CardGrid from './CardGrid';
 
 /**
  * NOTE:
@@ -105,8 +106,7 @@ export default function PopularsScreen() {
       {/* Popular items */}
       <SmoothText style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>Popular items near you</SmoothText>
 
-      <View style={{ marginBottom: 20 }}>
-        {/* Items grid */}
+      {/* <View style={{ marginBottom: 20 }}>
         <View className="flex-row flex-wrap justify-between">
           {dishes.map((item) => (
             <View key={item._id} style={{ width: '49%', marginBottom: 12 }}>
@@ -115,7 +115,6 @@ export default function PopularsScreen() {
           ))}
         </View>
 
-        {/* Footer */}
         {itemsLoading ? (
           <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
         ) : hasMoreItems ? (
@@ -126,13 +125,15 @@ export default function PopularsScreen() {
         ) : (
           <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>No more items</SmoothText>
         )}
-      </View>
+      </View> */}
+
+      <CardGrid dishes={dishes} itemsLoading={itemsLoading} hasMoreItems={hasMoreItems} loadMoreDishes={loadMoreDishes} renderDish={({ item }) => <PopularItemCard item={item} />} theme={theme} />
 
       {/* Popular places */}
       <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>Popular places near you</Text>
+      {/* <CardGrid dishes={places} itemsLoading={placesLoading} hasMoreItems={hasMorePlaces} loadMoreDishes={loadMorePlaces} renderDish={({ item }) => <PopularPlaceCard place={item} />} theme={theme} /> */}
 
-      <View style={{ marginBottom: 20 }}>
-        {/* Items grid */}
+      {/* <View style={{ marginBottom: 20 }}>
         <View className="flex-row flex-wrap justify-between">
           {places.map((place) => (
             <View key={place._id} style={{ width: '48%', marginBottom: 12 }}>
@@ -141,7 +142,6 @@ export default function PopularsScreen() {
           ))}
         </View>
 
-        {/* Footer */}
         {placesLoading ? (
           <ActivityIndicator size="small" color={theme.colors.primaryDark} style={{ margin: 10 }} />
         ) : hasMorePlaces ? (
@@ -152,7 +152,7 @@ export default function PopularsScreen() {
         ) : (
           <SmoothText style={{ textAlign: 'center', margin: 10, color: '#666' }}>No more items</SmoothText>
         )}
-      </View>
+      </View> */}
     </ScrollView>
   );
 }

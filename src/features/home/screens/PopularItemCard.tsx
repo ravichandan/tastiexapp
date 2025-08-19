@@ -7,8 +7,12 @@ import { theme } from '@/shared/theme';
 import SmoothText from '@/shared/components/SmoothText';
 import Constants from 'expo-constants';
 
-export default function PopularItemCard({ item }: { item: PlaceItem }) {
-  
+const MemoizedPopularItemCard = React.memo(PopularItemCard);
+
+export default MemoizedPopularItemCard;
+
+function PopularItemCard({ item }: { item: PlaceItem }) {
+
   return (
     <TouchableOpacity style={styles.card} key={item?._id}>
       <View style={styles.header}>
