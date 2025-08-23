@@ -18,3 +18,22 @@ export const doGetPopularItems = async (filters: any) => {
   }); //pageSize=12&pageNum=2
 };
 
+
+export const doGetDishDetail = async (placeId: string, dishId: string, filters?: any) => {
+  const placeItemDetailEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL.replace('{placeId}', placeId).replace('{itemId}', dishId);
+  return axios.get(placeItemDetailEndpoint, {
+    params: {
+      ...filters,      
+    },
+  }); //pageSize=12&pageNum=2
+};
+
+export const doGetDishDetailReviews = async (placeId: string, dishId: string, filters?: any) => {
+  const placeItemDetailReviewsEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL_REVIEWS.replace('{placeId}', placeId).replace('{itemId}', dishId);
+  return axios.get(placeItemDetailReviewsEndpoint, {
+    params: {
+      ...filters,      
+    },
+  }); //pageSize=12&pageNum=2
+};
+

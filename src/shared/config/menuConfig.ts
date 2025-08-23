@@ -178,4 +178,13 @@ export const ITEM_DETAIL_FILTER_BY_STARS = [
   },
 ];
 
+export const TEXT_LABELS = {
+  PRESENTATION: 'Display',
+  TASTE: 'Taste',
+  SERVICE: 'Service',
+  AMBIENCE: 'Ambience',
+  ALLERGENS: 'Allergens',
+  CALORIES: 'Calorie Info',
+};
+
 export const ITEM_DETAIL_SHOW_ONLY_IMAGES_LABEL = 'Show only those reviews with images or videos';

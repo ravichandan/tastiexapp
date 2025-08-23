@@ -28,6 +28,7 @@ import AppLayout from './AppLayout';
 import Navigation from '@/navigation/AppNavigator';
 import * as Font from "expo-font";
 import { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import AppLoading from "expo-app-loading"; // optional, for splash while loading
 
 // import { useDishStore } from '../state/useDishStore';
@@ -69,9 +70,12 @@ export default function App() {
       // />
     );
   }
+const queryClient = new QueryClient();
 
   return (
-    <Navigation />
+    <QueryClientProvider client={queryClient}>
+      <Navigation />
+    </QueryClientProvider>
     // <View className="flex-1 bg-white">
     //   {/* 🔲 Header with logo on black */}
     //     <View className="bg-black items-center justify-center py-6">

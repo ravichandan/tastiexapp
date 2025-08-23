@@ -34,7 +34,7 @@ export default function TxButton({
       onPress={onPress}
       disabled={disabled}
       className={clsx(
-        'px-6 py-3 rounded-2xl justify-center items-center transition-all duration-150',
+        'px-6 py-3 rounded-lg justify-center items-center transition-all duration-150',
         surfaceClass,
         outlineClass,
         ghostClass,

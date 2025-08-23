@@ -36,11 +36,16 @@ export type PlaceItem = {
   id: string;
   _id: string;
   name: string;
+  description: string;
   medias: Array<Media>;
   media: Media;
   ratingInfo?: RatingInfo;
   places?: Place[];
   place?: Place;
+  allergens?: FoodAllergens[];
+  price?: number;
+  calories?: CalorieInfo;
+  item: string; // stores objectId of item
 };
 export type Item = {
   id: string;
@@ -49,6 +54,27 @@ export type Item = {
   medias: Array<Media>;
   places?: Place[];
   placeItem?: PlaceItem;
+  description: string;
+};
+
+export enum FoodAllergens {
+  MILK = 'Milk',
+  EGGS = 'Eggs',
+  FISH = 'Fish',
+  SHELLFISH = 'Crustacean shellfish',
+  TREENUTS = 'Tree nuts',
+  PEANUTS = 'Peanuts',
+  WHEAT = 'Wheat',
+  SOYBEANS = 'Soybeans',
+}
+
+export enum CalorieUnit {
+  kJ = 'kJ',
+  kcal = 'kcal',
+}
+export type CalorieInfo = {
+  count: number;
+  unit: CalorieUnit;
 };
 
 export type Place = {
@@ -73,4 +99,14 @@ export type SuburbType = {
   id?: number;
   name: string;
   postcode: string;
+};
+
+export type Review = {
+  id: string;
+  user: {
+    id: string;
+    name: string;
+  };
+  comment: string;
+  rating: number;
 };

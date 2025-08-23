@@ -6,15 +6,20 @@ import { Item, PlaceItem } from '@/types/Types';
 import { theme } from '@/shared/theme';
 import SmoothText from '@/shared/components/SmoothText';
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/navigation/types';
 
 const MemoizedPopularItemCard = React.memo(PopularItemCard);
 
 export default MemoizedPopularItemCard;
 
-function PopularItemCard({ item }: { item: PlaceItem }) {
 
+function PopularItemCard({ item }: { item: PlaceItem }) {
+const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
   return (
-    <TouchableOpacity style={styles.card} key={item?._id}>
+    <TouchableOpacity style={styles.card} key={item?._id} onPress={() => navigation.navigate('DishDetail', { placeId: item.place!._id, dishId: item?.item })}>
       <View style={styles.header}>
         <SmoothText style={styles.headerText}>{item.name}</SmoothText>
       </View>

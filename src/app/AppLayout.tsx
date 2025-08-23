@@ -14,6 +14,7 @@ import { useAuthStore } from '@/state';
 import { theme as lightTheme } from '@/shared/theme';
 import LoginForm from '@/features/auth/components/LoginForm';
 import { eagerFetch } from './hooks/eagerFetch.hook';
+import DishDetailScreen from '@/features/dishDetail/screens/DishDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -65,6 +66,8 @@ export default function AppLayout() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginForm} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="DishDetail" component={DishDetailScreen} />
+
         </Stack.Navigator>
 
         <OverlayMenu />

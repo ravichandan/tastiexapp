@@ -15,5 +15,7 @@ export const API_ENDPOINTS = {
   SUBURBS: '/suburbs',
   POPULAR_PLACES: '/popular-places',
   POPULAR_ITEMS: '/popular-items',
+  PLACE_ITEM_DETAIL: '/places/{placeId}/items/{itemId}',
+  PLACE_ITEM_DETAIL_REVIEWS: '/places/{placeId}/items/{itemId}/reviews',
   MY_PROFILE: '/users/me',
 };

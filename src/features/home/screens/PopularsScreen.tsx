@@ -131,7 +131,7 @@ export default function PopularsScreen() {
 
       {/* Popular places */}
       <Text style={{ fontSize: 18, fontWeight: '600', marginVertical: 10 }}>Popular places near you</Text>
-      {/* <CardGrid dishes={places} itemsLoading={placesLoading} hasMoreItems={hasMorePlaces} loadMoreDishes={loadMorePlaces} renderDish={({ item }) => <PopularPlaceCard place={item} />} theme={theme} /> */}
+      <CardGrid dishes={places} itemsLoading={placesLoading} hasMoreItems={hasMorePlaces} loadMoreDishes={loadMorePlaces} renderDish={({ item }) => <PopularPlaceCard place={item} />} theme={theme} />
 
       {/* <View style={{ marginBottom: 20 }}>
         <View className="flex-row flex-wrap justify-between">
