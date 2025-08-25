@@ -1,11 +1,14 @@
 // shared/ts
 
+const primaryColor = '#1e828c';
+const secondaryColor = '#ff9800';
 const lightTheme = {
   background: '#FFFFFF',
   headerBackground: '#212529',
   text: '#000000',
   overlay: 'rgba(0,0,0,0.6)',
   primary: '#000000',
+  themeColor: primaryColor,
 };
 
 const darkTheme = {
@@ -16,8 +19,7 @@ const darkTheme = {
   primary: '#FFFFFF',
 };
 
-const primaryColor = '#1e828c';
-const secondaryColor = '#ff9800';
+
 
 const colors = {
   backgroundColor: primaryColor,
@@ -30,6 +32,7 @@ const colors = {
   textSecondary: '#757575',
   textLight: '#ffffff',
   buttonPrimary: primaryColor,
+  themeColor: primaryColor
 };
 
 const spacing = {

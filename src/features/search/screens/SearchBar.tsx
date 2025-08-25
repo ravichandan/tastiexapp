@@ -8,12 +8,13 @@ type Props = {
   onChange: (text: string) => void;
   onSearch: () => void;
   onClear: () => void;
+  placeHolder?: string;
 };
-export default function SearchBar({ onToggleFilters, value, onChange, onSearch, onClear }: Props) {
+export default function SearchBar({ onToggleFilters, value, onChange, onSearch, onClear, placeHolder='Search dishes or restaurants' }: Props) {
   return (
     <View className="flex-row items-center gap-2 bg-white">
       <TextInput
-        placeholder="Search dishes or restaurants"
+        placeholder={placeHolder}
         className="flex-1 border border-gray-300 rounded px-3 py-2"
         value={value}
         onChangeText={(text) => {

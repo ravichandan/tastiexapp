@@ -102,11 +102,46 @@ export type SuburbType = {
 };
 
 export type Review = {
-  id: string;
-  user: {
-    id: string;
-    name: string;
-  };
-  comment: string;
-  rating: number;
+    _id: string;
+  description: string;
+  service: number;
+  ambience: number;
+  taste: number;
+  presentation: number;
+  medias: Media[];
+  customer: CustomerInfo;
+  place: Place;
+  item: Item;
+  placeItem: any;
+  helpful: number;
+  notHelpful: number;
+  noOfReplies: number;
+  info: ReviewThread;
+  children: Review[];
+  modifiedAt: Date;
 };
+export type ReviewThread = {
+  _id: string;
+  likedBy: CustomerInfo[];
+
+}
+
+export type CustomerInfo = {
+  _id: string;
+  name: string;
+  picture?: Media;
+  email?: string;
+  interestedIn: Cuisine[];
+  allergens: FoodAllergens[];
+  reviewedOn?: Date;
+  totalPointsEarned: number;
+  status: string;
+  claimablePoints: number;
+  level: ActivityLevels;
+}
+
+export enum ActivityLevels {
+  BASIC = 'BASIC',
+  FOODIE = 'FOODIE',
+  INFLUENCER = 'INFLUENCER',
+}

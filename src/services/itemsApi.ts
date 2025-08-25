@@ -20,6 +20,7 @@ export const doGetPopularItems = async (filters: any) => {
 
 
 export const doGetDishDetail = async (placeId: string, dishId: string, filters?: any) => {
+  console.log('in itemApi.ts -> doGetDishDetail()');
   const placeItemDetailEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL.replace('{placeId}', placeId).replace('{itemId}', dishId);
   return axios.get(placeItemDetailEndpoint, {
     params: {
@@ -28,7 +29,7 @@ export const doGetDishDetail = async (placeId: string, dishId: string, filters?:
   }); //pageSize=12&pageNum=2
 };
 
-export const doGetDishDetailReviews = async (placeId: string, dishId: string, filters?: any) => {
+export const doGetDishDetailReviews = async (placeId: string, dishId: string, filters?: {pageNum?: number, pageSize?: number}) => {
   const placeItemDetailReviewsEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL_REVIEWS.replace('{placeId}', placeId).replace('{itemId}', dishId);
   return axios.get(placeItemDetailReviewsEndpoint, {
     params: {

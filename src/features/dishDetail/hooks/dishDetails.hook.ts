@@ -8,7 +8,8 @@ export function useDishReviews(params: {dishId: string, placeId: string}) {
   const query = useInfiniteQuery({
     queryKey: ["dishReviews", params.placeId, params.dishId],
     queryFn: async ({ pageParam = 1 }) => {
-      const res = await doGetDishDetailReviews(params.placeId, params.dishId);
+      console.log('dishDetails.hook, Fetching dish reviews for', params, 'page', pageParam);
+      const res = await doGetDishDetailReviews(params.placeId, params.dishId, { pageNum: pageParam, pageSize: 7 });
       console.log('Dish reviews fetched:', res.data);
       return res.data;
     },

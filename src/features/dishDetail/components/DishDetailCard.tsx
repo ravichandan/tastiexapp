@@ -16,7 +16,6 @@ export default function DishDetailCard({ place }: { place: Place }) {
       {/* Restaurant Info */}
       <View style={styles.header} className="py-2">
         <View className="flex-row my-2">
-          {' '}
           <View style={styles.iconContainer}>
             <UtensilsCrossed size={20} style={styles.icon} />
           </View>
@@ -62,23 +61,23 @@ export default function DishDetailCard({ place }: { place: Place }) {
         
         <View className="flex-row ">
           <View className='w-1/2 justify-center'>
-            <SmoothText style={{fontSize: 18}}>Price: <SmoothText style={{fontSize: 18, fontWeight: 'bold'}}>${placeItem?.price || 'NA'}</SmoothText></SmoothText>
+            <SmoothText style={{fontSize: 18}}>Price: </SmoothText><SmoothText style={{fontSize: 18, fontWeight: 'bold'}}>${placeItem?.price || 'NA'}</SmoothText>
           </View>
           <View style={styles.dishRatingContainer} className='w-1/2 justify-center ps-3'>
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.TASTE}: </SmoothText>
               <SmoothText>
                 {' '}
-                <SmoothText className='font-bold '>{placeItem?.ratingInfo?.taste}</SmoothText>/
-                <SmoothText className="text-sm">5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
+                <SmoothText className='font-bold '>{placeItem?.ratingInfo?.taste}</SmoothText>
+                <SmoothText className="text-sm">/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
               </SmoothText>
             </View>
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.PRESENTATION}: </SmoothText>
               <SmoothText>
                 {' '}
-                <SmoothText className='font-bold '>{placeItem?.ratingInfo?.presentation}</SmoothText>/
-                <SmoothText className="text-sm">5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
+                <SmoothText className='font-bold '>{placeItem?.ratingInfo?.presentation}</SmoothText>
+                <SmoothText className="text-sm">/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
               </SmoothText>
             </View>
           </View>
@@ -88,8 +87,7 @@ export default function DishDetailCard({ place }: { place: Place }) {
         <View> <SmoothText>Allergens: {placeItem?.allergens?.join(', ') || 'NA'}</SmoothText></View>
         <View> <SmoothText>Calories: {`${placeItem?.calories?.count || 'NA'} ${placeItem?.calories?.unit || ''}`}</SmoothText></View>
         <View> <TxButton label='Review this item' variant='dark'></TxButton></View>
-        {/* <Text></Text>
-        <Text>Calories: {`${placeItem?.calories?.count || 'NA'} ${placeItem?.calories?.unit || ''}`}</Text> */}
+
       </View>
     </View>
   );
@@ -99,6 +97,9 @@ const styles = StyleSheet.create({
   ...theme.card,
   card: {
     ...theme.card.card,
+    flex: 0,
+    // height: undefined,
+    // maxHeight: undefined,
     // height: 325,
     // maxHeight: 325,
     marginVertical: theme.spacing.sm,
