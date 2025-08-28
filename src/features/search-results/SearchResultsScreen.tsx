@@ -50,7 +50,7 @@ export default function SearchResultsScreen() {
   const renderDish = ({ item }: { item: Item }) => (
     <View style={styles.item}>
       {/* <SmoothText style={styles.itemTitle}>{item.name}</SmoothText> */}
-      <SearchItemCard item={item} />
+      <SearchItemCard item={item}  />
       {/* {item.restaurant ? <SmoothText style={styles.itemSubtitle}>{item.restaurant}</SmoothText> : null} */}
     </View>
   );

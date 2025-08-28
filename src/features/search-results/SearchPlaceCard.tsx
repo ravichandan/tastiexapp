@@ -1,13 +1,18 @@
 // components/SearchPlaceCard.tsx
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { MapPin } from 'lucide-react-native';
 import { Place } from '@/types/Types';
 import { theme } from '@/shared/theme';
 import SmoothText from '@/shared/components/SmoothText';
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/navigation/types';
 
 export default function SearchPlaceCard({ place }: { place: Place }) {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -25,7 +30,8 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
       </View>
 
       {place.items.slice(0, 3).map((item) => (
-        <View key={item._id} style={styles.dishRow}>
+        <TouchableOpacity key={item._id} style={styles.dishRow} onPress={() => navigation.navigate('DishDetail', { placeId: place!._id, dishId: item?._id })}>
+          {/* <Text>item: {JSON.stringify(item)}</Text> */}
           <Image
             source={{
               uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item.placeItem?.medias?.at(0)?.key,
@@ -51,7 +57,7 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
               </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
     </View>
   );

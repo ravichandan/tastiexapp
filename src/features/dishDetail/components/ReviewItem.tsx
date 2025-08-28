@@ -9,7 +9,7 @@ import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import { LikeDislikeButtons } from "@/shared/components/LikeDislikeButtons";
 
 export default function ReviewItem({ review }: { review: Review }) {
-  return (
+  return ( review && 
     <View className="m-1 p-2 border border-gray-300 rounded-lg gap-2">
 
       {/* First customer pic and name */}

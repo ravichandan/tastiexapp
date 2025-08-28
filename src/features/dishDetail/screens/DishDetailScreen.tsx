@@ -41,7 +41,7 @@ export default function DishDetailScreen({ route }: Props) {
   if (!reviewsLoading && reviewsData) {
     // Safe to use reviewsData here
     const { pages } = reviewsData;
-    const reviews2 = pages.flatMap((page) => page.reviews) ?? [];
+    const reviews2 = pages.flatMap((page) => page.reviews)?.filter(Boolean) ?? [];
     setOriginalReviews(reviews2);
     setFilteredReviews(reviews2);
   }
