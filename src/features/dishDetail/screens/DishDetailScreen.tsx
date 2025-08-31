@@ -72,7 +72,8 @@ export default function DishDetailScreen({ route }: Props) {
   const handleClear = () => {
     setSearchKey('');
     setFilteredReviews(originalReviews);
-
+  };
+  
   const feedbackReview = async ({ reviewId, action }: { reviewId: string; action: string }) => {
     if (user) {
       await useFeedbackReview({ reviewId, customerId: user.id || '', action });
