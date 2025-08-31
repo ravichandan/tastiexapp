@@ -105,7 +105,7 @@ export default function HomeScreen({ }: Props) {
   };
 
   return (
-    <View style={{ flex: 1 }} className='bg-white'>
+    <View style={{ flex: 1 }} className="">
       <View style={{ padding: 16 }}>
         <SmoothText style={{fontSize: 16}} className="capitalize">This is smooth text</SmoothText>
         <Text style={{fontSize: 16}} className="capitalize">This is not smooth text</Text>

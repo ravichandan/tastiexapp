@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; // Expo's icon pack
 import { theme } from "../theme";
@@ -8,6 +8,9 @@ type Props = {
   initialDislikes?: number;
   onLike?: () => void;
   onDislike?: () => void;
+  onUnlike?: () => void;
+  onUnDislike?: () => void;
+  vote?: "like" | "dislike" | null; // User's current vote
   size?: number;
 };
 
@@ -15,17 +18,25 @@ export const LikeDislikeButtons = ({
   initialLikes = 0,
   initialDislikes = 0,
   onLike,
+  onUnlike,
   onDislike,
+  onUnDislike,
+  vote = null,
   size = 22,
 }: Props) => {
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);
   const [userVote, setUserVote] = useState<"like" | "dislike" | null>(null);
+  useEffect(() => {
+    setUserVote(vote);
+  }, [vote]);
 
   const handleLike = () => {
+    console.log(`User voted ${userVote === "like" ? "unlike" : "like"} on review`);
     if (userVote === "like") {
       setLikes((prev) => prev - 1);
       setUserVote(null);
+      onUnlike?.();
     } else {
       if (userVote === "dislike") setDislikes((prev) => prev - 1);
       setLikes((prev) => prev + 1);
@@ -38,6 +49,7 @@ export const LikeDislikeButtons = ({
     if (userVote === "dislike") {
       setDislikes((prev) => prev - 1);
       setUserVote(null);
+      onUnDislike?.();
     } else {
       if (userVote === "like") setLikes((prev) => prev - 1);
       setDislikes((prev) => prev + 1);
@@ -50,7 +62,7 @@ export const LikeDislikeButtons = ({
     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}>
       {/* 👍 Like */}
       <TouchableOpacity
-        onPress={handleLike}
+        onPress={(handleLike)}
         style={{ flexDirection: "row", alignItems: "center", marginRight: 20 }}
       >
         <FontAwesome

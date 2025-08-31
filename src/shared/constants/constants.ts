@@ -17,5 +17,7 @@ export const API_ENDPOINTS = {
   POPULAR_ITEMS: '/popular-items',
   PLACE_ITEM_DETAIL: '/places/{placeId}/items/{itemId}',
   PLACE_ITEM_DETAIL_REVIEWS: '/places/{placeId}/items/{itemId}/reviews',
+  FEEDBACK_REVIEWS: '/reviews/{reviewId}',
+  FETCH_REVIEW_BY_ID: '/reviews/{reviewId}',
   MY_PROFILE: '/users/me',
 };

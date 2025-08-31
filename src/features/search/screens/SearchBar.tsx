@@ -12,7 +12,7 @@ type Props = {
 };
 export default function SearchBar({ onToggleFilters, value, onChange, onSearch, onClear, placeHolder='Search dishes or restaurants' }: Props) {
   return (
-    <View className="flex-row items-center gap-2 bg-white">
+    <View className="flex-row items-center gap-2 bg-white m-1">
       <TextInput
         placeholder={placeHolder}
         className="flex-1 border border-gray-300 rounded px-3 py-2"

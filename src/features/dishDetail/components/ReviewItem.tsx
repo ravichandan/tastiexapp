@@ -7,10 +7,13 @@ import { format } from 'date-fns'
 import { RatingStars } from "@/shared/components/RatingStars";
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import { LikeDislikeButtons } from "@/shared/components/LikeDislikeButtons";
+import { useAuthStore } from "@/state/useAuthStore";
 
-export default function ReviewItem({ review }: { review: Review }) {
+export default function ReviewItem({ review, onFeedback }: { review: Review, onFeedback: (params: {reviewId: string, action: string}) => void }) {
+  const user = useAuthStore((state) => state.user);
+  
   return ( review && 
-    <View className="m-1 p-2 border border-gray-300 rounded-lg gap-2">
+    <View className="mx-1 my-2 p-2 border border-gray-300 rounded-lg gap-2">
 
       {/* First customer pic and name */}
       <View className="flex-row items-center">
@@ -64,8 +67,11 @@ export default function ReviewItem({ review }: { review: Review }) {
         <LikeDislikeButtons
           initialLikes={review.helpful}
           initialDislikes={review.notHelpful}
-          onLike={() => console.log("Liked", review._id)}
-          onDislike={() => console.log("Disliked", review._id)}
+          onLike={() => onFeedback({reviewId: review._id, action: 'like'})}
+          onDislike={() => onFeedback({reviewId: review._id, action: 'dislike'})}
+          onUnlike={() => onFeedback({reviewId: review._id, action: 'unlike'})}
+          onUnDislike={() => onFeedback({reviewId: review._id, action: 'undislike'})}
+          vote={review.info?.likedBy?.find(c => c._id === user?.id) ? 'like' : null}
         />
         {review.info?.likedBy?.length > 0 && (
           <SmoothText className="text-gray-400">

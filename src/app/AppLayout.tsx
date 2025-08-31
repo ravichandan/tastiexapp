@@ -61,8 +61,10 @@ export default function AppLayout() {
       </View>
 
       {/* ✅ Stack Navigator Content */}
-      <View className="flex-1 bg-white">
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <View className="flex-1 ">
+        <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: {
+          backgroundColor: 'white',
+        } }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginForm} />
           <Stack.Screen name="Search" component={SearchScreen} />
