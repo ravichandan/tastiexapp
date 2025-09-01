@@ -1,6 +1,7 @@
 // hooks/useDishReviews.ts
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { doFeedbackReview, doFetchReview, doGetDishDetail, doGetDishDetailReviews } from "@/services/itemsApi";
+import {  doGetDishDetail, doGetDishDetailReviews } from "@/services/itemsApi";
+import { doFeedbackReview, doFetchReview } from "@/services/reviewsApi";
 
 export function useDishReviews(params: {dishId: string, placeId: string}) {
   const queryClient = useQueryClient();

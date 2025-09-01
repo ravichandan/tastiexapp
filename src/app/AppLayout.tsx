@@ -15,6 +15,7 @@ import { theme as lightTheme } from '@/shared/theme';
 import LoginForm from '@/features/auth/components/LoginForm';
 import { eagerFetch } from './hooks/eagerFetch.hook';
 import DishDetailScreen from '@/features/dishDetail/screens/DishDetailScreen';
+import PlaceDetailScreen from '@/features/placeDetail/screens/PlaceDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -68,6 +69,7 @@ export default function AppLayout() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginForm} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} />
           <Stack.Screen name="DishDetail" component={DishDetailScreen} />
 
         </Stack.Navigator>

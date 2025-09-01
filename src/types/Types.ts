@@ -21,7 +21,7 @@ export type RatingInfo = {
   service: number;
   taste: number;
   presentation: number;
-  reviewsCount: number;
+  // reviewsCount: number;
   noOfRatings: number
 };
 

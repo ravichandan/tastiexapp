@@ -14,7 +14,7 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} key={place._id} onPress={() => navigation.navigate('PlaceDetail', { placeId: place._id })}>
       <View style={styles.header}>
         <View>
           <SmoothText style={styles.title}>{place.placeName}</SmoothText>
@@ -59,7 +59,7 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
           </View>
         </TouchableOpacity>
       ))}
-    </View>
+    </TouchableOpacity>
   );
 }
 

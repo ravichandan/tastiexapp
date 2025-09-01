@@ -6,14 +6,18 @@ import { Place } from '@/types/Types';
 import { theme } from '@/shared/theme';
 import SmoothText from '@/shared/components/SmoothText';
 import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/navigation/types';
 
 const MemoizedPopularItemCard = React.memo(PopularPlaceCard);
 
 export default MemoizedPopularItemCard;
 
 function PopularPlaceCard({ place }: { place: Place }) {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     return (
-    <TouchableOpacity style={styles.card} key={place?._id}>
+    <TouchableOpacity style={styles.card} key={place?._id} onPress={() => navigation.navigate('PlaceDetail', { placeId: place._id })}>
       <View style={styles.header}>
         <Store size={14} style={styles.locationIcon} />
         <SmoothText className="capitalize" style={styles.headerText}>{place?.placeName}</SmoothText>
