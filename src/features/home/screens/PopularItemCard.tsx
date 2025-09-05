@@ -14,12 +14,14 @@ const MemoizedPopularItemCard = React.memo(PopularItemCard);
 
 export default MemoizedPopularItemCard;
 
-
 function PopularItemCard({ item }: { item: PlaceItem }) {
-const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
-    <TouchableOpacity style={styles.card} key={item?._id} onPress={() => navigation.navigate('DishDetail', { placeId: item.place!._id, dishId: item?.item })}>
+    <TouchableOpacity
+      style={styles.card}
+      key={item?._id}
+      onPress={() => navigation.navigate('DishDetail', { placeId: item.place!._id, dishId: item?.item })}>
       <View style={styles.header}>
         <SmoothText style={styles.headerText}>{item.name}</SmoothText>
       </View>

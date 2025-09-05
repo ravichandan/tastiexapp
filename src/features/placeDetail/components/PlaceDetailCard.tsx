@@ -1,6 +1,6 @@
 // components/DishCard.tsx
 import { Place } from '@/types/Types';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import Constants from 'expo-constants';
 import { theme } from '@/shared/theme';
@@ -8,8 +8,14 @@ import { MapPin, Store, UtensilsCrossed } from 'lucide-react-native';
 import SmoothText from '@/shared/components/SmoothText';
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import TxButton from '@/shared/components/TxButton';
+import React, { useState } from 'react';
 
-export default function PlaceDetailCard({ place }: { place: Place }) {
+const PlaceDetailCard = React.memo(_PlaceDetailCard);
+export default PlaceDetailCard;
+
+function _PlaceDetailCard({ place, onShowMenu }: { place: Place, onShowMenu: (flag: boolean) => void }) {
+  const [showMenu, setShowMenu] = useState(true);
+  
   return (
     <View style={styles.card}>
       {/* Restaurant Info */}
@@ -55,35 +61,40 @@ export default function PlaceDetailCard({ place }: { place: Place }) {
       </View>
 
       {/* Other details */}
-      <View style={styles.bodyContainer} className=" gap-4 ">
+      <View style={styles.bodyContainer} className=" gap-2 ">
         {/* price & ratings block */}
 
         <View className="flex-row ">
-          <View style={styles.dishRatingContainer} className="w-1/2 justify-center ps-3">
+          <View style={styles.dishRatingContainer} className="w-1/2 justify-center ">
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.AMBIENCE}: </SmoothText>
               <SmoothText>
-                {' '}
                 <SmoothText className="font-bold ">{place?.ratingInfo?.ambience}</SmoothText>
-                <SmoothText className="text-sm">/5 ({place?.ratingInfo?.noOfRatings})</SmoothText>
+                <SmoothText className="text-sm">/5 {place?.ratingInfo?.noOfRatings ? (place?.ratingInfo?.noOfRatings ) : ''}</SmoothText>
               </SmoothText>
             </View>
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.SERVICE}: </SmoothText>
               <SmoothText>
-                {' '}
                 <SmoothText className="font-bold ">{place?.ratingInfo?.service}</SmoothText>
-                <SmoothText className="text-sm">/5 ({place?.ratingInfo?.noOfRatings})</SmoothText>
+                <SmoothText className="text-sm">/5 {place?.ratingInfo?.noOfRatings ? (place?.ratingInfo?.noOfRatings ) : ''}</SmoothText>
               </SmoothText>
             </View>
           </View>
         </View>
 
+        <TouchableOpacity className="flex-row" onPress={()=> { setShowMenu(!showMenu); onShowMenu(!showMenu); }}>
+          {
+            showMenu? 
+            <SmoothText className='underline text-xl'>See all reviews</SmoothText>
+            : <SmoothText className='underline text-xl'>See menu</SmoothText>
+          }
+        </TouchableOpacity>
+
         {/* <View> <SmoothText>{place?.description || place?.items?.at(0)?.description || 'NA'}</SmoothText></View>
         <View> <SmoothText>Allergens: {place?.allergens?.join(', ') || 'NA'}</SmoothText></View>
         <View> <SmoothText>Calories: {`${place?.calories?.count || 'NA'} ${place?.calories?.unit || ''}`}</SmoothText></View> */}
         <View>
-          {' '}
           <TxButton label="Review this item" variant="dark"></TxButton>
         </View>
       </View>
@@ -98,14 +109,15 @@ const styles = StyleSheet.create({
     flex: 0,
     // height: undefined,
     // maxHeight: undefined,
-    height: 325,
+    // height: 425,
     // maxHeight: 325,
     marginVertical: theme.spacing.sm,
-    borderWidth: 0,
+    borderRadius: 8,
+    borderWidth: 1,
   },
   header: {
     ...theme.card.header,
-    height: 105,
+    // height: 105,
     flexDirection: 'column',
     alignItems: 'flex-start',
     fontSize: 18,
@@ -117,10 +129,10 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     // ...theme.card.bodyContainer,
-    marginVertical: theme.spacing.md,
+    // marginVertical: theme.spacing.md,
     padding: theme.spacing.md,
-    borderRadius: 8,
-    borderWidth: 1,
+    // borderRadius: 8,
+    // borderWidth: 1,
   },
   content: { flexDirection: 'row' as const, alignItems: 'center' as const, marginVertical: 3 },
   contentText: { color: theme.colors.textLight, marginLeft: theme.spacing.xs },

@@ -27,7 +27,7 @@ import '../../global.css';
 import AppLayout from './AppLayout';
 import Navigation from '@/navigation/AppNavigator';
 import * as Font from "expo-font";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import AppLoading from "expo-app-loading"; // optional, for splash while loading
 
@@ -37,8 +37,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // const login = useDishStore((state) => state.login);
 
 
+// import wdyr from '@welldone-software/why-did-you-render';
+// wdyr(React);
 
 export default function App() {
+
+
   console.log('in app.tsx');
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -70,7 +74,7 @@ export default function App() {
       // />
     );
   }
-const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>

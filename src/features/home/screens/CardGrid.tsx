@@ -18,8 +18,8 @@ type CardGridProps = {
 };
 
 const CardGrid: React.FC<CardGridProps> = ({ dishes, itemsLoading, hasMoreItems, loadMoreDishes, renderDish, theme }) => {
-  {
-    console.log('Loading in card grid, dishes.length:: ', dishes.length);
+{
+  console.log('Loading in card grid, dishes.length:: ', dishes.length);
   const scrollRef = useRef<ScrollView>(null);
   const scrollYRef = useRef(0);
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 10 }); // Initial range

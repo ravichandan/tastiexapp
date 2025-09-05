@@ -23,6 +23,7 @@ export type RatingInfo = {
   presentation: number;
   // reviewsCount: number;
   noOfRatings: number
+  noOfReviews: number
 };
 
 export type Media = {

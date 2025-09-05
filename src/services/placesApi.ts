@@ -23,6 +23,7 @@ export const doGetPlaceDetail = async (placeId: string, filters?: any) => {
     params: {
       ...filters,
       fetchMenu: true,
+      fetchReviews: true,
     },
   }); //pageSize=12&pageNum=2
 };
