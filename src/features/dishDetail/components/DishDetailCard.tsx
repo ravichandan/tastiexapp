@@ -8,9 +8,13 @@ import { MapPin, Store, UtensilsCrossed } from 'lucide-react-native';
 import SmoothText from '@/shared/components/SmoothText';
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import TxButton from '@/shared/components/TxButton';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/navigation/types';
 
 export default function DishDetailCard({ place }: { place: Place }) {
   const placeItem = place.items[0]?.placeItem;
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (
     <View style={styles.card}>
       {/* Restaurant Info */}
@@ -86,7 +90,7 @@ export default function DishDetailCard({ place }: { place: Place }) {
         <View> <SmoothText>{placeItem?.description || place?.items?.at(0)?.description || 'NA'}</SmoothText></View>
         <View> <SmoothText>Allergens: {placeItem?.allergens?.join(', ') || 'NA'}</SmoothText></View>
         <View> <SmoothText>Calories: {`${placeItem?.calories?.count || 'NA'} ${placeItem?.calories?.unit || ''}`}</SmoothText></View>
-        <View> <TxButton label='Review this item' variant='dark'></TxButton></View>
+        <View> <TxButton label='Review this item' variant='dark' onPress={()=> navigation.navigate('NewReview', { placeId: place._id, placeItemId: placeItem?._id })}></TxButton></View>
 
       </View>
     </View>

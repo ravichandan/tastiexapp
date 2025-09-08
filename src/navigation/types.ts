@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Search: undefined;
   PlaceDetail: { placeId: string; };
   DishDetail: { placeId: string; dishId: string };
+  NewReview: { placeId?: string; placeItemId?: string };
   // Search: { query?: string }; // if Search takes params
 
   // add other screens here

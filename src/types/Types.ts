@@ -104,6 +104,7 @@ export type SuburbType = {
 
 export type Review = {
     _id: string;
+  uuid?: string;
   description: string;
   service: number;
   ambience: number;
@@ -113,7 +114,7 @@ export type Review = {
   customer: CustomerInfo;
   place: Place;
   item: Item;
-  placeItem: any;
+  placeItem: PlaceItem;
   helpful: number;
   notHelpful: number;
   noOfReplies: number;
@@ -126,6 +127,21 @@ export type ReviewThread = {
   likedBy: CustomerInfo[];
 
 }
+
+export type NewReview = {
+  
+  uuid: string;
+  description?: string;
+  service?: number;
+  ambience?: number;
+  taste?: number;
+  presentation?: number;
+  medias?: Media[];
+  customer?: CustomerInfo;
+  place?: Place;
+  placeItem?: PlaceItem;
+  children?: NewReview[];
+};
 
 export type CustomerInfo = {
   _id: string;

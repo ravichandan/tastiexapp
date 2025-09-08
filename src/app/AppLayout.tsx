@@ -16,6 +16,7 @@ import LoginForm from '@/features/auth/components/LoginForm';
 import { eagerFetch } from './hooks/eagerFetch.hook';
 import DishDetailScreen from '@/features/dishDetail/screens/DishDetailScreen';
 import PlaceDetailScreen from '@/features/placeDetail/screens/PlaceDetailScreen';
+import ReviewForm from '@/features/reviewForm/screens/ReviewForm';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -71,6 +72,7 @@ export default function AppLayout() {
           <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} />
           <Stack.Screen name="DishDetail" component={DishDetailScreen} />
+          <Stack.Screen name="NewReview" component={ReviewForm} />
 
         </Stack.Navigator>
 

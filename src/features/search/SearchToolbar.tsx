@@ -17,7 +17,7 @@ export default function SearchToolbar({ onShare }: Props) {
 
   return (
     <>
-      <View className="flex-row items-center justify-between px-4 py-2 bg-white my-4">
+      <View className="flex-row items-center justify-between py-2 bg-white my-4">
 
         {/* Share */}
         {/* <TouchableOpacity onPress={onShare} className="flex-row items-center">
@@ -54,7 +54,7 @@ export default function SearchToolbar({ onShare }: Props) {
                 mode="dialog"
                 prompt="Pick a radius"
                 onValueChange={(value) => setRadius(value)}
-                style={{ width: 85 }}
+                style={{ width: 90 }}
               >
                 <Picker.Item style={{alignItems: 'center', justifyContent: 'center'}} label="10" value="10" />
                 <Picker.Item style={{alignItems: 'center', justifyContent: 'center'}} label="20" value="20" />

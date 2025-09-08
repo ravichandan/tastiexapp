@@ -9,13 +9,17 @@ import SmoothText from '@/shared/components/SmoothText';
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import TxButton from '@/shared/components/TxButton';
 import React, { useState } from 'react';
+import { RootStackParamList } from '@/navigation/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 const PlaceDetailCard = React.memo(_PlaceDetailCard);
 export default PlaceDetailCard;
 
-function _PlaceDetailCard({ place, onShowMenu }: { place: Place, onShowMenu: (flag: boolean) => void }) {
+function _PlaceDetailCard({ place, onShowMenu }: { place: Place; onShowMenu: (flag: boolean) => void }) {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(true);
-  
+
   return (
     <View style={styles.card}>
       {/* Restaurant Info */}
@@ -26,12 +30,7 @@ function _PlaceDetailCard({ place, onShowMenu }: { place: Place, onShowMenu: (fl
           </View>
           <Text style={[styles.headerText, { fontSize: 18, fontWeight: 'bold' }]}>{place?.placeName}</Text>
         </View>
-        {/* <View className="flex-row my-1">
-          <View style={styles.iconContainer}>
-            <Store size={16} style={styles.icon} />
-          </View>
-          <Text style={[styles.headerText, { fontSize: 16, fontWeight: 'medium' }]}>{place.placeName}</Text>
-        </View> */}
+
         <View className="flex-row my-1">
           <View style={styles.iconContainer}>
             <MapPin size={14} style={styles.icon} />
@@ -69,33 +68,55 @@ function _PlaceDetailCard({ place, onShowMenu }: { place: Place, onShowMenu: (fl
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.AMBIENCE}: </SmoothText>
               <SmoothText>
-                <SmoothText className="font-bold ">{place?.ratingInfo?.ambience}</SmoothText>
-                <SmoothText className="text-sm">/5 {place?.ratingInfo?.noOfRatings ? (place?.ratingInfo?.noOfRatings ) : ''}</SmoothText>
+                <SmoothText className="font-bold text-lg ">
+                  {place?.ratingInfo?.ambience != null ? Number(place.ratingInfo.ambience).toFixed(1) : ''}
+                </SmoothText>
+                <SmoothText className="text-lg">
+                  /5{' '}
+                  <SmoothText className="text-sm">
+                    {place?.ratingInfo?.noOfRatings ? place?.ratingInfo?.noOfRatings : ''}
+                  </SmoothText>
+                </SmoothText>
               </SmoothText>
             </View>
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.SERVICE}: </SmoothText>
               <SmoothText>
-                <SmoothText className="font-bold ">{place?.ratingInfo?.service}</SmoothText>
-                <SmoothText className="text-sm">/5 {place?.ratingInfo?.noOfRatings ? (place?.ratingInfo?.noOfRatings ) : ''}</SmoothText>
+                <SmoothText className="font-bold text-lg">
+                  {place?.ratingInfo?.service != null ? Number(place.ratingInfo.service).toFixed(1) : ''}
+                </SmoothText>
+                <SmoothText className="text-lg">
+                  /5{' '}
+                  <SmoothText className="text-sm">
+                    {place?.ratingInfo?.noOfRatings ? place?.ratingInfo?.noOfRatings : ''}
+                  </SmoothText>
+                </SmoothText>
               </SmoothText>
             </View>
           </View>
         </View>
 
-        <TouchableOpacity className="flex-row" onPress={()=> { setShowMenu(!showMenu); onShowMenu(!showMenu); }}>
-          {
-            showMenu? 
-            <SmoothText className='underline text-xl'>See all reviews</SmoothText>
-            : <SmoothText className='underline text-xl'>See menu</SmoothText>
-          }
+        <TouchableOpacity
+          className="flex-row"
+          onPress={() => {
+            setShowMenu(!showMenu);
+            onShowMenu(!showMenu);
+          }}>
+          {showMenu ? (
+            <SmoothText className="underline text-xl">See all reviews</SmoothText>
+          ) : (
+            <SmoothText className="underline text-xl">See menu</SmoothText>
+          )}
         </TouchableOpacity>
 
         {/* <View> <SmoothText>{place?.description || place?.items?.at(0)?.description || 'NA'}</SmoothText></View>
         <View> <SmoothText>Allergens: {place?.allergens?.join(', ') || 'NA'}</SmoothText></View>
         <View> <SmoothText>Calories: {`${place?.calories?.count || 'NA'} ${place?.calories?.unit || ''}`}</SmoothText></View> */}
         <View>
-          <TxButton label="Review this item" variant="dark"></TxButton>
+          <TxButton
+            label="Review this place"
+            variant="dark"
+            onPress={() => navigation.navigate('NewReview', { placeId: place._id })}></TxButton>
         </View>
       </View>
     </View>

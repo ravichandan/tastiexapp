@@ -37,7 +37,7 @@ function _PlaceItem({item, onFeedback }: { item: Item, onFeedback: (params: {rev
             <SmoothText className="font-bold">({review.taste})</SmoothText>
           </View> */}
         </View>
-        <View className="flex-row gap-1">
+        <View className="flex-row ">
           <View className="flex-col gap-1 w-2/3 px-3">
             <View className="flex-row items-center justify-between" style={{}}>
               <SmoothText>{TEXT_LABELS.TASTE}:</SmoothText>

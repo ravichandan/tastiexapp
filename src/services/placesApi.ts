@@ -36,3 +36,16 @@ export const doGetPlaceDetailReviews = async (placeId: string, filters?: { pageN
     },
   }); //pageSize=12&pageNum=2
 };
+
+export const doGetPlacesByName = async (query: string) => {
+  console.log('in placesApi.ts -> doGetPlacesByName()');
+  const placesByNameEndpoint = API_ENDPOINTS.PLACES_BY_NAME;
+  return axios.get(placesByNameEndpoint, {
+    params: {
+      placeName: query,
+      city: 'sydney',
+      lean: true
+    },
+  });
+};
+

@@ -181,7 +181,7 @@ export default function PlaceDetailScreen({ route }: Props) {
       <PlaceDetailCard place={place} onShowMenu={(flag: boolean) => setShowMenu(flag)} />
 
       {showMenu ? (
-        <View className=''>
+        <View className='m-2'>
           <SmoothText className="font-bold text-xl">Our Menu</SmoothText>
           <FlashList
             data={place.items}
@@ -198,7 +198,7 @@ export default function PlaceDetailScreen({ route }: Props) {
           />
         </View>
       ) : (
-        <View className=''>
+        <View className='m-2'>
           <FlashList
             data={filteredReviews}
             keyExtractor={(item: Review) => item._id}
