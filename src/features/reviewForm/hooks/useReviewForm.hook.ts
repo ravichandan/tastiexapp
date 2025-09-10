@@ -1,5 +1,6 @@
-import { doGetPlacesByName } from '@/services/placesApi';
+import { doGetPlacesByName, doGetPlaceDetail } from '@/services/placesApi';
 import { useReviewFormStore } from '@/state/useReviewFormStore';
+import { Place } from '@/types/Types';
 
 export const useReviewForm = () => {
   const {
@@ -11,7 +12,7 @@ export const useReviewForm = () => {
     setPresentation,
     setMedias,
     setCustomer,
-    setPlace,
+    setPlace: setPlaceInStore,
     setItem,
     addChild,
     removeChild,
@@ -21,7 +22,7 @@ export const useReviewForm = () => {
   const getPlacesByName = async (query: string) => {
     try {
       const response = await doGetPlacesByName(query);
-      console.log('Places fetched successfully:', response.data);
+      console.log('Places fetched successfully:', response.data?.places?.length);
       return response.data.places.map((place: any) => ({
        ...place,
         name: place.placeName
@@ -54,9 +55,20 @@ export const useReviewForm = () => {
     resetForm();
   };
 
-  const handlePlaceSearch = (query: string) => {
-    // Implement place search logic here, possibly calling an API
-    console.log('Searching for places with query:', query);
+  const setPlace = (place: Place | null) => {
+    if(!place) {
+      resetForm();
+    } else {
+      // Implement place search logic here, possibly calling an API
+      console.log('useReviewForm.hook -> setPlace: ', place._id);
+      doGetPlaceDetail(place._id).then((response) => {
+        place = {...place!, items: [...response.data.items]};
+        setPlaceInStore(place!);
+        // You can update the store with detailed place info if needed
+      }).catch((error) => {
+        console.error('Error fetching place details:', error);
+      });
+  }
   };
 
   return {

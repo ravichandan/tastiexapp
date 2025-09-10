@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import { RatingStars } from '@/shared/components/RatingStars';
-import PlaceItemForm from '../components/PlaceItemForm';
+import PlaceItemFormOrig from '../components/PlaceItemForm';
 import { useReviewForm } from '../hooks/useReviewForm.hook';
 import SmoothText from '@/shared/components/SmoothText';
 import TxButton from '@/shared/components/TxButton';
 import TxAutocomplete from '@/shared/components/TxAutoComplete';
-import { add } from 'date-fns';
+import RatingSlider from '@/shared/components/RatingSlider';
 
 const ReviewForm: React.FC = () => {
   const {
@@ -37,14 +36,23 @@ const ReviewForm: React.FC = () => {
 
 
   const [restaurantName, setRestaurantName] = useState('');
+  const [selectedRestaurantName, setSelectedRestaurantName] = useState('');
   const [places, setPlaces] = useState<any[]>([]);
 
   useEffect(() => {
     let isMounted = true;
+    console.log('In ReviewForm->useEffect(), restaurantName state changed:', restaurantName);
+    if(!restaurantName) {
+      setPlaces([]);
+      handlePlaceSelect(null);
+      resetForm();
+      addChild();
+      return;
+    }
     const fetchPlaces = async () => {
-      if (restaurantName) {
+      if (restaurantName?.length >= 2) {
         const result = await getPlacesByName(restaurantName);
-        console.log('Places fetched in ReviewForm:', result);
+        console.log('Places fetched in ReviewForm:', result?.length);
         if (isMounted) setPlaces(result || []);
       } else {
         setPlaces([]);
@@ -54,10 +62,20 @@ const ReviewForm: React.FC = () => {
     return () => { isMounted = false; };
   }, [restaurantName]);
 
+  
+  useEffect(() => {
+    console.log('In ReviewForm, places state updated, length:', review?.place?._id);
+    setSelectedRestaurantName(review?.place?.placeName || '');
+  }, [review?.place]);
+
   const handlePlaceSelect = (place: any) => {
-    console.log('in ReviewForm->handlePlaceSelect, Selected place:', place);
+    console.log('in ReviewForm->handlePlaceSelect, Selected place:', place?._id);
     setPlace(place);
+    // doGetPlaceDetail
   }
+
+  // Memoize PlaceItemForm to prevent unnecessary rerenders
+  const PlaceItemForm = React.useMemo(() => React.memo(PlaceItemFormOrig), []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -68,44 +86,45 @@ const ReviewForm: React.FC = () => {
         </View>
 
         <View style={styles.formBlock}>
-          <SmoothText style={styles.label}>Where did you have food?</SmoothText>
-
-          <TxAutocomplete data={places} onSelect={handlePlaceSelect} onQueryChange={(query) => setRestaurantName(query)} />
-          {/* <TxAutocomplete data={places} onSelect={handlePlaceSelect} onQueryChange={(query) => console.log('in onqueryChange', query)} /> */}
-
-          {/* <TextInput
-            value={restaurantName}
-            onChangeText={setRestaurantName}
-            style={styles.input}
-            placeholder="Enter restaurant name"
-            placeholderTextColor="#888"
-          /> */}
+          <SmoothText style={styles.label}>Where did you have food?{review?.place?._id}</SmoothText>
+          <TxAutocomplete data={places} onSelect={handlePlaceSelect} selectedValue={selectedRestaurantName} onQueryChange={(query: string) => setRestaurantName(query)} />
         </View>
 
         <View style={styles.formBlock}>
           <SmoothText style={styles.label}>How was the Ambience there?</SmoothText>
-          <RatingStars rating={review?.ambience || 0} /* onChange={setAmbience} */ />
+          <RatingSlider
+            initial={review?.ambience || 0}
+            max={5}
+            step={0.5}
+            onChange={setAmbience}
+          />
         </View>
 
         <View style={styles.formBlock}>
           <SmoothText style={styles.label}>And their Service?</SmoothText>
-          <RatingStars rating={review?.service || 0} /* onChange={setService} */ />
+          <RatingSlider
+            initial={review?.service || 0}
+            max={5}
+            step={0.5}
+            onChange={setService}
+          />
         </View>
 
         <View style={styles.itemsBlock}>
           <Text style={styles.sectionTitle}>What did you have there?</Text>
-          {review?.children && review.children.map((child, index) => (
-            <PlaceItemForm
-              key={child.uuid}
-              review={child}
-              index={index}
-              items={review.place?.placeItems || []}
-              // onUpdate={updateFoodItem}
-              onRemove={removeChild}
-              onImageUpload={handleImageUpload}
-              showRemoveButton={(review?.children?.length || 0) > 1}
-            />
-          ))}
+          {React.useMemo(() => (
+            review?.children && review.children.map((child, index) => (
+              <PlaceItemForm
+                key={child.uuid}
+                review={child}
+                index={index}
+                items={review.place?.items || []}
+                onRemove={removeChild}
+                onImageUpload={handleImageUpload}
+                showRemoveButton={(review?.children?.length || 0) > 1}
+              />
+            ))
+          ), [review?.children, review?.place?.items])}
           <TouchableOpacity style={styles.addButton} onPress={() => addChild()}>
             <Plus size={20} color="#2563eb" />
             <Text style={styles.addButtonText}>Add another item</Text>
@@ -113,10 +132,8 @@ const ReviewForm: React.FC = () => {
         </View>
 
         <View style={styles.submitBlock}>
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Submit Review</Text>
-          </TouchableOpacity>
-          <TxButton label={'SubmitReview'} onPress={handleSubmit} /> 
+          <TxButton label="Submit Review" variant="dark" onPress={handleSubmit} />
+
         </View>
       </View>
     </ScrollView>

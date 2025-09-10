@@ -26,9 +26,12 @@ import { Image, ScrollView, Text, View } from 'react-native';
 import '../../global.css';
 import AppLayout from './AppLayout';
 import Navigation from '@/navigation/AppNavigator';
-import * as Font from "expo-font";
+import * as Font from 'expo-font';
 import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 // import AppLoading from "expo-app-loading"; // optional, for splash while loading
 
 // import { useDishStore } from '../state/useDishStore';
@@ -36,37 +39,36 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // const user = useDishStore((state) => state.user);
 // const login = useDishStore((state) => state.login);
 
-
 // import wdyr from '@welldone-software/why-did-you-render';
 // wdyr(React);
 
 export default function App() {
-
-
   console.log('in app.tsx');
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      "OpenSans-Regular": require("@/assets/fonts/Open_Sans/OpenSans-Regular.ttf"),
-      "OpenSans-Bold": require("@/assets/fonts/Open_Sans/OpenSans-Bold.ttf"),
-      "OpenSans-Italic": require("@/assets/fonts/Open_Sans/OpenSans-Italic.ttf"),
-      "OpenSans-Light": require("@/assets/fonts/Open_Sans/OpenSans-Light.ttf"),
-      "OpenSans-SemiBold": require("@/assets/fonts/Open_Sans/OpenSans-SemiBold.ttf"),
+      'OpenSans-Regular': require('@/assets/fonts/Open_Sans/OpenSans-Regular.ttf'),
+      'OpenSans-Bold': require('@/assets/fonts/Open_Sans/OpenSans-Bold.ttf'),
+      'OpenSans-Italic': require('@/assets/fonts/Open_Sans/OpenSans-Italic.ttf'),
+      'OpenSans-Light': require('@/assets/fonts/Open_Sans/OpenSans-Light.ttf'),
+      'OpenSans-SemiBold': require('@/assets/fonts/Open_Sans/OpenSans-SemiBold.ttf'),
     });
   };
   useEffect(() => {
-    loadFonts().then(() => {
-      setFontsLoaded(true);
-    }).catch((error) => {
-      console.error('Error loading fonts:', error);
-    });
+    loadFonts()
+      .then(() => {
+        setFontsLoaded(true);
+      })
+      .catch((error) => {
+        console.error('Error loading fonts:', error);
+      });
   }, []);
-  
+
   if (!fontsLoaded) {
     return (
-      <Text >Loading fonts...</Text>
+      <Text>Loading fonts...</Text>
       // <AppLoading
       //   startAsync={loadFonts}
       //   onFinish={() => setFontsLoaded(true)}
@@ -77,9 +79,13 @@ export default function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Navigation />
-    </QueryClientProvider>
+    <PaperProvider>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <Navigation />
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </PaperProvider>
     // <View className="flex-1 bg-white">
     //   {/* 🔲 Header with logo on black */}
     //     <View className="bg-black items-center justify-center py-6">

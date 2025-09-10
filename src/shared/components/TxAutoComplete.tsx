@@ -1,25 +1,32 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Text, TouchableOpacity } from "react-native";
-import Autocomplete from "react-native-autocomplete-input";
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  LayoutRectangle,
+} from 'react-native';
+import { Portal } from 'react-native-paper';
 
-type TxAutocompleteProps<T> = {
-  data: T[]; // list of items to search from
-  placeholder?: string;
-  onSelect: (item: T) => void; // callback when user selects
-  onQueryChange: (query: string) => void; // callback when query changes
-};
 
-const TxAutocomplete = <T extends { _id: string; name: string }>(
-  props: TxAutocompleteProps<T>
-) => {
-  const { data, placeholder = "Search...", onSelect, onQueryChange } = props;
-  const [query, setQuery] = useState("");
-  const [showList, setShowList] = useState(true);
+const deviceWidth = Dimensions.get('window').width;
 
-  // Debounce query changes before firing onQueryChange
+export default function TxAutoComplete({ data, selectedValue, onSelect, placeholder, onQueryChange }: any) {
+  const [query, setQuery] = useState('');
+  const [showList, setShowList] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState<LayoutRectangle | null>(null);
+  const inputRef = useRef<any>(null);
+
+  const filtered = data.filter(
+    (item: any) => item.name && query && item.name.toLowerCase().includes(query.toLowerCase()),
+  );
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
-    if (!onQueryChange || query.length < 2) return;
     if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     debounceTimeout.current = setTimeout(() => {
       onQueryChange(query);
@@ -29,72 +36,112 @@ const TxAutocomplete = <T extends { _id: string; name: string }>(
     };
   }, [query, onQueryChange]);
 
-  // Filter list based on query
-  const filtered =
-    showList && query.length > 0
-      ? data.filter((item) =>
-          item.name.toLowerCase().includes(query.toLowerCase())
-        )
-      : [];
+  // React.useEffect(() => {
+  //   // console.log('AutoComplete data:', data);
+  //   // console.log('AutoComplete filtered:', filtered);
+  // }, [data, filtered]);
+
+  // Only measure input after showList is set to true, and after layout is complete
+  React.useEffect(() => {
+    if (showList) {
+      // Delay to ensure input is rendered and visible
+      setTimeout(() => {
+        measureInput();
+      }, 10);
+    }
+  }, [showList]);
+
+  const measureInput = () => {
+    // console.log('Measuring input...');
+    inputRef.current?.measureInWindow((x: number, y: number, width: number, height: number) => {
+      setDropdownPos({ x, y, width, height });
+    });
+  };
+
+  // React state updates are asynchronous, so showList will not reflect the new value immediately after setShowList.
+  // For debugging, use useEffect to log changes:
+  React.useEffect(() => {
+    if(!showList) {
+      setQuery(selectedValue || query);
+    }
+  }, [showList]);
 
   return (
-    <Autocomplete
-      data={filtered}
-      value={query}
-      onChangeText={text => {
-        setQuery(text);
-        setShowList(true);
-      }}
-      placeholder={placeholder}
-      flatListProps={{
-        keyExtractor: (_, idx) => idx.toString(),
-        renderItem: ({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              setQuery(item.name);
-              setShowList(false);
-              onSelect(item);
-            }}
-            className="px-3 py-3 border-0 bor border-gray-200 z-30"
-          >
-            <Text className="text-slate-800">{item.name}</Text>
-          </TouchableOpacity>
-        ),
-      }}
-      inputContainerStyle={{
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        paddingHorizontal: 8,
-        backgroundColor: "white",
-        // zIndex: -1,
-      }}
-      containerStyle={{
-        position: 'relative',
-        // zIndex: 10,
-        backgroundColor: 'white',
-      }}
-      listContainerStyle={{
-        position: 'absolute',
-        top: '90%',
-        left: 0,
-        right: 0,
-        borderWidth: 0,
-        borderColor: 'red',
-        borderBottomEndRadius: 8,
-        borderBottomStartRadius: 8,
-        marginTop: 4,
-        backgroundColor: 'white',
-        zIndex: 20,
-        elevation: 5, // for Android shadow
-        // shadowColor: '',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-      }}
-    />
-  );
-};
+    < >
+      <View style={{ position: 'relative' }}>
+        <TextInput
+          className='capitalize'
+          ref={inputRef}
+          value={query}
+          onChangeText={(text) => {
+            setQuery(text);
+            setShowList(true);
+          }}
 
-export default TxAutocomplete;
+          placeholder={placeholder}
+          style={styles.input}
+          onBlur={() => {console.log('Input blurred, showList:', showList); }}
+          onFocus={() => {
+            setShowList(true);
+          }}
+        />
+      </View>
+
+      {showList && dropdownPos  && (
+        <Portal>
+          <Pressable style={StyleSheet.absoluteFill} onPress={() => setShowList(false)} />
+          <View
+            style={[
+              styles.dropdown,
+              {
+                position: 'absolute',
+                top: dropdownPos.y + dropdownPos.height,
+                left: dropdownPos.x,
+                width: dropdownPos.width,
+                maxWidth: deviceWidth - 32,
+              },
+            ]}>
+            <FlatList
+              data={filtered}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setQuery(item.name);
+                    setShowList(false);
+                    onSelect(item);
+                  }}
+                  style={styles.item}>
+                  <Text className='capitalize' style={styles.itemText}>{item.name}</Text>
+                </TouchableOpacity>
+              )}
+              keyboardShouldPersistTaps="handled"
+            />
+          </View>
+        </Portal>
+      )}
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 10,
+  },
+  dropdown: {
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    maxHeight: 200,
+  },
+  item: {
+    padding: 10,
+  },
+  itemText: {
+    fontSize: 16,
+  },
+});

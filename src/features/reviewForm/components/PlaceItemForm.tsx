@@ -1,16 +1,17 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Trash2 } from 'lucide-react-native';
 import ImageUpload from './ImageUpload';
-import { NewReview, PlaceItem } from '@/types/Types';
+import { Item, NewReview, PlaceItem } from '@/types/Types';
 import TxAutocomplete from '@/shared/components/TxAutoComplete';
 import { RatingStars } from '@/shared/components/RatingStars';
+import RatingSlider from '@/shared/components/RatingSlider';
+import { useReviewForm } from '../hooks/useReviewForm.hook';
 
 interface PlaceItemFormProps {
   review: NewReview;
   index: number;
-  items: PlaceItem[];
+  items: Item[];
   onRemove: (id: string) => void;
   onImageUpload: (id: string, file: any) => void;
   showRemoveButton: boolean;
@@ -24,9 +25,8 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   onImageUpload,
   showRemoveButton,
 }) => {
-  const handleSelect = (item: PlaceItem) => {
-    console.log('in PlaceItemForm->handleSelect, Selected item:', item);
-    // review.placeItem = item;
+  const handleOnChange = (query: string) => {
+    console.log('in PlaceItemForm->handleOnChange, Query:', query);
     // TODO: update Zustand state or navigate
   };
   const dummyDishes = [
@@ -41,12 +41,24 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
     'Ramen',
     'Sandwich',
   ];
+
+  const { setTaste, setPresentation, setMedias, setDescription } = useReviewForm();
+  useEffect(() => {
+    console.log('in PlaceItemForm, items.length prop:', items?.length);
+  }, [items]);
+
+  const handleItemSelect = (item: any) => {
+    console.log('in ReviewForm->handleItemSelect, Selected item:', item._id);
+    // setItem(item);
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.headerRow}>
         <Text style={styles.itemTitle}>Item {index + 1}</Text>
         {showRemoveButton && (
           <TouchableOpacity onPress={() => onRemove(review.uuid!)}>
+            {/* <Trash2 size={20} color="red" /> */}
             <Trash2 size={20} color="#ef4444" />
           </TouchableOpacity>
         )}
@@ -54,17 +66,28 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
 
       <View style={styles.formBlock}>
         <Text style={styles.label}>Dish Name</Text>
-        <TxAutocomplete data={items} onSelect={handleSelect} />
+        <TxAutocomplete data={items} onSelect={handleItemSelect} onQueryChange={(query:string) => handleOnChange(query)} />
       </View>
 
       <View style={styles.formBlock}>
         <Text style={styles.label}>How is its taste?</Text>
-        <RatingStars rating={1} />
+        {/* <RatingStars rating={1} /> */}
+        <RatingSlider
+          initial={2.5}
+          max={5}
+          step={0.5}
+          onChange={(val: any) => setTaste(review, val)}
+        />
       </View>
 
       <View style={styles.formBlock}>
         <Text style={styles.label}>And its Presentation?</Text>
-        <RatingStars rating={1} />
+        <RatingSlider
+          initial={2.5}
+          max={5}
+          step={0.5}
+          onChange={(val: any) => setPresentation(review, val)}
+        />
       </View>
 
       {/* Uncomment and implement image upload if needed
@@ -81,7 +104,7 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
         <Text style={styles.label}>Anything else like quantity, spicy, etc</Text>
         <TextInput
           value={review.description}
-          // onChangeText={(text) => ...}
+          onChangeText={(text: string) => setDescription(review, text)}
           style={styles.textarea}
           placeholder="Add additional information"
           multiline
