@@ -21,6 +21,7 @@ interface ReviewFormStore {
    */
   updateReview: (newReview: NewReview) => void;
   addChild(): string;
+  updateChild: (id: string, updatedChild: Partial<NewReview>) => void;
   removeChild(id: string): void;
   resetForm: () => void;
 }
@@ -84,6 +85,19 @@ export const useReviewFormStore = create<ReviewFormStore>((set) => ({
       };
     });
     return id;
+  },
+  updateChild: (id: string, updatedChild: Partial<NewReview>) => {
+    set((state) => {
+      const newChildren = state.review?.children?.map((child) =>
+        child.uuid === id ? { ...child, ...updatedChild } : child
+      );
+      return {
+        review: {
+          ...state.review!,
+          children: newChildren,
+        },
+      };
+    });
   },
 
   removeChild: (id) =>

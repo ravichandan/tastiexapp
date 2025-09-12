@@ -8,8 +8,13 @@ import SmoothText from '@/shared/components/SmoothText';
 import TxButton from '@/shared/components/TxButton';
 import TxAutocomplete from '@/shared/components/TxAutoComplete';
 import RatingSlider from '@/shared/components/RatingSlider';
+import { useAuthStore } from '@/state';
+import { NewReview } from '@/types/Types';
+import ImageUpload from '../components/ImageUpload';
 
 const ReviewForm: React.FC = () => {
+  const user = useAuthStore(state => state.user);
+
   const {
     review,
     setDescription,
@@ -24,10 +29,12 @@ const ReviewForm: React.FC = () => {
     addChild,
     removeChild,
     resetForm,
+    updateChild,
     handleImageUpload,
     handleSubmit,
     getPlacesByName,
-  } = useReviewForm();
+    // initiateImageUpload
+  } = useReviewForm(user);
 
   useEffect(() => {
     resetForm();
@@ -38,7 +45,28 @@ const ReviewForm: React.FC = () => {
   const [restaurantName, setRestaurantName] = useState('');
   const [selectedRestaurantName, setSelectedRestaurantName] = useState('');
   const [places, setPlaces] = useState<any[]>([]);
-
+  const [errors, setErrors] = useState<{ [key: string]: string | string[] }>({});
+  const validate = () => {
+    if(!review) {
+      return false;
+    }
+    const newErrors: { [key: string]: string | string[] } = {};
+    if (review.description && review.description.length < 5) {
+      newErrors.description = 'Description must be at least 5 characters.';
+    }
+    if (review.taste === undefined) {
+      newErrors.taste = 'Please provide a taste rating.';
+    }
+    if (review.presentation === undefined) {
+      newErrors.presentation = 'Please provide a presentation rating.';
+    }
+    // if(review.medias || review.medias.length === 0) {
+    //   newErrors.medias = "Please upload at least one image or video.";
+    // }
+    // Add more business logic checks here...
+    setErrors({ ...newErrors, medias: errors.medias });
+    return Object.keys(newErrors).length === 0;
+  };
   useEffect(() => {
     let isMounted = true;
     console.log('In ReviewForm->useEffect(), restaurantName state changed:', restaurantName);
@@ -64,18 +92,59 @@ const ReviewForm: React.FC = () => {
 
   
   useEffect(() => {
-    console.log('In ReviewForm, places state updated, length:', review?.place?._id);
+    // console.log('In ReviewForm, places state updated, length:', review?.place?._id);
     setSelectedRestaurantName(review?.place?.placeName || '');
   }, [review?.place]);
 
+  const onSubmit = () => {
+    console.log('In ReviewForm->onSubmit(), review to validate:', review);
+    if (validate()) {
+      // console.log('Validation successful, submitting review:', JSON.stringify(review));
+      // handleSubmit();
+    } else {
+      console.log('Validation failed, errors:', errors);
+    }
+  }
+
   const handlePlaceSelect = (place: any) => {
-    console.log('in ReviewForm->handlePlaceSelect, Selected place:', place?._id);
+    // console.log('in ReviewForm->handlePlaceSelect, Selected place:', place?._id);
     setPlace(place);
     // doGetPlaceDetail
   }
 
+  const onHandleImageUpload = async (review: NewReview, file: any) => {
+    console.log('in PlaceItemForm->onHandleImageUpload, childUuid:', review.uuid, 'file:', file);
+
+    // setMedias(childUuid, [file]);
+    try {
+      const response = await handleImageUpload(review.uuid, file);
+      console.log('in PlaceItemForm -> onHandleImageUpload, response:', response);
+      console.log('in PlaceItemForm -> onHandleImageUpload, before, review.medias:', JSON.stringify(review.medias));
+      if (response) {
+        review.medias = review.medias ? [...review.medias, response] : [response];
+      }
+      console.log('in PlaceItemForm -> onHandleImageUpload, after, review.medias:', JSON.stringify(review.medias));
+      updateChild(review.uuid!, review);
+    } catch (error: any) {
+
+      console.error('Image upload failed:', error);
+      console.error('Image upload failed:', JSON.stringify(error));
+      if (!errors.medias) {
+        errors.medias = [];
+      }
+      errors.medias =
+        Array.from(
+          { length: (review.medias?.length ?? 0) + 1 },
+          (_, index) =>
+            'Error: ' + (index < errors.medias.length ? errors.medias[index] : error.message || 'Upload failed'),
+        ) ?? [];
+      setErrors({ ...errors, medias: errors.medias });
+    }
+  };
+
   // Memoize PlaceItemForm to prevent unnecessary rerenders
-  const PlaceItemForm = React.useMemo(() => React.memo(PlaceItemFormOrig), []);
+  // const PlaceItemForm = React.useMemo(() => React.memo(PlaceItemFormOrig), [user]);
+  const PlaceItemForm = PlaceItemFormOrig;//), [user]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -112,8 +181,9 @@ const ReviewForm: React.FC = () => {
 
         <View style={styles.itemsBlock}>
           <Text style={styles.sectionTitle}>What did you have there?</Text>
-          {React.useMemo(() => (
-            review?.children && review.children.map((child, index) => (
+          {/* <TxButton label="Check Login" variant="dark" onPress={() => initiateImageUpload()} /> */}
+          {/* {React.useMemo(() => ( */}
+            {review?.children && review.children.map((child, index) => (
               <PlaceItemForm
                 key={child.uuid}
                 review={child}
@@ -123,17 +193,46 @@ const ReviewForm: React.FC = () => {
                 onImageUpload={handleImageUpload}
                 showRemoveButton={(review?.children?.length || 0) > 1}
               />
-            ))
-          ), [review?.children, review?.place?.items])}
+            ))}
+          {/* ), [review?.children, review?.place?.items, user])} */}
           <TouchableOpacity style={styles.addButton} onPress={() => addChild()}>
             <Plus size={20} color="#2563eb" />
             <Text style={styles.addButtonText}>Add another item</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.submitBlock}>
-          <TxButton label="Submit Review" variant="dark" onPress={handleSubmit} />
+        {review && (<View style={[styles.formBlock, { flexDirection: 'column' }]}>
+          <SmoothText style={styles.label}>Have more image or videos of this place?</SmoothText>
 
+          <View style={{ flexDirection: 'row' }}>
+            <View className='mr-2'>
+              <ImageUpload
+                imageKey={review.medias?.at(0)?.key ?? null}
+                onImageUpload={(file) => onHandleImageUpload(review, file)}
+              />
+            </View>
+            {(review.medias?.length ?? 0) > 0 && <View className='mr-2'>
+              <ImageUpload
+                imageKey={review.medias?.at(1)?.key ?? null}
+                onImageUpload={(file) => onHandleImageUpload(review, file)}
+              />
+            </View>}
+            {(review.medias?.length ?? 0) > 1 && <View className='mr-2'>
+              <ImageUpload
+                imageKey={review.medias?.at(2)?.key ?? null}
+                onImageUpload={(file) => onHandleImageUpload(review, file)}
+              />
+            </View>}
+          </View>
+          <View style={{}}>
+            <SmoothText style={styles.error}>
+              {errors.medias?.at(0) ?? errors.medias?.at(1) ?? errors.medias?.at(2)}
+            </SmoothText>
+          </View>
+        </View>)}
+
+        <View style={styles.submitBlock}>
+          <TxButton label="Submit Review" variant="dark" onPress={onSubmit} />
         </View>
       </View>
     </ScrollView>
@@ -219,6 +318,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  error: {
+    color: '#ef4444',
   },
 });
 

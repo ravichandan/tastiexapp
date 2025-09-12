@@ -28,6 +28,7 @@ export type RatingInfo = {
 
 export type Media = {
   id: string;
+  _id: string;
   url: string;
   type: 'image' | 'video';
   key: string; // S3 key or similar identifier

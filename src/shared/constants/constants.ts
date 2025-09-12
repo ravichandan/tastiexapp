@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
   SUBURBS: '/suburbs',
   POPULAR_PLACES: '/popular-places',
   POPULAR_ITEMS: '/popular-items',
+  MEDIAS_UPLOAD: '/medias/upload',
   PLACE_DETAIL: '/places/{placeId}',//66d6cfd52ad41fb628b9881f?pageSize=5&pageNum=1&fetchMenu=true',
   PLACES_BY_NAME: '/places/',//places/?placeName=biryani&city=sydney
   PLACE_DETAIL_REVIEWS: '/places/{placeId}/reviews',
