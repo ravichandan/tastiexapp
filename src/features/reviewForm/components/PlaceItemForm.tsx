@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Trash2 } from 'lucide-react-native';
 import ImageUpload from './ImageUpload';
@@ -14,6 +15,7 @@ interface PlaceItemFormProps {
   review: NewReview;
   index: number;
   items: Item[];
+  control?: any;
   onRemove: (id: string) => void;
   onImageUpload: (uuid: string, file: any) => void;
   showRemoveButton: boolean;
@@ -22,6 +24,7 @@ interface PlaceItemFormProps {
 const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   review,
   index,
+  control,
   items,
   onRemove,
   onImageUpload,
@@ -31,42 +34,11 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
     console.log('in PlaceItemForm->handleOnChange, Query:', query);
     // TODO: update Zustand state or navigate
   };
-  const dummyDishes = [
-    'Pizza',
-    'Burger',
-    'Sushi',
-    'Pasta',
-    'Tacos',
-    'Vegetable Biryani',
-    'Chicken Biryani',
-    'Biryani',
-    'Ramen',
-    'Sandwich',
-  ];
 
   const user = useAuthStore((state) => state.user);
-  const { setTaste, setPresentation, setMedias, setDescription } = useReviewForm(user);
+  const { setTaste, setItem, setPresentation, setMedias, setDescription } = useReviewForm(user);
   const { handleImageUpload, updateChild } = useReviewForm(user);
-
   const [errors, setErrors] = useState<{ [key: string]: string | string[] }>({});
-  const validate = () => {
-    const newErrors: { [key: string]: string | string[] } = {};
-    if (!review.description || review.description.length < 5) {
-      newErrors.description = 'Description must be at least 5 characters.';
-    }
-    if (review.taste === undefined) {
-      newErrors.taste = 'Please provide a taste rating.';
-    }
-    if (review.presentation === undefined) {
-      newErrors.presentation = 'Please provide a presentation rating.';
-    }
-    // if(review.medias || review.medias.length === 0) {
-    //   newErrors.medias = "Please upload at least one image or video.";
-    // }
-    // Add more business logic checks here...
-    setErrors({ ...newErrors, medias: errors.medias });
-    return Object.keys(newErrors).length === 0;
-  };
 
   useEffect(() => {
     console.log('in PlaceItemForm rendered');
@@ -76,8 +48,8 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   }, [review.medias]);
   // const item: any =]
   const handleItemSelect = (item: any) => {
-    console.log('in ReviewForm->handleItemSelect, Selected item:', item._id);
-    // setItem(item);
+    console.log('in ReviewForm->handleItemSelect, Selected item:', item);
+    setItem(review, item._id);
   };
 
   const onHandleImageUpload = async (review: NewReview, file: any) => {
@@ -123,55 +95,140 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
       </View>
 
       <View style={styles.formBlock}>
-        <Text style={styles.label}>Dish Name</Text>
-        {React.useMemo(() => (
-          <TxAutocomplete
-            data={items}
-            onSelect={handleItemSelect}
-            onQueryChange={(query: string) => handleOnChange(query)}
-          />
-        ), [items])}
+        <SmoothText style={styles.label}>Dish Name</SmoothText>
+        <Controller
+          control={control}
+          name={`children.${index}.dish`}
+          rules={{ required: 'Please select a dish.' }}
+          render={({ field: { value, onChange } }) => (
+             React.useMemo(() => (<TxAutocomplete
+              data={items}
+              selectedValue={value?.name}
+              onSelect={(item: any) => {
+                handleItemSelect(item);
+                onChange(item);
+              }}
+              onQueryChange={(query: string) => handleOnChange(query)}
+            />), [items])
+          )}
+        />
+        {control._formState?.errors?.children?.[index]?.dish && (
+          <SmoothText style={styles.error}>
+            {control._formState.errors.children[index].dish.message}
+          </SmoothText>
+        )}
       </View>
 
       <View style={styles.formBlock}>
         <Text style={styles.label}>How is its taste?</Text>
-        {/* <RatingStars rating={1} /> */}
-        <RatingSlider initial={2.5} max={5} step={0.5} onChange={(val: any) => setTaste(review, val)} />
+        {/* {control ? ( */}
+          <>
+            <Controller
+              control={control}
+              name={`children.${index}.taste`}
+              rules={{ required: 'Please rate the taste.',
+                validate: value => value >= 1 || 'Taste rating must be at least 1.'
+              }}
+              render={({ field: { value, onChange } }) => (
+                <RatingSlider
+                  initial={value ?? 0}
+                  max={5}
+                  step={0.5}
+                  onChange={(item: any) => {
+                    setTaste(review, item);
+                    onChange(item);
+                  }}
+                />
+              )}
+            />
+            {/* Show error for taste */}
+            {control._formState?.errors?.children?.[index]?.taste && (
+              <SmoothText style={styles.error}>
+                {control._formState.errors.children[index].taste.message}
+              </SmoothText>
+            )}
+          </>
+        {/* // ) : (
+        //   <RatingSlider initial={2.5} max={5} step={0.5} onChange={(val: any) => setTaste(review, val)} />
+        // )} */}
       </View>
 
       <View style={styles.formBlock}>
         <Text style={styles.label}>And its Presentation?</Text>
-        <RatingSlider initial={2.5} max={5} step={0.5} onChange={(val: any) => setPresentation(review, val)} />
+        {/* {control ? ( */}
+          <>
+            <Controller
+              control={control}
+              name={`children.${index}.presentation`}
+              rules={{ required: 'Please rate the presentation.',
+                validate: value => value >= 1 || 'Presentation rating must be at least 1.'
+              }}
+              render={({ field: { value, onChange } }) => (
+                <RatingSlider
+                  initial={value}
+                  max={5}
+                  step={0.5}
+                  onChange={(item: any) => {
+                    setPresentation(review, item);
+                    onChange(item);
+                  }}
+                />
+              )}
+            />
+            {/* Show error for presentation */}
+            {control._formState?.errors?.children?.[index]?.presentation && (
+              <SmoothText style={styles.error}>
+                {control._formState.errors.children[index].presentation.message}
+              </SmoothText>
+            )}
+          </>
+        {/* ) : (
+          <RatingSlider initial={2.5} max={5} step={0.5} onChange={(val: any) => setPresentation(review, val)} />
+        )} */}
       </View>
 
       <View style={[styles.formBlock, { flexDirection: 'column' }]}>
         <SmoothText style={styles.label}>Add any image or video of this item</SmoothText>
-
-        <View style={{ flexDirection: 'row' }}>
-          <View className='mr-2'>
-            <ImageUpload
-              imageKey={review.medias?.at(0)?.key ?? null}
-              onImageUpload={(file) => onHandleImageUpload(review, file)}
-            />
-          </View>
-          {(review.medias?.length ?? 0) > 0 && <View className='mr-2'>
-            <ImageUpload
-              imageKey={review.medias?.at(1)?.key ?? null}
-              onImageUpload={(file) => onHandleImageUpload(review, file)}
-            />
-          </View>}
-          {(review.medias?.length ?? 0) > 1 && <View className='mr-2'>
-            <ImageUpload
-              imageKey={review.medias?.at(2)?.key ?? null}
-              onImageUpload={(file) => onHandleImageUpload(review, file)}
-            />
-          </View>}
-        </View>
-        <View style={{}}>
-          <SmoothText style={styles.error}>
-            {errors.medias?.at(0) ?? errors.medias?.at(1) ?? errors.medias?.at(2)}
-          </SmoothText>
-        </View>
+        <Controller
+            control={control}
+            name={`children.${index}.medias`}
+            rules={{ required: 'Please add atleast 1 picture or video' }}
+            render={({ field: { value, onChange } }) => (
+              <View style={{ flexDirection: 'row' }}>
+                <View className='mr-2'>
+                  <ImageUpload
+                    imageKey={review.medias?.at(0)?.key ?? null}
+                    onImageUpload={(file) => {
+                    onHandleImageUpload(review, file);
+                    onChange(file);
+                  }}
+                  />
+                </View>
+                {(review.medias?.length ?? 0) > 0 && <View className='mr-2'>
+                  <ImageUpload
+                    imageKey={review.medias?.at(1)?.key ?? null}
+                    onImageUpload={(file) => onHandleImageUpload(review, file)}
+                  />
+                </View>}
+                {(review.medias?.length ?? 0) > 1 && <View className='mr-2'>
+                  <ImageUpload
+                    imageKey={review.medias?.at(2)?.key ?? null}
+                    onImageUpload={(file) => onHandleImageUpload(review, file)}
+                  />
+                </View>}
+              </View>
+            )}
+          />
+              {/* <View style={{}}>
+                <SmoothText style={styles.error}>
+                  {errors.medias?.at(0) ?? errors.medias?.at(1) ?? errors.medias?.at(2)}
+                </SmoothText>
+              </View> */}
+            {control._formState?.errors?.children?.[index]?.medias && (
+              <SmoothText style={styles.error}>
+                {control._formState.errors.children[index].medias.message}
+              </SmoothText>
+            )}
       </View>
       {/* {review.medias && review.medias.length > 0 && ( */}
 

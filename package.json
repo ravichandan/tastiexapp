@@ -49,6 +49,7 @@
     "nativewind": "4.1.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.62.0",
     "react-native": "0.79.5",
     "react-native-autocomplete-input": "^5.5.6",
     "react-native-elements": "^3.4.3",

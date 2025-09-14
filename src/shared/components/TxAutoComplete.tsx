@@ -66,6 +66,18 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
     }
   }, [showList]);
 
+  const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity
+      onPress={() => {
+        setQuery(item.name);
+        setShowList(false);
+        onSelect(item);
+      }}
+      style={styles.item}>
+      <Text className='capitalize' style={styles.itemText}>{item.name ?? item.placeName}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     < >
       <View style={{ position: 'relative' }}>
@@ -77,10 +89,9 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
             setQuery(text);
             setShowList(true);
           }}
-
           placeholder={placeholder}
           style={styles.input}
-          onBlur={() => {console.log('Input blurred, showList:', showList); }}
+          onBlur={() => {}}
           onFocus={() => {
             setShowList(true);
           }}
@@ -104,17 +115,7 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
             <FlatList
               data={filtered}
               keyExtractor={(item) => item._id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setQuery(item.name);
-                    setShowList(false);
-                    onSelect(item);
-                  }}
-                  style={styles.item}>
-                  <Text className='capitalize' style={styles.itemText}>{item.name}</Text>
-                </TouchableOpacity>
-              )}
+              renderItem={renderItem}
               keyboardShouldPersistTaps="handled"
             />
           </View>
@@ -123,6 +124,7 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
     </>
   );
 }
+// export default React.memo(TxAutoComplete) as typeof TxAutoComplete;
 
 const styles = StyleSheet.create({
   input: {

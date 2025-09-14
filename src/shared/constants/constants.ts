@@ -23,5 +23,6 @@ export const API_ENDPOINTS = {
   PLACE_ITEM_DETAIL_REVIEWS: '/places/{placeId}/items/{itemId}/reviews',
   FEEDBACK_REVIEWS: '/reviews/{reviewId}',
   FETCH_REVIEW_BY_ID: '/reviews/{reviewId}',
+  SUBMIT_REVIEW: '/reviews',
   MY_PROFILE: '/users/me',
 };

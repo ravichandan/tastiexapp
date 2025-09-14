@@ -6,6 +6,7 @@ import { useAuthStore } from '@/state';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
+import { doSubmitReview } from '@/services/reviewsApi';
 // import { Platform } from 'react-native';
 
 export const useReviewForm = (user: any) => {
@@ -28,6 +29,7 @@ export const useReviewForm = (user: any) => {
   } = useReviewFormStore();
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  // Do not get token here; get it dynamically in handleSubmit for latest value
 
   const getPlacesByName = async (query: string) => {
     try {
@@ -99,14 +101,37 @@ export const useReviewForm = (user: any) => {
 
   };
 
-  const handleSubmit = () => {
-    // console.log({
-    //   restaurantName,
-    //   ambience,
-    //   service,
-    //   foodItems
-    // });
-    alert('Review submitted successfully!');
+  const handleSubmit = async () => {
+
+    if(!review) {
+      console.warn('No review to submit');
+      return;
+    }
+    let reviewToSubmit = {
+      ...review,
+      place: review.place?._id,
+      customerInfo: {id: user?.id},
+    } as any;
+    console.log('Submitted review details: ',reviewToSubmit );
+    delete reviewToSubmit.uuid;
+    reviewToSubmit?.children?.forEach((child: any) => {
+      delete child.uuid;
+    });
+
+    const token = useAuthStore.getState().token;
+    console.log('useReviewForm.hook->handleSubmit(), token::   ', token);
+    if(!token) {
+      console.warn('No auth token, cannot submit review');
+      // navigation.navigate('Login');
+      return;
+    }
+    await doSubmitReview(user?.id, token, reviewToSubmit).then((response) => {
+      console.log('Review submitted successfully:', response.data);
+      navigation.navigate('Home');
+    }).catch((error) => {
+      console.error('Error submitting review:', error);
+      throw error;
+    });
     resetForm();
   };
 

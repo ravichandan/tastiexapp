@@ -83,6 +83,7 @@ export type Place = {
   id: string;
   _id: string;
   placeName: string;
+  name: string;
   location: string;
   ambience: number;
   service: number;
@@ -140,7 +141,7 @@ export type NewReview = {
   medias?: Media[];
   customer?: CustomerInfo;
   place?: Place;
-  placeItem?: PlaceItem;
+  item?: string; // stores objectId of item
   children?: NewReview[];
 };
 

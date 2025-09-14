@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 // import { v4 as uuidv4 } from 'uuid';
-import {randomUUID} from 'expo-crypto';
+import { randomUUID } from 'expo-crypto';
 
 import { CustomerInfo, Media, NewReview, Place, PlaceItem } from '@/types/Types';
 
@@ -15,7 +15,7 @@ interface ReviewFormStore {
   setMedias: (childRef: NewReview, medias: Media[]) => void;
   setCustomer: (customer: CustomerInfo | string) => void;
   setPlace: (place: Place) => void;
-  setItem: (item: PlaceItem) => void;
+  setItem: (childRef: NewReview, placeItem: string) => void;
   /**
    * returns the index
    */
@@ -29,53 +29,69 @@ interface ReviewFormStore {
 export const useReviewFormStore = create<ReviewFormStore>((set) => ({
   review: { uuid: randomUUID() },
 
-  setDescription: (childRef, description) => set((state) => ({ 
-    review: { 
-      ...state.review!, 
-      children:
-        state.review?.children
-        ? [...state.review.children.map(child => child.uuid === childRef.uuid ? {...child, description} : child)]
-        : state.review?.children
-    }})),
+  setDescription: (childRef, description) =>
+    set((state) => ({
+      review: {
+        ...state.review!,
+        children: state.review?.children
+          ? [
+              ...state.review.children.map((child) =>
+                child.uuid === childRef.uuid ? { ...child, description } : child,
+              ),
+            ]
+          : state.review?.children,
+      },
+    })),
   setAmbience: (ambience) => set((state) => ({ review: { ...state.review!, ambience } })),
   setService: (service) => set((state) => ({ review: { ...state.review!, service } })),
-  setTaste: (childRef, taste) => set((state) => ({ 
-    review: { 
-      ...state.review!, 
-      children:
-        state.review?.children
-        ? [...state.review.children.map(child => child.uuid === childRef.uuid ? {...child, taste} : child)]
-        : state.review?.children
-    }})),
-  setPresentation: (childRef, presentation) => set((state) => ({ 
-    review: { 
-      ...state.review!, 
-      children:
-        state.review?.children
-        ? [...state.review.children.map(child => child.uuid === childRef.uuid ? {...child, presentation} : child)]
-        : state.review?.children
-    }})),
-  setMedias: (childRef, medias) => set((state) => ({ 
-    review: { 
-      ...state.review!, 
-      children:
-        state.review?.children
-        ? [...state.review.children.map(child => child.uuid === childRef.uuid ? {...child, medias} : child)]
-        : state.review?.children
-    }})),
+  setTaste: (childRef, taste) =>
+    set((state) => ({
+      review: {
+        ...state.review!,
+        children: state.review?.children
+          ? [...state.review.children.map((child) => (child.uuid === childRef.uuid ? { ...child, taste } : child))]
+          : state.review?.children,
+      },
+    })),
+  setPresentation: (childRef, presentation) =>
+    set((state) => ({
+      review: {
+        ...state.review!,
+        children: state.review?.children
+          ? [
+              ...state.review.children.map((child) =>
+                child.uuid === childRef.uuid ? { ...child, presentation } : child,
+              ),
+            ]
+          : state.review?.children,
+      },
+    })),
+  setMedias: (childRef, medias) =>
+    set((state) => ({
+      review: {
+        ...state.review!,
+        children: state.review?.children
+          ? [...state.review.children.map((child) => (child.uuid === childRef.uuid ? { ...child, medias } : child))]
+          : state.review?.children,
+      },
+    })),
   setCustomer: (customer) => set((state) => ({ review: { ...state.review!, customerInfo: customer } })),
   setPlace: (place) => set((state) => ({ review: { ...state.review!, place } })),
-  setItem: (item) => set((state) => ({ review: { ...state.review!, item } })),
+  setItem: (childRef, placeItem) =>
+    set((state) => ({
+      review: {
+        ...state.review!,
+        children: state.review?.children?.map((child) => (child.uuid === childRef.uuid ? { ...child, placeItem } : child)),
+      },
+    })),
 
   updateReview: (newReview) => set((state) => ({ review: { ...state.review, ...newReview } })),
   addChild: () => {
     let id = '';
     set((state) => {
       const uuid = randomUUID();
-      const newChildren = state.review?.children
-        ? [...state.review.children, { uuid }]
-        : [{ uuid }];
-    //   id = newChildren.length - 1;
+      const newChildren = state.review?.children ? [...state.review.children, { uuid }] : [{ uuid }];
+      //   id = newChildren.length - 1;
       id = uuid;
       return {
         review: {
@@ -89,7 +105,7 @@ export const useReviewFormStore = create<ReviewFormStore>((set) => ({
   updateChild: (id: string, updatedChild: Partial<NewReview>) => {
     set((state) => {
       const newChildren = state.review?.children?.map((child) =>
-        child.uuid === id ? { ...child, ...updatedChild } : child
+        child.uuid === id ? { ...child, ...updatedChild } : child,
       );
       return {
         review: {
