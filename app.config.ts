@@ -1,7 +1,6 @@
 import 'dotenv/config';
-import { Platform } from 'react-native';
 
-export default ({ config }) => {
+export default ({ config }: {config: any}) => {
   const currentVersionCode = config.android?.versionCode || 1;
   const envFile =
   process.env.APP_ENV === 'production'
@@ -84,9 +83,9 @@ export default ({ config }) => {
       eas: {
         projectId: '4951e295-3d7f-410d-af5e-89d1130d5640',
       },
-      googleClientId,
-      googleIOsClientId,
-      googleAndroidClientId,
+      googleClientId: process.env.googleClientId,
+      googleIOsClientId: process.env.googleIOsClientId,
+      googleAndroidClientId: process.env.googleAndroidClientId,
       googleSecret,
       bucketAccessEndpoint,
       GOOGLE_MAPS_API_KEY_IOS: process.env.GOOGLE_MAPS_API_KEY_IOS,
