@@ -20,8 +20,8 @@ export interface LoginResponse {
 }
 
 export interface OidcLoginPayload {
-  code: string;
-  codeVerifier?: string;
+  email: string;
+  accessToken: string;
   platform: string;
 }
 

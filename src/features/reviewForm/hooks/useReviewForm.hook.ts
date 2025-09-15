@@ -9,7 +9,7 @@ import { RootStackParamList } from '@/navigation/types';
 import { doSubmitReview } from '@/services/reviewsApi';
 // import { Platform } from 'react-native';
 
-export const useReviewForm = (user: any) => {
+export const useReviewForm = (user: any, token: any) => {
   console.log('useReviewForm.hook-> invoked with user: ', user);
   const {
     review,
@@ -118,7 +118,7 @@ export const useReviewForm = (user: any) => {
       delete child.uuid;
     });
 
-    const token = useAuthStore.getState().token;
+    // const token = useAuthStore.getState().token;
     console.log('useReviewForm.hook->handleSubmit(), token::   ', token);
     if(!token) {
       console.warn('No auth token, cannot submit review');

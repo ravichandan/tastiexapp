@@ -36,8 +36,9 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   };
 
   const user = useAuthStore((state) => state.user);
-  const { setTaste, setItem, setPresentation, setMedias, setDescription } = useReviewForm(user);
-  const { handleImageUpload, updateChild } = useReviewForm(user);
+  const token = useAuthStore((state) => state.token);
+  const { setTaste, setItem, setPresentation, setMedias, setDescription } = useReviewForm(user, token);
+  const { handleImageUpload, updateChild } = useReviewForm(user, token);
   const [errors, setErrors] = useState<{ [key: string]: string | string[] }>({});
 
   useEffect(() => {

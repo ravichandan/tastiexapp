@@ -17,6 +17,7 @@ import { RootStackParamList } from '@/navigation/types';
 
 const ReviewForm: React.FC = () => {
   const user = useAuthStore(state => state.user);
+  const token = useAuthStore(state => state.token);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const {
     review,
@@ -37,7 +38,7 @@ const ReviewForm: React.FC = () => {
     handleSubmit: handleSubmitHookCall,
     getPlacesByName,
     // initiateImageUpload
-  } = useReviewForm(user);
+  } = useReviewForm(user, token);
 
   useEffect(() => {
     resetForm();
