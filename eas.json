@@ -33,10 +33,7 @@
       "developmentClient": false,
       "distribution": "store",
       "env": {
-        "APP_ENV": "production",
-        "GOOGLE_MAPS_API_KEY_ANDROID": "AIzaSyCBxedfhhQZTrsyflt8oBXYsAAsO6HCIjo",
-        "GOOGLE_MAPS_API_KEY_IOS": "AIzaSyDOVlczZ1RztKwCKJkc1IWDQT65YzmgRyI",
-        "GOOGLE_MAPS_API_KEY_WEB": "AIzaSyDosbJvra6VSMMvWQZjHRlO-vG1v601Oic"
+        "APP_ENV": "production"
       }
     }
   },
