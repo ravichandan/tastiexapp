@@ -71,7 +71,6 @@ export default function DishDetailCard({ place }: { place: Place }) {
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.TASTE}: </SmoothText>
               <SmoothText>
-                {' '}
                 <SmoothText className='font-bold '>{placeItem?.ratingInfo?.taste}</SmoothText>
                 <SmoothText className="text-sm">/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
               </SmoothText>
@@ -79,7 +78,6 @@ export default function DishDetailCard({ place }: { place: Place }) {
             <View style={styles.dishRating}>
               <SmoothText>{TEXT_LABELS.PRESENTATION}: </SmoothText>
               <SmoothText>
-                {' '}
                 <SmoothText className='font-bold '>{placeItem?.ratingInfo?.presentation}</SmoothText>
                 <SmoothText className="text-sm">/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText>
               </SmoothText>
@@ -87,11 +85,10 @@ export default function DishDetailCard({ place }: { place: Place }) {
           </View>
         </View>
 
-        <View> <SmoothText>{placeItem?.description || place?.items?.at(0)?.description || 'NA'}</SmoothText></View>
-        <View> <SmoothText>Allergens: {placeItem?.allergens?.join(', ') || 'NA'}</SmoothText></View>
-        <View> <SmoothText>Calories: {`${placeItem?.calories?.count || 'NA'} ${placeItem?.calories?.unit || ''}`}</SmoothText></View>
-        <View> <TxButton label='Review this item' variant='dark' onPress={()=> navigation.navigate('NewReview', { placeId: place._id, placeItemId: placeItem?._id })}></TxButton></View>
-
+        <View><SmoothText>{placeItem?.description || place?.items?.at(0)?.description || 'NA'}</SmoothText></View>
+        <View><SmoothText>{`Allergens: ${placeItem?.allergens?.join(', ') || 'NA'}`}</SmoothText></View>
+        <View><SmoothText>{`Calories: ${placeItem?.calories?.count || 'NA'} ${placeItem?.calories?.unit || ''}`}</SmoothText></View>
+        <View><TxButton label='Review this item' variant='dark' onPress={()=> navigation.navigate('NewReview', { placeId: place._id, placeItemId: placeItem?._id })}></TxButton></View>
       </View>
     </View>
   );

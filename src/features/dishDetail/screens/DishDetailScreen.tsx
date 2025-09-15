@@ -109,7 +109,7 @@ export default function DishDetailScreen({ route }: Props) {
           placeHolder="Search"
         />
 
-        {filteredReviews?.length && (
+        {filteredReviews?.length > 0 && (
           <View className="mt-2">
             {/* <Text>filteredReviews[0]:- {JSON.stringify(filteredReviews[0])}</Text> */}
             <FlatList
