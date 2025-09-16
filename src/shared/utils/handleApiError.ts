@@ -1,8 +1,9 @@
 import { AxiosError } from 'axios';
+import { logger } from '@/shared/utils/logger';
 
 // src/shared/utils/handleApiError.ts
 export function handleApiError(error: unknown): string {
-  console.log('in handleApiError, error: ', error);
+  logger.debug('in handleApiError, error: ', error);
   if (error instanceof AxiosError) {
     console.error('Error in Axios: ', '' + error.config?.baseURL + error.config?.url);
     return 'Error: ' + error.config?.method + ' ' + error.config?.baseURL + error.config?.url + '. ' + error.message;

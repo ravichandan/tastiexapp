@@ -7,10 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
 import { doSubmitReview } from '@/services/reviewsApi';
+import { logger } from '@/shared/utils/logger';
 // import { Platform } from 'react-native';
 
 export const useReviewForm = (user: any, token: any) => {
-  console.log('useReviewForm.hook-> invoked with user: ', user);
+  logger.debug('useReviewForm.hook-> invoked with user: ', user);
   const {
     review,
     setDescription,
@@ -34,7 +35,7 @@ export const useReviewForm = (user: any, token: any) => {
   const getPlacesByName = async (query: string) => {
     try {
       const response = await doGetPlacesByName(query);
-      console.log('Places fetched successfully:', response.data?.places?.length);
+      logger.debug('Places fetched successfully:', response.data?.places?.length);
       return (
         response.data.places.map((place: any) => ({
           ...place,
@@ -48,8 +49,8 @@ export const useReviewForm = (user: any, token: any) => {
   };
 
   // const handleImageUpload = (childUuid?: string, file?: any) => {
-  //   // console.log('initiateImageUpload called');
-  //   console.log('useReviewForm.hook->handleImageUpload(), user::   ', user);
+  //   // logger.debug('initiateImageUpload called');
+  //   logger.debug('useReviewForm.hook->handleImageUpload(), user::   ', user);
   //   const customerId = user?.id;
   //   if (!customerId) {
   //     console.warn('No user logged in, cannot upload media');
@@ -58,7 +59,7 @@ export const useReviewForm = (user: any, token: any) => {
   //   }
   // };
   // const user = useAuthStore((state) => {
-  //   console.log('useReviewForm.hook->handleImageUpload(), state in useAuthStore: ', state);
+  //   logger.debug('useReviewForm.hook->handleImageUpload(), state in useAuthStore: ', state);
   //   return state.user;
   // });
   const handleImageUpload = async (childUuid?: string, file?: any): Promise<Media | null> => {
@@ -66,11 +67,11 @@ export const useReviewForm = (user: any, token: any) => {
     // reader.onload = (event) => {
     //   if (event.target?.result) {
     //     // updateFoodItem(id, 'image', event.target.result as string);
-    //     console.log('Handle image upload for item, event.target?.result: ', event.target?.result);
+    //     logger.debug('Handle image upload for item, event.target?.result: ', event.target?.result);
     //   }
     // };
     // reader.readAsDataURL(file);
-    console.log('useReviewForm.hook->handleImageUpload(), user::   ', user);
+    logger.debug('useReviewForm.hook->handleImageUpload(), user::   ', user);
     const customerId = user?.id;
     if (!customerId) {
       console.warn('No user logged in, cannot upload media');
@@ -78,12 +79,12 @@ export const useReviewForm = (user: any, token: any) => {
       // return null;
     }
 
-    console.log('in ReviewForm->handleImageUpload, childUuid:', childUuid, 'file:', file);
+    logger.debug('in ReviewForm->handleImageUpload, childUuid:', childUuid, 'file:', file);
     
     const newMedia = {} as Media;
     return await uploadMedia(customerId, file)
       .then((data) => {
-        console.log('Media uploaded successfully, data:', data);
+        logger.debug('Media uploaded successfully, data:', data);
         if (data.at(0)) {
           newMedia.type = file.type || 'image/jpeg';
           newMedia.url = data.at(0).url;
@@ -112,21 +113,21 @@ export const useReviewForm = (user: any, token: any) => {
       place: review.place?._id,
       customerInfo: {id: user?.id},
     } as any;
-    console.log('Submitted review details: ',reviewToSubmit );
+    logger.debug('Submitted review details: ',reviewToSubmit );
     delete reviewToSubmit.uuid;
     reviewToSubmit?.children?.forEach((child: any) => {
       delete child.uuid;
     });
 
     // const token = useAuthStore.getState().token;
-    console.log('useReviewForm.hook->handleSubmit(), token::   ', token);
+    logger.debug('useReviewForm.hook->handleSubmit(), token::   ', token);
     if(!token) {
       console.warn('No auth token, cannot submit review');
       // navigation.navigate('Login');
       return;
     }
     await doSubmitReview(user?.id, token, reviewToSubmit).then((response) => {
-      console.log('Review submitted successfully:', response.data);
+      logger.debug('Review submitted successfully:', response.data);
       navigation.navigate('Home');
     }).catch((error) => {
       console.error('Error submitting review:', error);
@@ -140,7 +141,7 @@ export const useReviewForm = (user: any, token: any) => {
       resetForm();
     } else {
       // Implement place search logic here, possibly calling an API
-      console.log('useReviewForm.hook -> setPlace: ', place._id);
+      logger.debug('useReviewForm.hook -> setPlace: ', place._id);
       doGetPlaceDetail(place._id)
         .then((response) => {
           place = { ...place!, items: [...response.data.items] };

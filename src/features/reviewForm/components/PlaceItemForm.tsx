@@ -10,6 +10,7 @@ import RatingSlider from '@/shared/components/RatingSlider';
 import { useReviewForm } from '../hooks/useReviewForm.hook';
 import { useAuthStore } from '@/state';
 import SmoothText from '@/shared/components/SmoothText';
+import { logger } from '@/shared/utils/logger';
 
 interface PlaceItemFormProps {
   review: NewReview;
@@ -31,7 +32,7 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   showRemoveButton,
 }) => {
   const handleOnChange = (query: string) => {
-    console.log('in PlaceItemForm->handleOnChange, Query:', query);
+    logger.debug('in PlaceItemForm->handleOnChange, Query:', query);
     // TODO: update Zustand state or navigate
   };
 
@@ -42,29 +43,29 @@ const PlaceItemForm: React.FC<PlaceItemFormProps> = ({
   const [errors, setErrors] = useState<{ [key: string]: string | string[] }>({});
 
   useEffect(() => {
-    console.log('in PlaceItemForm rendered');
+    logger.debug('in PlaceItemForm rendered');
   }, []);
   useEffect(() => {
-    console.log('in PlaceItemForm rendered, review.medias', JSON.stringify(review.medias));
+    logger.debug('in PlaceItemForm rendered, review.medias', JSON.stringify(review.medias));
   }, [review.medias]);
   // const item: any =]
   const handleItemSelect = (item: any) => {
-    console.log('in ReviewForm->handleItemSelect, Selected item:', item);
+    logger.debug('in ReviewForm->handleItemSelect, Selected item:', item);
     setItem(review, item._id);
   };
 
   const onHandleImageUpload = async (review: NewReview, file: any) => {
-    console.log('in PlaceItemForm->onHandleImageUpload, childUuid:', review.uuid, 'file:', file);
+    logger.debug('in PlaceItemForm->onHandleImageUpload, childUuid:', review.uuid, 'file:', file);
 
     // setMedias(childUuid, [file]);
     try {
       const response = await handleImageUpload(review.uuid, file);
-      console.log('in PlaceItemForm -> onHandleImageUpload, response:', response);
-      console.log('in PlaceItemForm -> onHandleImageUpload, before, review.medias:', JSON.stringify(review.medias));
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, response:', response);
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, before, review.medias:', JSON.stringify(review.medias));
       if (response) {
         review.medias = review.medias ? [...review.medias, response] : [response];
       }
-      console.log('in PlaceItemForm -> onHandleImageUpload, after, review.medias:', JSON.stringify(review.medias));
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, after, review.medias:', JSON.stringify(review.medias));
       updateChild(review.uuid!, review);
     } catch (error: any) {
 

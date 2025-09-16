@@ -7,6 +7,7 @@ import { CUISINES, DIETARIES } from '@/shared/config/menuConfig';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
 import { SuburbType } from '@/types/Types';
 import { doGetItems, doGetPlaces } from '@/services/searchApi';
+import { logger } from '@/shared/utils/logger';
 
 /**
  * Hook responsibilities:
@@ -47,7 +48,7 @@ export const useSearch = () => {
   const [optionsError, setOptionsError] = useState<string | null>(null);
 
   const fetchFilterOptions = useCallback(async () => {
-    console.log('In useSearch.ts, Fetching filter options...');
+    logger.debug('In useSearch.ts, Fetching filter options...');
     setOptionsLoading(true);
     setOptionsError(null);
     try {
@@ -122,7 +123,7 @@ export const useSearch = () => {
 
         // call items endpoint
         const { data:itemsData } = await doGetItems(currentSearchKey, filters);
-        console.log('Items data:', itemsData.items?.length);
+        logger.debug('Items data:', itemsData.items?.length);
         // save it into search store
         setItems({pageNumber: itemsData.page, pageSize: itemsData.pageSize, results: itemsData.items, total: itemsData.size});
 
@@ -166,13 +167,13 @@ export const useSearch = () => {
             longitude: currentLocation.lng,
           },
         });
-        console.log('Suburb name:', data);
+        logger.debug('Suburb name:', data);
         if (data?.name) {
           setLocationName(data.name);
         }
         // const results = data?.places ?? data; // adapt to your API
-        // console.log('Search results:', JSON.stringify(data.places?.length));
-        // console.log('Search results:', Object.keys(data));
+        // logger.debug('Search results:', JSON.stringify(data.places?.length));
+        // logger.debug('Search results:', Object.keys(data));
         // Save snapshot to search store (so results + filters + key persist)
         // setSearchData({
         //   searchKey: currentSearchKey,

@@ -2,6 +2,7 @@
 import { useCallback, useState } from 'react';
 import { useFiltersStore } from '@/state/useFiltersStore';
 import { fetchSuburbs } from '@/services/suburbsApi';
+import { logger } from '@/shared/utils/logger';
 
 /**
  * Hook responsibilities:
@@ -19,7 +20,7 @@ export const eagerFetch = () => {
   const [optionsError, setOptionsError] = useState<string | null>(null);
 
   const fetchAvailableSuburbs = useCallback(async () => {
-    console.log('In eagerFetch.hook.ts, Fetching suburbs options...');
+    logger.debug('In eagerFetch.hook.ts, Fetching suburbs options...');
     setOptionsLoading(true);
     setOptionsError(null);
     try {

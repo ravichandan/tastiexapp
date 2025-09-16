@@ -5,6 +5,7 @@ import { useLogin } from '../hooks/useLogin';
 import { useGoogleLogin } from '@/features/auth/hooks/useGoogleLogin';
 import OAuthButton from '@/shared/components/OAuthButton';
 import { useNavigation } from '@react-navigation/native';
+import SmoothText from '@/shared/components/SmoothText';
 
 export default function LoginForm() {
   const navigation = useNavigation();

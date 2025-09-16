@@ -31,6 +31,7 @@ import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { logger } from '@/shared/utils/logger';
 
 // import AppLoading from "expo-app-loading"; // optional, for splash while loading
 
@@ -43,7 +44,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 // wdyr(React);
 
 export default function App() {
-  console.log('in app.tsx');
+  logger.debug('in app.tsx');
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 

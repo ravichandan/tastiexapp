@@ -18,6 +18,7 @@ import PlaceDetailCard from '../components/PlaceDetailCard';
 import PlaceItem from '../components/PlaceItem';
 import { theme } from '@/shared/theme';
 import PlaceReviewItem from '../components/PlaceReviewItem';
+import { logger } from '@/shared/utils/logger';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PlaceDetail'>;
 
@@ -25,8 +26,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'PlaceDetail'>;
 
 export default function PlaceDetailScreen({ route }: Props) {
   const { placeId } = route.params;
-  console.log('in PlaceDetailScreen');
-  console.log(`placeID ${route.params.placeId}`);
+  logger.debug('in PlaceDetailScreen');
+  logger.debug(`placeID ${route.params.placeId}`);
 
   // @ts-ignore
   PlaceDetailScreen.whyDidYouRender = true;
@@ -112,7 +113,7 @@ export default function PlaceDetailScreen({ route }: Props) {
     }
   };
 
-  // console.log('Dish detail data, reviews:', filteredReviews);
+  // logger.debug('Dish detail data, reviews:', filteredReviews);
 
   //   const handleSearch = () => {
   //     const trimmed = searchKey.trim();
@@ -159,24 +160,12 @@ export default function PlaceDetailScreen({ route }: Props) {
     ({ item }: { item: Review }) => <PlaceReviewItem review={item} onFeedback={feedbackReview} />,
     [feedbackReview],
   );
-      // <View style={{ flex: 1 }}>
-
-      // {/* <FlashList
-      //   data={items}
-      //   keyExtractor={(item: Item) => item._id}
-      //   renderItem={renderMenuItem}
-      //   // removeClippedSubviews={true}
-      //   // scrollEnabled={false}
-      // /> */}
-          // </View>
 
   if (placeLoading || reviewsLoading) {
     return <ActivityIndicator size="large" style={{ marginTop: 40 }} />;
   }
 
-  // console.log('Place detail data:', place);
   return (
-    // <>
     <ScrollView className="flex-1 m-1">
       <PlaceDetailCard place={place} onShowMenu={(flag: boolean) => setShowMenu(flag)} />
 
@@ -214,117 +203,7 @@ export default function PlaceDetailScreen({ route }: Props) {
           />
         </View>
       )}
-      {/* // {/* {place.items?.length > 0 && ( */}
-        {/* <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{ width: layout.width }}
-      renderTabBar={(props) => (
-        <TabBar
-          {...props}
-          indicatorStyle={{ backgroundColor: "black" }}
-          style={{ backgroundColor: "white" }}
-          
-        />
-      )}
-      style={{ flex: 1 }} // 👈 important: give TabView full height
-    /> */}
-      //  {/* )}  */}
-
-      // {/* />} */}
-      // {/* <Text>{JSON.stringify(reviews)}</Text>
-    // <Text>{JSON.stringify(dishData.places.map((place: Place) => {return {id: place._id, name: place.placeName, items: place.items.map(i=> {return {id: i._id, name: i.name}})}}))}</Text> */}
-      // {/* <PlaceDetailCard place={place} /> */}
-
-      // {/* <View className="h-full flex-1 flex-grow hidden">
-    //     <TabsProvider defaultIndex={tabIndex} onChangeIndex={setTabIndex}>
-    //       <Tabs
-    //         // simple appearance options:
-    //         uppercase={false}
-    //         showTextLabel={true}
-    //         // style={styles.tabs}
-
-    //         tabHeaderStyle={{ height: 0, opacity: 0 }} // Hide the tab bar
-    //         // set primary color via theme prop if needed:
-    //         theme={{ colors: { primary: '#00bcd4' } }}>
-    //         <TabScreen label="Menu">
-    //           <View style={styles.tabContent}>
-    //             {place.items?.length > 0 ? (
-    //               <FlashList
-    //                 data={place.items}
-    //                 keyExtractor={(item: Item) => item._id}
-    //                 renderItem={renderMenuItem}
-    //                 removeClippedSubviews={true}
-    //                 scrollEnabled={false}
-    //               />
-    //             ) : (
-    //               <SmoothText style={styles.emptyText}>No menu found</SmoothText>
-    //             )}
-    //           </View>
-    //         </TabScreen>
-
-    //         <TabScreen label="Reviews">
-    //           <View style={styles.tabContent}>
-    //             {reviewsLoading ? (
-    //               <ActivityIndicator style={{ marginTop: 24 }} />
-    //             ) : place.reviews?.length > 0 ? (
-    //               <FlashList
-    //                 data={place.reviews}
-    //                 keyExtractor={(item: Review) => item._id}
-    //                 renderItem={({ item }) => (
-    //                   <PlaceReviewItem review={item} onFeedback={(args) => feedbackReview(args)} />
-    //                 )}
-    //                 contentContainerStyle={{ paddingBottom: 24 }}
-    //               />
-    //             ) : (
-    //               <SmoothText style={styles.emptyText}>No reviews yet</SmoothText>
-    //             )}
-    //           </View>
-    //         </TabScreen>
-    //       </Tabs>
-    //     </TabsProvider> */}
-    //   {/* </View> */}
-    //   {/* Reviews block */}
-    //   {/* <View className="m-1 hidden todo">
-    //     <SmoothText className="text-2xl font-bold m-1">Reviews</SmoothText>
-    //     <SearchBar
-    //       onToggleFilters={() => {}}
-    //       value={searchKey}
-    //       onChange={handleChange}
-    //       onSearch={() => {}}
-    //       onClear={handleClear}
-    //       placeHolder="Search"
-    //     />
-
-    //     {filteredReviews?.length && (
-    //       <View className="mt-2">
-    //         <FlatList
-    //           data={filteredReviews}
-    //           extraData={filteredReviews}
-    //           keyExtractor={(item) => item?._id}
-    //           scrollEnabled={false}
-    //           //   ListHeaderComponent={() => null}
-    //           //   renderItem={({ item }) => <Text>   fds </Text>}
-    //           //   renderItem={renderReview}
-    //           renderItem={({ item }) => (<ReviewItem review={item} onFeedback={(args) => feedbackReview(args)} />)}
-    //           // ✅ Infinite scroll
-    //           onEndReached={() => {
-    //             if (hasNextPage) fetchNextPage();
-    //           }}
-    //           onEndReachedThreshold={0.5}
-    //           ListEmptyComponent={<Text className="text-gray-500 mt-3">No results</Text>}
-    //           ListFooterComponent={isFetchingNextPage ? <ActivityIndicator style={{ margin: 16 }} /> : null}
-    //           // ✅ Pull-to-refresh: handled by hook (auto resets pages)
-    //           refreshing={isRefetching}
-    //           onRefresh={refetch}
-    //           contentContainerStyle={{ paddingBottom: 24 }}
-    //         />
-    //       </View>
-    //     )}
-    //   </View> */}
     </ScrollView>
-    // </>
   );
 }
 

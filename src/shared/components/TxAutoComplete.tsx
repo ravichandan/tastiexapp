@@ -37,8 +37,8 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
   }, [query, onQueryChange]);
 
   // React.useEffect(() => {
-  //   // console.log('AutoComplete data:', data);
-  //   // console.log('AutoComplete filtered:', filtered);
+  //   // logger.debug('AutoComplete data:', data);
+  //   // logger.debug('AutoComplete filtered:', filtered);
   // }, [data, filtered]);
 
   // Only measure input after showList is set to true, and after layout is complete
@@ -52,7 +52,7 @@ export default function TxAutoComplete({ data, selectedValue, onSelect, placehol
   }, [showList]);
 
   const measureInput = () => {
-    // console.log('Measuring input...');
+    // logger.debug('Measuring input...');
     inputRef.current?.measureInWindow((x: number, y: number, width: number, height: number) => {
       setDropdownPos({ x, y, width, height });
     });

@@ -14,7 +14,7 @@ export default function SearchItemCard({ item }: { item: Item }) {
   const placeItem = item.places?.at(0)?.placeItem;
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   
-  // console.log('item in SearchItemCard', item.places?.at(0));
+  // logger.debug('item in SearchItemCard', item.places?.at(0));
   return (
     <TouchableOpacity style={styles.card} key={item?._id} onPress={() => navigation.navigate('DishDetail', { placeId: item.places!.at(0)!._id, dishId: item?._id })}>
       <View style={styles.header}>

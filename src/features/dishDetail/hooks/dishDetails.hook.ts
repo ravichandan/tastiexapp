@@ -2,6 +2,7 @@
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import {  doGetDishDetail, doGetDishDetailReviews } from "@/services/itemsApi";
 import { doFeedbackReview, doFetchReview } from "@/services/reviewsApi";
+import { logger } from '@/shared/utils/logger';
 
 export function useDishReviews(params: {dishId: string, placeId: string}) {
   const queryClient = useQueryClient();
@@ -9,9 +10,9 @@ export function useDishReviews(params: {dishId: string, placeId: string}) {
   const query = useInfiniteQuery({
     queryKey: ["dishReviews", params.placeId, params.dishId],
     queryFn: async ({ pageParam = 1 }) => {
-      console.log('dishDetails.hook, Fetching dish reviews for', params, 'page', pageParam);
+      logger.debug('dishDetails.hook, Fetching dish reviews for', params, 'page', pageParam);
       const res = await doGetDishDetailReviews(params.placeId, params.dishId, { pageNum: pageParam, pageSize: 7 });
-      console.log('Dish reviews fetched:', res.data);
+      logger.debug('Dish reviews fetched:', res.data);
       return res.data;
     },
     initialPageParam: 1,

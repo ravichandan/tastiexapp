@@ -6,6 +6,7 @@ import { useAuthStore } from '@/state/useAuthStore';
 import * as SecureStore from 'expo-secure-store';
 import { Linking, Platform } from 'react-native';
 import { oidcLoginUser } from '@/features/auth/api/authApi';
+import { logger } from '@/shared/utils/logger';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -15,8 +16,8 @@ const discovery = {
   userInfoEndpoint: 'https://www.googleapis.com/oauth2/v3/userinfo',
 };
 
-console.log('Platform.OS:: ', Platform.OS);
-console.log('Constants.expoConfig?.extra?.apiBaseUrl: ', Constants.expoConfig?.extra?.apiBaseUrl);
+logger.debug('Platform.OS:: ', Platform.OS);
+logger.debug('Constants.expoConfig?.extra?.apiBaseUrl: ', Constants.expoConfig?.extra?.apiBaseUrl);
 const clientId =
   Platform.OS === 'ios'
     ? Constants.expoConfig?.extra?.googleIOsClientId
@@ -94,14 +95,14 @@ export const useGoogleLogin = (onSuccess?: () => void) => {
   // Main login flow
   const login = async () => {
     const result = await request[2](); // request[2] is the `promptAsync` function
-    console.log('OAuth result:', result);
+    logger.debug('OAuth result:', result);
 
     if (result?.type === 'success') {
       const code = result.params.code;
       const codeVerifier = request[0]?.codeVerifier;
       const platform = Platform.OS;
       const loginUrl = `${Constants.expoConfig?.extra?.apiBaseUrl}/customers/code-login`;
-      console.log(`code: ${code}, codeVerifier: ${codeVerifier}, platform: ${platform}, loginUrl: ${loginUrl}`);
+      logger.debug(`code: ${code}, codeVerifier: ${codeVerifier}, platform: ${platform}, loginUrl: ${loginUrl}`);
 
       // Exchange code for tokens directly with Google
       
@@ -118,7 +119,7 @@ export const useGoogleLogin = (onSuccess?: () => void) => {
         body: params.toString(),
       });
       const tokenData = await tokenResponse.json();
-      console.log('Google token response:', tokenData);
+      logger.debug('Google token response:', tokenData);
 
       accessToken = tokenData.access_token;
       if (tokenData.refresh_token) {
@@ -132,15 +133,15 @@ export const useGoogleLogin = (onSuccess?: () => void) => {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
         userInfo = await userInfoResponse.json();
-        console.log('Google user info:', userInfo);
+        logger.debug('Google user info:', userInfo);
       }
 
-      console.log('Exchanging code for app tokens at backend..., accessToken: ', accessToken);
+      logger.debug('Exchanging code for app tokens at backend..., accessToken: ', accessToken);
 
       // Now lets create session in backend
       const loginResponse = await oidcLoginUser({
         email: userInfo.email,
-        accessToken,
+        accessToken: accessToken ?? '',
         platform,
       });
       setUser(loginResponse.user, accessToken!);

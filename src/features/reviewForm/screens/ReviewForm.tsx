@@ -14,6 +14,7 @@ import ImageUpload from '../components/ImageUpload';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
+import { logger } from '@/shared/utils/logger';
 
 const ReviewForm: React.FC = () => {
   const user = useAuthStore(state => state.user);
@@ -114,7 +115,7 @@ const ReviewForm: React.FC = () => {
 
   // This onSubmit is for react-hook-form, and will sync values to store, then call the original handleSubmit from useReviewForm
   const onSubmit = async (data: any) => {
-    console.log('onSubmit called with data:', data);
+    logger.debug('onSubmit called with data:', data);
     setAmbience(data.ambience);
     setService(data.service);
     setPlace(data.placeName);
@@ -133,17 +134,17 @@ const ReviewForm: React.FC = () => {
   };
 
   const onHandleImageUpload = async (review: NewReview, file: any) => {
-    console.log('in PlaceItemForm->onHandleImageUpload, childUuid:', review.uuid, 'file:', file);
+    logger.debug('in PlaceItemForm->onHandleImageUpload, childUuid:', review.uuid, 'file:', file);
 
     // setMedias(childUuid, [file]);
     try {
       const response = await handleImageUpload(review.uuid, file);
-      console.log('in PlaceItemForm -> onHandleImageUpload, response:', response);
-      console.log('in PlaceItemForm -> onHandleImageUpload, before, review.medias:', JSON.stringify(review.medias));
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, response:', response);
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, before, review.medias:', JSON.stringify(review.medias));
       if (response) {
         review.medias = review.medias ? [...review.medias, response] : [response];
       }
-      console.log('in PlaceItemForm -> onHandleImageUpload, after, review.medias:', JSON.stringify(review.medias));
+      logger.debug('in PlaceItemForm -> onHandleImageUpload, after, review.medias:', JSON.stringify(review.medias));
       updateChild(review.uuid!, review);
     } catch (error: any) {
 

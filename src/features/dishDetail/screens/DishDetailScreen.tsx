@@ -13,13 +13,14 @@ import SearchBar from '@/features/search/screens/SearchBar';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/state/useAuthStore';
 import { useNavigation } from '@react-navigation/native';
+import { logger } from '@/shared/utils/logger';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DishDetail'>;
 
 export default function DishDetailScreen({ route }: Props) {
   const { placeId, dishId } = route.params;
-  console.log('in DishDetailScreen');
-  console.log(`placeID ${route.params.placeId}, itemId: ${route.params.dishId}`);
+  logger.debug('in DishDetailScreen');
+  logger.debug(`placeID ${route.params.placeId}, itemId: ${route.params.dishId}`);
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [searchKey, setSearchKey] = useState('');
@@ -39,7 +40,7 @@ export default function DishDetailScreen({ route }: Props) {
     isRefetching,
   } = useDishReviews({ placeId, dishId });
 
-  console.log('Dish detail data, reviewsData:', reviewsData);
+  logger.debug('Dish detail data, reviewsData:', reviewsData);
   useEffect(() => {
     if (!reviewsLoading && reviewsData) {
       // Safe to use reviewsData here
@@ -50,7 +51,7 @@ export default function DishDetailScreen({ route }: Props) {
     }
   }, [reviewsLoading, reviewsData]);
 
-  console.log('Dish detail data, reviews:', filteredReviews);
+  logger.debug('Dish detail data, reviews:', filteredReviews);
 
   //   const handleSearch = () => {
   //     const trimmed = searchKey.trim();

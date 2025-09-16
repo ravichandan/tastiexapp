@@ -32,7 +32,6 @@ export const LikeDislikeButtons = ({
   }, [vote]);
 
   const handleLike = () => {
-    console.log(`User voted ${userVote === "like" ? "unlike" : "like"} on review`);
     if (userVote === "like") {
       setLikes((prev) => prev - 1);
       setUserVote(null);

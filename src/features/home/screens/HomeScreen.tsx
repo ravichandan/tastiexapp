@@ -18,6 +18,7 @@ import { theme } from "@/shared/theme";
 import SmoothText from '@/shared/components/SmoothText';
 import SearchToolbar from '@/features/search/SearchToolbar';
 import PopularsScreen from './PopularsScreen';
+import { logger } from '@/shared/utils/logger';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -38,7 +39,7 @@ export default function HomeScreen({ }: Props) {
       performSearch(searchKey);
     }
   }, []);
-  console.log('in home screen');
+  logger.debug('in home screen');
 
   useEffect(() => {
     fetchFilterOptions();
@@ -68,7 +69,7 @@ export default function HomeScreen({ }: Props) {
   };
 
   const onSelectCuisine = (cuisine: CuisineType | null): void => {
-    console.log('Selected cuisine:', cuisine);
+    logger.debug('Selected cuisine:', cuisine);
     if (cuisine) {
       setSelectedCuisines([cuisine]);
     } else {
@@ -84,7 +85,7 @@ export default function HomeScreen({ }: Props) {
   }
 
   const onSelectDietary = (dietary: DietaryType | null): void => {
-    console.log('Selected dietary:', dietary);
+    logger.debug('Selected dietary:', dietary);
     if (dietary) {
       setSelectedDietary([dietary]);
     } else {
@@ -101,7 +102,7 @@ export default function HomeScreen({ }: Props) {
 
     const handleShare = () => {
     // Use Share API or your flow
-    console.log("Share:", { location, radius });
+    logger.debug("Share:", { location, radius });
   };
 
   return (

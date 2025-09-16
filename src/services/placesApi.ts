@@ -1,5 +1,6 @@
 import { axiosInstance as axios } from '@/services/axiosInstance';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
+import { logger } from '@/shared/utils/logger';
 
 export const doGetPopularPlaces = async (filters: any) => {
   const popularPlacesEndpoint = API_ENDPOINTS.POPULAR_PLACES;
@@ -17,7 +18,7 @@ export const doGetPopularPlaces = async (filters: any) => {
 };
 
 export const doGetPlaceDetail = async (placeId: string, filters?: any) => {
-  console.log('in placesApi.ts -> doGetPlaceDetail()');
+  logger.debug('in placesApi.ts -> doGetPlaceDetail()');
   const placeDetailEndpoint = API_ENDPOINTS.PLACE_DETAIL.replace('{placeId}', placeId);
   return axios.get(placeDetailEndpoint, {
     params: {
@@ -38,7 +39,7 @@ export const doGetPlaceDetailReviews = async (placeId: string, filters?: { pageN
 };
 
 export const doGetPlacesByName = async (query: string) => {
-  console.log('in placesApi.ts -> doGetPlacesByName()');
+  logger.debug('in placesApi.ts -> doGetPlacesByName()');
   const placesByNameEndpoint = API_ENDPOINTS.PLACES_BY_NAME;
   return axios.get(placesByNameEndpoint, {
     params: {

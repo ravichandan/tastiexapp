@@ -1,7 +1,7 @@
 // src/state/useAuthStore.ts
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
-
+import { logger } from '@/shared/utils/logger';
 import * as SecureStore from 'expo-secure-store';
 
 const TOKEN_KEY = 'auth_token';
@@ -58,13 +58,13 @@ export const useAuthStore = create<AuthState>()(
 useAuthStore.subscribe(
   (state) => state.user,
   (user: any) => {
-    console.log('[Auth] User changed:', user);
+    logger.debug('[Auth] User changed:', user);
   },
 );
 
 useAuthStore.subscribe(
   (state) => state,
   (state: any) => {
-    console.log('[Auth] state changed:', state);
+    logger.debug('[Auth] state changed:', state);
   },
 );

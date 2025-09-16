@@ -1,6 +1,7 @@
 // services/places.ts
 import Constants from "expo-constants";
 import { Platform } from "react-native";
+import { logger } from '@/shared/utils/logger';
 
 let API_KEY: string;
 
@@ -25,7 +26,7 @@ export interface PlaceDetails {
 }
 
 const BASE = "https://maps.googleapis.com/maps/api";
-console.log("Google Maps API Key:", API_KEY);
+logger.debug("Google Maps API Key:", API_KEY);
 
 export async function fetchAutocomplete(
   input: string,
@@ -45,7 +46,7 @@ export async function fetchAutocomplete(
 
 
   const res = await fetch(`${BASE}/place/autocomplete/json?${params.toString()}`);
-  console.log("fetchAutocomplete response:", res);
+  logger.debug("fetchAutocomplete response:", res);
   const json = await res.json();
   if (json.status !== "OK") return [];
   return json.predictions.map((p: any) => ({

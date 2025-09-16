@@ -17,6 +17,7 @@ import { eagerFetch } from './hooks/eagerFetch.hook';
 import DishDetailScreen from '@/features/dishDetail/screens/DishDetailScreen';
 import PlaceDetailScreen from '@/features/placeDetail/screens/PlaceDetailScreen';
 import ReviewForm from '@/features/reviewForm/screens/ReviewForm';
+import { logger } from '@/shared/utils/logger';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,7 +33,7 @@ export default function AppLayout() {
   const { fetchAvailableSuburbs } = eagerFetch();
 
   const openMenu = useOverlayMenuStore((state) => state.openMenu);
-  console.log('in app layout');
+  logger.debug('in app layout');
 
   const loadAvailableSuburbs = async () => {
     await fetchAvailableSuburbs();
@@ -40,7 +41,7 @@ export default function AppLayout() {
   
   useEffect(() => {
     loadAvailableSuburbs().then(() => {
-      console.log('Available suburbs loaded');
+      logger.debug('Available suburbs loaded');
     }).catch((error) => {
       console.error('Error loading available suburbs:', error);
     });

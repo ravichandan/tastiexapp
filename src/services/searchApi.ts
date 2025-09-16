@@ -41,7 +41,7 @@ export const doGetItems = async (searchKey: string, filters: any) => {
   });
 };
 // const res = await fetch(`${BASE}/place/autocomplete/json?${params.toString()}`);
-//   console.log("fetchAutocomplete response:", res);
+//   logger.debug("fetchAutocomplete response:", res);
 //   const json = await res.json();
 //   if (json.status !== "OK") return [];
 //   return json.predictions.map((p: any) => ({

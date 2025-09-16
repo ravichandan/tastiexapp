@@ -10,7 +10,7 @@ export function useLogin(onSuccess?: () => void) {
   const login = useAuthStore((s) => s.login);
 
   const handleLogin = async (payload: LoginPayload) => {
-    console.log('in handleLoging');
+    logger.debug('in handleLoging');
     setLoading(true);
     setError(null);
     try {

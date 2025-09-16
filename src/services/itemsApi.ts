@@ -1,6 +1,6 @@
 import { axiosInstance as axios } from '@/services/axiosInstance';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
-
+import { logger } from '@/shared/utils/logger';
 
 export const doGetPopularItems = async (filters: any) => {
   const popularItemsEndpoint = API_ENDPOINTS.POPULAR_ITEMS;
@@ -20,7 +20,7 @@ export const doGetPopularItems = async (filters: any) => {
 
 
 export const doGetDishDetail = async (placeId: string, dishId: string, filters?: any) => {
-  console.log('in itemApi.ts -> doGetDishDetail()');
+  logger.debug('in itemApi.ts -> doGetDishDetail()');
   const placeItemDetailEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL.replace('{placeId}', placeId).replace('{itemId}', dishId);
   return axios.get(placeItemDetailEndpoint, {
     params: {

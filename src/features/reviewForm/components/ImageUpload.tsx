@@ -25,12 +25,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageKey, onImageUpload }) =>
         {
           text: 'Camera',
           onPress: () => {
-            // console.log('Before Launching camera... initiateImageUpload()');
+            // logger.debug('Before Launching camera... initiateImageUpload()');
             // initiateImageUpload();
             launchCamera({ mediaType: 'photo', quality: 0.7 }, (response: any) => {
-              // console.log('Camera response: ', response.assets.length);
+              // logger.debug('Camera response: ', response.assets.length);
 
-            // console.log('After Fetching camera response... initiateImageUpload()');
+            // logger.debug('After Fetching camera response... initiateImageUpload()');
             // initiateImageUpload();
               if (response.assets && response.assets.length > 0) {
                 onImageUpload(response.assets[0]);

@@ -1,7 +1,7 @@
 import { axiosInstance as axios } from '@/services/axiosInstance';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
 import { Platform } from 'react-native';
-
+import { logger } from '@/shared/utils/logger';
 
 export const uploadMedia = async (customerId: string, file: any) => {
   if (!file || !file.uri) {
@@ -27,7 +27,7 @@ export const uploadMedia = async (customerId: string, file: any) => {
         });
         // });
         // const result = await response.json();
-        console.log('Upload result:', response);
+        logger.debug('Upload result:', response);
         return response.data;
         // Optionally update state with result
       } catch (err: any) {
@@ -40,7 +40,7 @@ export const uploadMedia = async (customerId: string, file: any) => {
 
 
 // export const doGetDishDetail = async (placeId: string, dishId: string, filters?: any) => {
-//   console.log('in itemApi.ts -> doGetDishDetail()');
+//   logger.debug('in itemApi.ts -> doGetDishDetail()');
 //   const placeItemDetailEndpoint = API_ENDPOINTS.PLACE_ITEM_DETAIL.replace('{placeId}', placeId).replace('{itemId}', dishId);
 //   return axios.get(placeItemDetailEndpoint, {
 //     params: {

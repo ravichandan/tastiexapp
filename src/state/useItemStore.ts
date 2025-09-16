@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
+import { logger } from '@/shared/utils/logger';
 
 interface ItemState {
   selectedCuisine: string | null;
@@ -22,6 +23,6 @@ export const useItemStore = create<ItemState>()(
 useItemStore.subscribe(
   (state) => state.searchTerm,
   (searchTerm) => {
-    console.log('searchTerm changed:', searchTerm);
+    logger.debug('searchTerm changed:', searchTerm);
   },
 );

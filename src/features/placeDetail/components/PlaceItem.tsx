@@ -15,7 +15,7 @@ export default PlaceItem;
 
 function _PlaceItem({item, onFeedback }: { item: Item, onFeedback: (params: {reviewId: string, action: string}) => void }) {
   const user = useAuthStore((state) => state.user);
-  // console.log('item::: ', item);
+  // logger.debug('item::: ', item);
   return ( item && 
     <View className=" my-2  flex-row border border-dashed border-gray-300 rounded-lg gap-2">
 
