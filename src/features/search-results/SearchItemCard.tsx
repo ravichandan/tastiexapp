@@ -25,10 +25,6 @@ export default function SearchItemCard({ item }: { item: Item }) {
             <SmoothText className="capitalize" style={styles.locationText}>{item.places?.at(0)?.address?.suburb}</SmoothText>
           </View>
         </View>
-        {/* <View>
-          <SmoothText style={styles.rating}>Ambience: {item.places?.at(0)?.ratingInfo?.ambience}</SmoothText>
-          <SmoothText style={styles.rating}>Service: {item.ratingInfo?.service}</SmoothText>
-        </View> */}
       </View>
 
       {placeItem && (
@@ -45,17 +41,11 @@ export default function SearchItemCard({ item }: { item: Item }) {
               <View style={{ flexDirection: 'column', width: 200 }}>
                 <View style={styles.dishRating}>
                   <SmoothText>Taste: </SmoothText>
-                  <SmoothText>
-                    {' '}
-                    {placeItem?.ratingInfo?.taste} / 5 ({placeItem?.ratingInfo?.noOfRatings})
-                  </SmoothText>
+                  <SmoothText><SmoothText className="font-bold">{placeItem?.ratingInfo?.taste ?? 'NA'}</SmoothText><SmoothText>/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
                 </View>
                 <View style={styles.dishRating}>
                   <SmoothText>Presentation: </SmoothText>
-                  <SmoothText>
-                    {' '}
-                    {placeItem?.ratingInfo?.presentation} / 5 ({placeItem?.ratingInfo?.noOfRatings})
-                  </SmoothText>
+                  <SmoothText><SmoothText className="font-bold">{placeItem?.ratingInfo?.presentation ?? 'NA'}</SmoothText><SmoothText>/5 ({placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
                 </View>
               </View>
             )}

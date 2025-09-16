@@ -38,7 +38,6 @@ function PopularItemCard({ item }: { item: PlaceItem }) {
           <View style={styles.dishRating}>
             <SmoothText>Taste: </SmoothText>
             <SmoothText>
-              {' '}
               {item?.ratingInfo?.taste} /
               <SmoothText className="text-sm">5 ({item?.ratingInfo?.noOfRatings})</SmoothText>
             </SmoothText>
@@ -46,7 +45,6 @@ function PopularItemCard({ item }: { item: PlaceItem }) {
           <View style={styles.dishRating}>
             <SmoothText className="text-sm">Presentation: </SmoothText>
             <SmoothText>
-              {' '}
               {item?.ratingInfo?.presentation} /
               <SmoothText className="text-sm">5 ({item?.ratingInfo?.noOfRatings})</SmoothText>
             </SmoothText>

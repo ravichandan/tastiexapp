@@ -72,7 +72,7 @@ function _PlaceDetailCard({ place, onShowMenu }: { place: Place; onShowMenu: (fl
                   {place?.ratingInfo?.ambience != null ? Number(place.ratingInfo.ambience).toFixed(1) : ''}
                 </SmoothText>
                 <SmoothText className="text-lg">
-                  /5{' '}
+                  /5
                   <SmoothText className="text-sm">
                     {place?.ratingInfo?.noOfRatings ? place?.ratingInfo?.noOfRatings : ''}
                   </SmoothText>
@@ -86,7 +86,7 @@ function _PlaceDetailCard({ place, onShowMenu }: { place: Place; onShowMenu: (fl
                   {place?.ratingInfo?.service != null ? Number(place.ratingInfo.service).toFixed(1) : ''}
                 </SmoothText>
                 <SmoothText className="text-lg">
-                  /5{' '}
+                  /5
                   <SmoothText className="text-sm">
                     {place?.ratingInfo?.noOfRatings ? place?.ratingInfo?.noOfRatings : ''}
                   </SmoothText>

@@ -35,7 +35,6 @@ function PopularPlaceCard({ place }: { place: Place }) {
           <View style={styles.dishRating}>
             <SmoothText>Service: </SmoothText>
             <SmoothText>
-              {' '}
               {place?.ratingInfo?.service} /
               <SmoothText className="text-sm">5 ({place?.ratingInfo?.noOfRatings})</SmoothText>
             </SmoothText>
@@ -43,7 +42,6 @@ function PopularPlaceCard({ place }: { place: Place }) {
           <View style={styles.dishRating}>
             <SmoothText className="text-sm">Ambience: </SmoothText>
             <SmoothText>
-              {' '}
               {place?.ratingInfo?.ambience} /
               <SmoothText className="text-sm">5 ({place?.ratingInfo?.noOfRatings})</SmoothText>
             </SmoothText>

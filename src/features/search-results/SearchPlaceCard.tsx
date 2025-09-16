@@ -24,8 +24,8 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
           </View>
         </View>
         <View>
-          <SmoothText style={styles.rating}>Ambience: {place.ratingInfo?.ambience}</SmoothText>
-          <SmoothText style={styles.rating}>Service: {place.ratingInfo?.service}</SmoothText>
+          <SmoothText style={styles.rating}>Ambience: {place.ratingInfo?.ambience ?? 'NA'}</SmoothText>
+          <SmoothText style={styles.rating}>Service: {place.ratingInfo?.service ?? 'NA'}</SmoothText>
         </View>
       </View>
 
@@ -43,17 +43,11 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
             <View style={{ flexDirection: 'column', width: 200 }}>
               <View style={styles.dishRating}>
                 <SmoothText>Taste: </SmoothText>
-                <SmoothText>
-                  {' '}
-                  {item.placeItem?.ratingInfo?.taste} / 5 ({item.placeItem?.ratingInfo?.noOfRatings})
-                </SmoothText>
+                <SmoothText><SmoothText className="font-bold">{item.placeItem?.ratingInfo?.taste ?? 'NA'}</SmoothText><SmoothText>/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
               </View>
               <View style={styles.dishRating}>
                 <SmoothText>Presentation: </SmoothText>
-                <SmoothText>
-                  {' '}
-                  {item.placeItem?.ratingInfo?.presentation} / 5 ({item.placeItem?.ratingInfo?.noOfRatings})
-                </SmoothText>
+                <SmoothText><SmoothText className="font-bold">{item.placeItem?.ratingInfo?.presentation ?? 'NA'}</SmoothText><SmoothText>/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
               </View>
             </View>
           </View>
@@ -104,6 +98,12 @@ const styles = StyleSheet.create({
   //   dishName: { fontWeight: "600" },
   //   dishRating: { fontSize: 12, color: "#555" },
   ...theme.card,
+  header: {
+    ...theme.card.header,
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    alignItems: 'center' as const
+  },
   location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const },
   locationText: { color: theme.colors.textLight, marginLeft: theme.spacing.xs },
   locationIcon: { color: theme.colors.textLight, marginRight: theme.spacing.xs },

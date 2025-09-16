@@ -81,9 +81,12 @@ export default function SearchResultsScreen() {
                 <ActivityIndicator style={{ marginTop: 24 }} />
               ) : places && places.length > 0 ? (
                 <FlashList
-                  data={places} 
+                  data={places}
                   keyExtractor={(item) => item._id}
                   renderItem={renderPlace}
+                  style={{ flex: 1 }}
+                  contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
+                  ListHeaderComponent={<View style={{ height: 0 }} />}
                 />
 
                 // <FlatList
@@ -108,9 +111,9 @@ export default function SearchResultsScreen() {
                   data={dishes}
                   keyExtractor={(item) => item._id}
                   renderItem={renderDish}
-                  contentContainerStyle={{ paddingBottom: 24 }}
-                  
-                  
+                  style={{ flex: 1 }}
+                  contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
+                  ListHeaderComponent={<View style={{ height: 0 }} />}
                 />
               ) : (
                 <SmoothText style={styles.emptyText}>No dishes found</SmoothText>
