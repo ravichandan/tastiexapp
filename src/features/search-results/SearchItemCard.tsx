@@ -97,6 +97,10 @@ const styles = StyleSheet.create({
   //   dishName: { fontWeight: "600" },
   //   dishRating: { fontSize: 12, color: "#555" },
   ...theme.card,
+  card: {
+    ...theme.card.card,
+    margin: 0,
+  },
   location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const },
   locationText: { color: theme.colors.textLight, marginLeft: theme.spacing.xs },
   locationIcon: { color: theme.colors.textLight, marginRight: theme.spacing.xs },

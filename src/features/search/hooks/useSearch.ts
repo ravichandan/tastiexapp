@@ -118,6 +118,7 @@ export const useSearch = () => {
 
         // call places endpoint
         const { data } = await doGetPlaces(currentSearchKey, filters);
+        logger.debug('in useSearch hook, places data length:', data.places?.length);
         // save it into search store
         setPlaces({pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size });
 

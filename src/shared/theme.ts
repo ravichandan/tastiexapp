@@ -62,7 +62,7 @@ const card = {
     borderColor: colors.textSecondary,
     borderWidth: 0.5,
     color: colors.buttonPrimary,
-    margin: 5,
+    // margin: 5,
     // borderColor: colors.buttonPrimary,
     // padding: spacing.sm,
     // shadow for iOS

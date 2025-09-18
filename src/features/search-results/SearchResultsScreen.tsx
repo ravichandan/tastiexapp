@@ -1,7 +1,7 @@
 // src/features/search/screens/SearchResultsScreen.tsx
 import { useEffect } from 'react';
 import * as React from 'react';
-import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem } from 'react-native';
+import { View, StyleSheet, FlatList, Text, ActivityIndicator, ListRenderItem, ScrollView } from 'react-native';
 import { Tabs, TabScreen, TabsProvider } from 'react-native-paper-tabs';
 import { useSearchStore } from '@/state/useSearchStore';
 import { useFiltersStore } from '@/state/useFiltersStore';
@@ -35,6 +35,7 @@ export default function SearchResultsScreen() {
   // Normalize results shape to get two arrays
   // Adapt this to match your backend (this is defensive)
   const places = (placesResponse.results ?? []) as Place[];
+  console.log('places in SearchResultsScreen', places?.length);
   const dishes = (items?.results ?? []) as Item[];
 
   const renderPlace = ({ item: place }: { item: Place }) => (
@@ -43,12 +44,15 @@ export default function SearchResultsScreen() {
     //   {/* {place.subtitle ? <SmoothText style={styles.itemSubtitle}>{place.subtitle}</SmoothText> : null} */}
     // </View>
     <View style={styles.item}>
+      {/* <SmoothText style={styles.itemTitle}>places length: {places.length}</SmoothText>
+      <SmoothText style={styles.itemTitle}>places.items length: {places?.at(0)?.items?.length}</SmoothText> */}
+      {/* <SmoothText style={styles.itemTitle}>{place._id}</SmoothText> */}
       <SearchPlaceCard place={place} />
     </View>
   );
 
   const renderDish = ({ item }: { item: Item }) => (
-    <View style={styles.item}>
+    <View style={{}}>
       {/* <SmoothText style={styles.itemTitle}>{item.name}</SmoothText> */}
       <SearchItemCard item={item}  />
       {/* {item.restaurant ? <SmoothText style={styles.itemSubtitle}>{item.restaurant}</SmoothText> : null} */}
@@ -75,30 +79,24 @@ export default function SearchResultsScreen() {
           // set primary color via theme prop if needed:
           theme={{ colors: { primary: '#00bcd4' } }}>
           <TabScreen label="Places">
-            <View style={styles.tabContent}>
-              {/* <SmoothText style={styles.itemTitle}>hello places</SmoothText> */}
-              {isLoading ? (
-                <ActivityIndicator style={{ marginTop: 24 }} />
-              ) : places && places.length > 0 ? (
+            <ScrollView style={styles.tabContent}>
+             
                 <FlashList
                   data={places}
                   keyExtractor={(item) => item._id}
                   renderItem={renderPlace}
-                  style={{ flex: 1 }}
-                  contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
+                  removeClippedSubviews={true}
+                  scrollEnabled={false}
+                  ListEmptyComponent={
+                    <SmoothText className="text-slate-500 text-center my-4">No restaurants found</SmoothText>
+                  }
+                  contentContainerStyle={{ paddingBottom: 24 }}
                   ListHeaderComponent={<View style={{ height: 0 }} />}
+                  ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
+                  
                 />
-
-                // <FlatList
-                //   data={places.slice(1, 2)} // Limit to first 10 for performance
-                //   keyExtractor={(item, idx) => (item.id ?? idx).toString()}
-                //   renderItem={renderPlace}
-                //   contentContainerStyle={{ paddingBottom: 24 }}
-                // />
-              ) : (
-                <SmoothText style={styles.emptyText}>No places found</SmoothText>
-              )}
-            </View>
+              
+            </ScrollView>
           </TabScreen>
 
           <TabScreen label="Dishes">
@@ -111,9 +109,15 @@ export default function SearchResultsScreen() {
                   data={dishes}
                   keyExtractor={(item) => item._id}
                   renderItem={renderDish}
-                  style={{ flex: 1 }}
+                  removeClippedSubviews={true}
+                  scrollEnabled={false}
+                  ListEmptyComponent={
+                    <SmoothText className="text-slate-500 text-center my-4">No dishes found</SmoothText>
+                  }
                   contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
                   ListHeaderComponent={<View style={{ height: 0 }} />}
+                  ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
+
                 />
               ) : (
                 <SmoothText style={styles.emptyText}>No dishes found</SmoothText>

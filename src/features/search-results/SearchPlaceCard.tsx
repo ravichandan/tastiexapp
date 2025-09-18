@@ -40,14 +40,17 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
           />
           <View>
             <SmoothText style={styles.dishName}>{item.name}</SmoothText>
-            <View style={{ flexDirection: 'column', width: 200 }}>
+            <View style={{ flexDirection: 'column', width: 230 }}>
               <View style={styles.dishRating}>
                 <SmoothText>Taste: </SmoothText>
-                <SmoothText><SmoothText className="font-bold">{item.placeItem?.ratingInfo?.taste ?? 'NA'}</SmoothText><SmoothText>/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
+                <SmoothText>{
+                item.placeItem?.ratingInfo?.taste 
+                ? <SmoothText className="">{item.placeItem?.ratingInfo?.taste}/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText> 
+                : 'NA'}</SmoothText>
               </View>
               <View style={styles.dishRating}>
                 <SmoothText>Presentation: </SmoothText>
-                <SmoothText><SmoothText className="font-bold">{item.placeItem?.ratingInfo?.presentation ?? 'NA'}</SmoothText><SmoothText>/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText></SmoothText>
+                <SmoothText>{item.placeItem?.ratingInfo?.presentation ? <SmoothText className="">{item.placeItem?.ratingInfo?.presentation ?? 'NA'}</SmoothText> : 'NA'}/5 ({item.placeItem?.ratingInfo?.noOfRatings})</SmoothText>
               </View>
             </View>
           </View>
@@ -58,46 +61,11 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
 }
 
 const styles = StyleSheet.create({
-  //   card: {
-  //     // marginBottom: theme.spacing.sm,
-  //     flex: 1,
-  //     // height: 2000,
-  //     backgroundColor: theme.colors.surface,
-  //     // borderBottomEndRadius: theme.radius.sm,
-  //     borderRadius: theme.radius.md,
-  //     borderColor: theme.colors.textSecondary,
-  //     borderWidth: 0.5,
-  //     // borderColor: theme.colors.buttonPrimary,
-  //     // padding: theme.spacing.sm,
-  //         // shadow for iOS
-  //     // shadowColor: "#000",
-  //     // shadowOpacity: 0.1,
-  //     // shadowRadius: 4,
-  //     // shadowOffset: { width: 0, height: 2 },
-
-  //     // shadow for Android
-  //     // elevation: 2,
-  //   },
-  //   header: {
-  //     backgroundColor: theme.colors.backgroundColor,
-  //     borderTopLeftRadius: theme.radius.sm,
-  //     borderTopRightRadius: theme.radius.sm,
-  //     padding: theme.spacing.sm,
-  //     // borderTopWidth: 1,
-  //     flexDirection: "row",
-  //     justifyContent: "space-between",
-  //     borderColor: '#000',
-  //     // marginBottom: theme.spacing.sm,
-  //   },
-  //   title: { fontSize: 16, fontWeight: "bold" },
-  //   location: { flexDirection: "row", alignItems: "center" },
-  //   locationText: { marginLeft: 4, color: "#666" },
-  //   rating: { fontSize: 12, color: "#555" },
-  //   dishRow: { flexDirection: "row", marginTop: 8 },
-  //   dishImage: { width: 50, height: 50, borderRadius: 4, marginRight: 8 },
-  //   dishName: { fontWeight: "600" },
-  //   dishRating: { fontSize: 12, color: "#555" },
   ...theme.card,
+  card: {
+    ...theme.card.card,
+    margin: 0,
+  },
   header: {
     ...theme.card.header,
     flexDirection: 'row' as const,
@@ -107,9 +75,9 @@ const styles = StyleSheet.create({
   location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const },
   locationText: { color: theme.colors.textLight, marginLeft: theme.spacing.xs },
   locationIcon: { color: theme.colors.textLight, marginRight: theme.spacing.xs },
-  rating: { color: theme.colors.textLight, fontSize: 12 },
+  rating: { color: theme.colors.textLight, fontSize: 12, justifyContent: 'flex-end', textAlign: 'right' as const },
   dishRow: { flexDirection: 'row' as const, marginTop: theme.spacing.sm, alignItems: 'center' },
   dishImage: { width: 50, height: 50, borderRadius: theme.radius.md, marginHorizontal: theme.spacing.sm },
-  dishName: { fontWeight: '600' as const, textTransform: 'capitalize' },
+  dishName: { fontWeight: '700' as const, textTransform: 'capitalize' },
   dishRating: { fontSize: 12, flexDirection: 'row' as const, width: '100%', flex: 1, flexGrow: 1, justifyContent: 'space-between' },
 });
