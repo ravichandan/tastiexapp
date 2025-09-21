@@ -1,7 +1,6 @@
 import { axiosInstance as axios } from '@/services/axiosInstance';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
-import { useFiltersStore } from '@/state/useFiltersStore';
-import { SuburbType } from '@/types/Types';
+import { logger } from '@/shared/utils/logger';
 
 export const doSearch = async (query: string, filters: any) => {
   const { data } = await axios.get(`/search`, {
@@ -12,6 +11,7 @@ export const doSearch = async (query: string, filters: any) => {
 
 export const doGetPlaces = async (searchKey: string, filters: any) => {
   const placesEndpoint = API_ENDPOINTS.PLACES;
+  logger.debug('in searchApi.ts -> doGetPlaces(), searchKey:', searchKey, ' filters:', filters);
   return axios.get(placesEndpoint, {
     params: {
       placeName: searchKey,
@@ -22,6 +22,8 @@ export const doGetPlaces = async (searchKey: string, filters: any) => {
       includeSurroundingSuburbs: true,
       cuisines: filters.cuisines.join(',') || undefined,
       dietary: filters.dietary.join(',') || undefined,
+      pageNum: filters.pageNum || 1,
+      pageSize: filters.pageSize || 10,
     },
   });
 };

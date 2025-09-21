@@ -38,6 +38,7 @@ export const useSearch = () => {
     setSearchData, // convenience method to write snapshot
     setItems,
     setPlaces,
+    placesResponse,
     setLoading: setSearchLoading,
     setError: setSearchError,
     setSearchPerformed,
@@ -83,7 +84,8 @@ export const useSearch = () => {
    * - calls search API, and writes a snapshot (searchKey + filters + results) into useSearchStore
    */
   const performSearch = useCallback(
-    async (maybeQuery?: string) => {
+    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
+      logger.debug('In useSearch.ts, performSearch called with:', { maybeQuery, pageNum, pageSize });
       // Use latest searchKey from store if not provided
       const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
 
@@ -99,18 +101,18 @@ export const useSearch = () => {
         dietary: useFiltersStore.getState().selectedDietary,
         location: useFiltersStore.getState().location,
         distance: useFiltersStore.getState().radius,
+        pageNum,
+        pageSize,
       };
       setSearchData({
-          searchKey: currentSearchKey,
-          filters
-        });
+        searchKey: currentSearchKey,
+        filters
+      });
 
       try {
         setSearchLoading(true);
         setSearchPerformed(true);
         setSearchError(null);
-        // places/?placeName=biryani&itemName=biryani&distance=50&city=sydney
-        // /items/?itemName=biryani&distance=50&city=Sydney
         setSearchData({
           searchKey: currentSearchKey,
           filters,
@@ -119,14 +121,31 @@ export const useSearch = () => {
         // call places endpoint
         const { data } = await doGetPlaces(currentSearchKey, filters);
         logger.debug('in useSearch hook, places data length:', data.places?.length);
-        // save it into search store
-        setPlaces({pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size });
+        // append logic for places
+        const prevPlaces = placesResponse?.results ?? [];
+        const newPlaces = pageNum > 1 ? [...prevPlaces, ...(data.places ?? [])] : (data.places ?? []);
+        logger.debug('in useSearch hook, places prevPlaces length:', prevPlaces.length);
+        logger.debug('in useSearch hook, places newPlaces length:', newPlaces.length);
+        setPlaces({
+          pageNum: +data.page,
+          pageSize: +data.size,
+          results: newPlaces,
+          total: +data.size,
+          hasMore: ((data.places?.length ?? 0) >= +pageSize),
+        });
 
         // call items endpoint
-        const { data:itemsData } = await doGetItems(currentSearchKey, filters);
+        const { data: itemsData } = await doGetItems(currentSearchKey, filters);
         logger.debug('Items data:', itemsData.items?.length);
-        // save it into search store
-        setItems({pageNumber: itemsData.page, pageSize: itemsData.pageSize, results: itemsData.items, total: itemsData.size});
+        // append logic for items
+        const prevItems = useSearchStore.getState().itemsResponse?.results ?? [];
+        const newItems = pageNum > 1 ? [...prevItems, ...(itemsData.items ?? [])] : (itemsData.items ?? []);
+        setItems({
+          pageNum: itemsData.page,
+          pageSize: itemsData.pageSize,
+          results: newItems,
+          total: itemsData.size
+        });
 
       } catch (err: any) {
         console.error('Search failed', err);
@@ -135,7 +154,7 @@ export const useSearch = () => {
         setSearchLoading(false);
       }
     },
-    [setSearchData, setSearchLoading, setSearchError],
+    [placesResponse, setSearchData, setSearchLoading, setSearchError],
   );
 
   /**
@@ -179,8 +198,8 @@ export const useSearch = () => {
         // setSearchData({
         //   searchKey: currentSearchKey,
         //   filters,
-        //   placesResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
-        //   itemsResponse: { pageNumber: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
+        //   placesResponse: { pageNum: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
+        //   itemsResponse: { pageNum: data.page, pageSize: data.pageSize, results: data.places, total: data.size  },
         // });
       } catch (err: any) {
         console.error('Search failed', err);

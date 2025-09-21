@@ -13,8 +13,9 @@ interface SearchResult {
   // [key: string]: any;
   pageSize: number;
   results: Place[] | PlaceItem[] | Item[];
-  pageNumber: number;
+  pageNum: number;
   total: number;
+  hasMore?: boolean;
 }
 
 interface SearchState {
@@ -45,8 +46,8 @@ interface SearchState {
 export const useSearchStore = create<SearchState>((set) => ({
   searchKey: '',
   filters: {},
-  placesResponse: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
-  itemsResponse: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
+  placesResponse: { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
+  itemsResponse: { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
   isLoading: false,
   searchPerformed: false,
   error: null,
@@ -60,8 +61,8 @@ export const useSearchStore = create<SearchState>((set) => ({
   clear: () =>
     set({
       searchKey: '',
-      placesResponse: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
-      itemsResponse: { pageNumber: 0, pageSize: 10, results: [], total: 0 },
+      placesResponse: { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
+      itemsResponse: { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
       filters: {},
       error: undefined,
     }),
@@ -69,8 +70,8 @@ export const useSearchStore = create<SearchState>((set) => ({
     set({
       searchKey,
       filters,
-      placesResponse: placesResponse || { pageNumber: 0, pageSize: 10, results: [], total: 0 },
-      itemsResponse: itemsResponse || { pageNumber: 0, pageSize: 10, results: [], total: 0 },
+      placesResponse: placesResponse || { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
+      itemsResponse: itemsResponse || { pageNum: 0, pageSize: 10, results: [], total: 0, hasMore: true },
       isLoading: false,
       error: undefined,
     }),

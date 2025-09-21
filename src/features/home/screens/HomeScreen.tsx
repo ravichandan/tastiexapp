@@ -19,6 +19,7 @@ import SmoothText from '@/shared/components/SmoothText';
 import SearchToolbar from '@/features/search/SearchToolbar';
 import PopularsScreen from './PopularsScreen';
 import { logger } from '@/shared/utils/logger';
+import { set } from 'date-fns';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -28,20 +29,16 @@ export default function HomeScreen({ }: Props) {
   
   const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
   const { performSearch, optionsError } = useSearch();
-  const { searchKey, clear, isLoading: searchLoading, error: searchError, searchPerformed, setSearchPerformed,  } = useSearchStore();
+  const { searchKey, clear, isLoading: searchLoading, error: searchError, setSearchKey, setSearchPerformed,  } = useSearchStore();
   const [query, setQuery] = useState(searchKey);
+  const [searchTriggered, setSearchTriggered] = useState(false);
   const { location, radius, setSelectedCuisines, setSelectedDietary} = useFiltersStore();
 
 
-  useEffect(() => {
-    if(searchKey){
-      setQuery(searchKey);
-      performSearch(searchKey);
-    }
-  }, []);
+
   logger.debug('in home screen');
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchFilterOptions();
   },[]);
 
@@ -49,7 +46,10 @@ export default function HomeScreen({ }: Props) {
     const trimmed = query.trim();
     if (trimmed) {
       Keyboard.dismiss();
-      performSearch(trimmed);
+      // setSearchKey(trimmed);
+      setQuery(trimmed);
+      setSearchTriggered(true);
+      // performSearch(trimmed);
     } else {
       clear();
       console.warn('Please enter a search query');
@@ -65,6 +65,7 @@ export default function HomeScreen({ }: Props) {
     setQuery('');
     clear();
     setSearchPerformed(false);
+    setSearchTriggered(false);
     // Keyboard.dismiss();
   };
 
@@ -117,8 +118,8 @@ export default function HomeScreen({ }: Props) {
         <SearchButton style={{backgroundColor: theme.colors.buttonPrimary}} onClick={handleSearch} />
       </View>
 
-      
-      {searchPerformed && searchKey ?  <SearchResultsScreen /> : <PopularsScreen />}
+
+      {searchTriggered ? <SearchResultsScreen query={query} setQuery={setQuery} /> : <PopularsScreen />}
       {searchLoading && <ActivityIndicator />}
       {searchError && <SmoothText className='text-red-500'>{searchError}</SmoothText>}
     </View>
