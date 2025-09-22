@@ -28,11 +28,28 @@ import { logger } from '@/shared/utils/logger';
 
 type SearchResultsScreenProps = {
   query: string;
-  setQuery: (q: string) => void;
+  // setQuery: (q: string) => void;
 };
 
-export default function SearchResultsScreen({ query, setQuery }: SearchResultsScreenProps) {
-  const { placesResponse, itemsResponse: items, searchKey, setSearchKey, isLoading } = useSearchStore();
+
+export default function SearchResultsScreen({ query }: SearchResultsScreenProps) {
+  // Add logging to track rerenders and prop changes
+  // const query='biryani';
+  logger.debug('[SearchResultsScreen] rerender', {
+    time: new Date().toISOString(),
+    query,
+  });
+
+  // Use Zustand selectors to only subscribe to the state SearchResultsScreen needs
+  const placesResponse = useSearchStore(state => state.placesResponse);
+  const items = useSearchStore(state => state.itemsResponse);
+  // const searchKey = useSearchStore(state => state.searchKey);
+  // const setSearchKey = useSearchStore(state => state.setSearchKey);
+  const isLoading = useSearchStore(state => state.isLoading);
+
+  // Always derive places from state, never assign locally
+  const places: Place[] = (placesResponse.results ?? []) as Place[];
+
   const [isFetchingMore, setIsFetchingMore] = React.useState(false);
   const { performSearch } = useSearch();
 
@@ -44,14 +61,20 @@ export default function SearchResultsScreen({ query, setQuery }: SearchResultsSc
   }, []);
 
   useEffect(() => {
-    logger.debug('SearchResultsScreen useEffect - searchKey or query changed:', { searchKey, query });
-    if (query && searchKey !== query) {
-      setSearchKey(query);
+    logger.debug('SearchResultsScreen useEffect - searchKey or query changed:', { 
+      // searchKey, 
+      query });
+    if (query 
+      // && searchKey !== query
+    ) {
+      // setSearchKey(query);
     // }
     // if (query) {
       performSearch(query);
     }
-  }, [searchKey, query]);
+  }, [
+    // searchKey, 
+    query]);
 
   // Normalize results shape to get two arrays
   // Adapt this to match your backend (this is defensive)
@@ -59,7 +82,7 @@ export default function SearchResultsScreen({ query, setQuery }: SearchResultsSc
   // const totalPlaces = placesResponse.total || 0;
   const pageNum = placesResponse.pageNum || 1;
   const pageSize =  10;
-  // console.log('places in SearchResultsScreen', places?.length);
+  logger.debug('places in SearchResultsScreen', places?.length);
   // Lazy load more places when end reached
   const fetchMorePlaces = async () => {
     logger.debug('SearchResultsScreen -> fetchMorePlaces() called isFetchingMore:', isFetchingMore, ' !placesResponse.hasMore', !placesResponse.hasMore);
@@ -69,33 +92,35 @@ export default function SearchResultsScreen({ query, setQuery }: SearchResultsSc
     try {
       const nextPage = pageNum + 1;
       const resp = await performSearch(query, nextPage, pageSize);
-      logger.debug('Fetched more places, response:', resp);
+      // logger.debug('Fetched more places, response:', resp);
     } finally {
       setIsFetchingMore(false);
     }
   };
   const dishes = (items?.results ?? []) as Item[];
+  // logger.debug('SearchResultsScreen -> places keys:', places.map(p => p._id));
 
-  const renderPlace = ({ item: place }: { item: Place }) => (
-    // <View style={styles.item}>
-    //   <SmoothText style={styles.itemTitle}>{place.placeName}</SmoothText>
-    //   {/* {place.subtitle ? <SmoothText style={styles.itemSubtitle}>{place.subtitle}</SmoothText> : null} */}
-    // </View>
-    <View style={styles.item}>
-      <SmoothText style={styles.itemTitle}>place._id: {place._id}</SmoothText>
-      {/* <SmoothText style={styles.itemTitle}>places.items length: {places?.at(0)?.items?.length}</SmoothText> */}
-      {/* <SmoothText style={styles.itemTitle}>{place._id}</SmoothText> */}
-      <SearchPlaceCard place={place} />
-    </View>
-  );
+  // Memoize renderPlace and renderDish to prevent unnecessary re-renders
+  const renderPlace = React.useCallback(({ item: place }: { item: Place }) => {
+    // logger.debug('renderPlace recreated for place._id:', place._id);
+    return (
+      place.items?.length ? <View style={styles.item}>
+        {/* <SmoothText style={styles.itemTitle}>place._id: {place._id}</SmoothText>
+        <SmoothText style={styles.itemTitle}>place.items.length: {place.items.length}</SmoothText> */}
+        <SearchPlaceCard place={place} />
+      </View>
+      : null
+    );
+  }, []);
 
-  const renderDish = ({ item }: { item: Item }) => (
-    <View style={{}}>
-      {/* <SmoothText style={styles.itemTitle}>{item.name}</SmoothText> */}
-      <SearchItemCard item={item}  />
-      {/* {item.restaurant ? <SmoothText style={styles.itemSubtitle}>{item.restaurant}</SmoothText> : null} */}
-    </View>
-  );
+  const renderDish = React.useCallback(({ item }: { item: Item }) => {
+    // logger.debug('renderDish recreated for item._id:', item._id);
+    return (
+      <View style={{}}>
+        <SearchItemCard item={item}  />
+      </View>
+    );
+  }, []);
 
   // const renderDish: ListRenderItem<any> = ({ item }) => (
   //   <View style={styles.item}>
@@ -119,7 +144,7 @@ export default function SearchResultsScreen({ query, setQuery }: SearchResultsSc
           <TabScreen label="Places">
             <View style={styles.tabContent}>
               <FlashList
-                data={placesResponse.results as Place[]}
+                data={places}
                 keyExtractor={(item) => item._id}
                 renderItem={renderPlace}
                 // removeClippedSubviews={true}
@@ -130,13 +155,14 @@ export default function SearchResultsScreen({ query, setQuery }: SearchResultsSc
                 contentContainerStyle={{ paddingBottom: 24 }}
                 ListHeaderComponent={<View style={{ height: 0 }} />}
                 ListFooterComponent={
-                  isLoading //|| isFetchingMore
+                  isLoading
                     ? <ActivityIndicator style={{ margin: 16 }} />
                     : null
                 }
                 onEndReached={() => fetchMorePlaces()}
                 // onEndReached={() => {logger.debug('onEndReached called');}}
                 onEndReachedThreshold={0.5}
+
               />
             </View>
           </TabScreen>

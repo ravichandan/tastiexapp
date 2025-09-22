@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import SearchButton from '@/features/search/screens/SearchButton';
 import FilterAccordion from '@/features/search/screens/FilterAccordion';
 import { useSearch } from '@/features/search/hooks/useSearch';
-import { useSearchStore } from '@/state/useSearchStore';
+// import { useSearchStore } from '@/state/useSearchStore';
 import { SearchIcon, X } from 'lucide-react-native';
 import { useFiltersStore } from '@/state/useFiltersStore';
 import { CuisineType, DietaryType } from '@/types/Types';
@@ -19,12 +19,16 @@ import SmoothText from '@/shared/components/SmoothText';
 import SearchToolbar from '@/features/search/SearchToolbar';
 import PopularsScreen from './PopularsScreen';
 import { logger } from '@/shared/utils/logger';
-import { set } from 'date-fns';
+import { useSearchStore } from '@/state/useSearchStore';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ }: Props) {
-  
+
+    // Add logging to track rerenders and state
+  logger.debug('[HomeScreen] rerender', {
+    time: new Date().toISOString(),
+  });
   const [showFilters, setShowFilters] = useState(false);
   
   const { cuisinesOptions, dietaryOptions, fetchFilterOptions } = useSearch();
@@ -34,9 +38,16 @@ export default function HomeScreen({ }: Props) {
   const [searchTriggered, setSearchTriggered] = useState(false);
   const { location, radius, setSelectedCuisines, setSelectedDietary} = useFiltersStore();
 
-
-
-  logger.debug('in home screen');
+  // Log key state/prop changes
+  useEffect(() => {
+    logger.debug('[HomeScreen] useEffect: query/searchTriggered/searchKey', {
+      query,
+      searchTriggered,
+      // searchKey,
+    });
+  }, [query, searchTriggered, 
+    // searchKey
+  ]);
 
   useEffect(() => { 
     fetchFilterOptions();

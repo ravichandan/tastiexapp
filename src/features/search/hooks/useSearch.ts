@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { axiosInstance } from '@/services/axiosInstance';
 import { LocationData, useFiltersStore } from '@/state/useFiltersStore';
 import { useSearchStore } from '@/state/useSearchStore';
+import { Place, Item } from '@/types/Types';
 import { CUISINES, DIETARIES } from '@/shared/config/menuConfig';
 import { API_ENDPOINTS } from '@/shared/constants/constants';
 import { SuburbType } from '@/types/Types';
@@ -41,7 +42,7 @@ export const useSearch = () => {
     placesResponse,
     setLoading: setSearchLoading,
     setError: setSearchError,
-    setSearchPerformed,
+    // setSearchPerformed,
   } = useSearchStore();
 
   // UI state for loading options
@@ -75,7 +76,7 @@ export const useSearch = () => {
   }, [setCuisinesOptions, setDietaryOptions]);
 
   /** returns true if there are search results */
-  const hasSearchResults = useSearchStore((state) => state.searchPerformed);
+  // const hasSearchResults = useSearchStore((state) => state.searchPerformed);
 
   /**
    * performSearch:
@@ -85,17 +86,14 @@ export const useSearch = () => {
    */
   const performSearch = useCallback(
     async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
-      logger.debug('In useSearch.ts, performSearch called with:', { maybeQuery, pageNum, pageSize });
-      // Use latest searchKey from store if not provided
+      logger.debug('In useSearch.ts, performSearch (REAL API) called with:', { maybeQuery, pageNum, pageSize });
       const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
 
-      // Trim and bail if empty (also clear stored results)
       if (!currentSearchKey || !currentSearchKey.trim()) {
         useSearchStore.getState().clear();
         return;
       }
 
-      // Read the latest selected filters (guaranteed up-to-date)
       const filters = {
         cuisines: useFiltersStore.getState().selectedCuisines,
         dietary: useFiltersStore.getState().selectedDietary,
@@ -104,52 +102,59 @@ export const useSearch = () => {
         pageNum,
         pageSize,
       };
-      setSearchData({
-        searchKey: currentSearchKey,
-        filters
-      });
 
-      try {
-        setSearchLoading(true);
-        setSearchPerformed(true);
-        setSearchError(null);
+      // Only reset results and store filters/searchKey on new search
+      if (pageNum === 1) {
         setSearchData({
           searchKey: currentSearchKey,
-          filters,
+          filters
         });
+      }
 
-        // call places endpoint
-        const { data } = await doGetPlaces(currentSearchKey, filters);
-        logger.debug('in useSearch hook, places data length:', data.places?.length);
-        // append logic for places
-        const prevPlaces = placesResponse?.results ?? [];
-        const newPlaces = pageNum > 1 ? [...prevPlaces, ...(data.places ?? [])] : (data.places ?? []);
-        logger.debug('in useSearch hook, places prevPlaces length:', prevPlaces.length);
-        logger.debug('in useSearch hook, places newPlaces length:', newPlaces.length);
+      setSearchError(null);
+      setSearchLoading(true);
+      try {
+        // Call real API for places and items
+        const [placesRes, itemsRes] = await Promise.all([
+          doGetPlaces(currentSearchKey, filters),
+          doGetItems(currentSearchKey, filters)
+        ]);
+
+        // Extract data from Axios responses
+        const placesData = placesRes.data;
+        const itemsData = itemsRes.data;
+        logger.debug('Search results:', {
+          placesData
+          // items: itemsData?.results?.length,
+        });
+        // Handle places pagination
+        const pagePlaces = (placesData?.places ?? []) as Place[];
+        const prevPlaces = (placesResponse?.results ?? []) as Place[];
+        const newPlaces = (pageNum > 1 ? [...prevPlaces, ...pagePlaces] : pagePlaces) as Place[];
         setPlaces({
-          pageNum: +data.page,
-          pageSize: +data.size,
+          pageNum,
+          pageSize,
           results: newPlaces,
-          total: +data.size,
-          hasMore: ((data.places?.length ?? 0) >= +pageSize),
+          total: placesData?.total ?? newPlaces.length,
+          hasMore: placesData?.hasMore ?? (pagePlaces.length === pageSize),
         });
 
-        // call items endpoint
-        const { data: itemsData } = await doGetItems(currentSearchKey, filters);
-        logger.debug('Items data:', itemsData.items?.length);
-        // append logic for items
-        const prevItems = useSearchStore.getState().itemsResponse?.results ?? [];
-        const newItems = pageNum > 1 ? [...prevItems, ...(itemsData.items ?? [])] : (itemsData.items ?? []);
+        // Handle items pagination
+        const pageItems = (itemsData?.items ?? []) as Item[];
+        const prevItems = (useSearchStore.getState().itemsResponse?.results ?? []) as Item[];
+        const newItems = (pageNum > 1 ? [...prevItems, ...pageItems] : pageItems) as Item[];
         setItems({
-          pageNum: itemsData.page,
-          pageSize: itemsData.pageSize,
+          pageNum,
+          pageSize,
           results: newItems,
-          total: itemsData.size
+          total: itemsData?.total ?? newItems.length,
+          hasMore: itemsData?.hasMore ?? (pageItems.length === pageSize),
         });
 
+        return { places: pagePlaces, items: pageItems };
       } catch (err: any) {
-        console.error('Search failed', err);
-        setSearchError(err.message+'. '+ JSON.stringify(err.error) || 'Search failed');
+        logger.error('performSearch API error', err);
+        setSearchError(err?.message || 'Search failed');
       } finally {
         setSearchLoading(false);
       }
@@ -220,6 +225,101 @@ export const useSearch = () => {
         suburbsOptions.filter((suburb: SuburbType) => suburb.name.toLowerCase().includes(input.toLowerCase())),
       );
     }, [suburbsOptions],
+  );
+
+  /**
+   * performSearch:
+   * - reads current selected filters from useFiltersStore (latest values)
+   * - reads searchKey either from passed argument or from useSearchStore's current state
+   * - calls search API, and writes a snapshot (searchKey + filters + results) into useSearchStore
+   */
+  const mockPerformSearch = useCallback(
+    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
+      logger.debug('In useSearch.ts, performSearch (MOCK) called with:', { maybeQuery, pageNum, pageSize });
+      // Use latest searchKey from store if not provided
+      const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
+
+      // Trim and bail if empty (also clear stored results)
+      if (!currentSearchKey || !currentSearchKey.trim()) {
+        useSearchStore.getState().clear();
+        return;
+      }
+
+      // Read the latest selected filters (guaranteed up-to-date)
+      const filters = {
+        cuisines: useFiltersStore.getState().selectedCuisines,
+        dietary: useFiltersStore.getState().selectedDietary,
+        location: useFiltersStore.getState().location,
+        distance: useFiltersStore.getState().radius,
+        pageNum,
+        pageSize,
+      };
+      setSearchData({
+        searchKey: currentSearchKey,
+        filters
+      });
+
+      setSearchError(null);
+
+      // --- MOCK DATA GENERATION ---
+      // Simulate a paginated API
+      const totalPlaces = 23;
+      const totalItems = 17;
+      const allPlaces = Array.from({ length: totalPlaces }, (_, i) => ({
+        _id: `place_${i+1}`,
+        name: `Mock Place ${i+1}`,
+        address: { city: 'Sydney' },
+        createdAt: new Date().toISOString(),
+        items: [],
+        medias: [],
+        modifiedAt: new Date().toISOString(),
+        openingTimes: [],
+        placeName: `Mock Place ${i+1}`,
+        ratingInfo: {},
+        tags: [],
+      }));
+      const allItems = Array.from({ length: totalItems }, (_, i) => ({
+        _id: `item_${i+1}`,
+        name: `Mock Dish ${i+1}`,
+        price: 10 + i,
+        restaurant: `Mock Place ${((i % totalPlaces) + 1)}`,
+      }));
+
+      // Paginate
+      const startPlace = (pageNum - 1) * pageSize;
+      const endPlace = startPlace + pageSize;
+      const pagePlaces = allPlaces.slice(startPlace, endPlace);
+
+      const prevPlaces = (placesResponse?.results ?? []) as Place[];
+      const newPlaces = (pageNum > 1 ? [...prevPlaces, ...pagePlaces] : pagePlaces) as Place[];
+
+      setPlaces({
+        pageNum,
+        pageSize,
+        results: newPlaces,
+        total: totalPlaces,
+        hasMore: endPlace < totalPlaces,
+      });
+
+      // Items pagination
+      const startItem = (pageNum - 1) * pageSize;
+      const endItem = startItem + pageSize;
+      const pageItems = allItems.slice(startItem, endItem);
+      const prevItems = (useSearchStore.getState().itemsResponse?.results ?? []) as Item[];
+      const newItems = (pageNum > 1 ? [...prevItems, ...pageItems] : pageItems) as Item[];
+
+      setItems({
+        pageNum,
+        pageSize,
+        results: newItems,
+        total: totalItems,
+        hasMore: endItem < totalItems,
+      });
+
+      // Simulate async
+      return new Promise((resolve) => setTimeout(() => resolve({ places: pagePlaces, items: pageItems }), 300));
+    },
+    [placesResponse, setSearchData, setSearchLoading, setSearchError],
   );
 
   return {

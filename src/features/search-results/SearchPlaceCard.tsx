@@ -31,7 +31,6 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
 
       {place.items.slice(0, 3).map((item) => (
         <TouchableOpacity key={item._id} style={styles.dishRow} onPress={() => navigation.navigate('DishDetail', { placeId: place!._id, dishId: item?._id })}>
-          {/* <Text>item: {JSON.stringify(item)}</Text> */}
           <Image
             source={{
               uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item.placeItem?.medias?.at(0)?.key,
