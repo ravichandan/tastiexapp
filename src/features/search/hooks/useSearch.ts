@@ -40,6 +40,7 @@ export const useSearch = () => {
     setItems,
     setPlaces,
     placesResponse,
+    itemsResponse,
     setLoading: setSearchLoading,
     setError: setSearchError,
     // setSearchPerformed,
@@ -84,16 +85,16 @@ export const useSearch = () => {
    * - reads searchKey either from passed argument or from useSearchStore's current state
    * - calls search API, and writes a snapshot (searchKey + filters + results) into useSearchStore
    */
-  const performSearch = useCallback(
-    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
-      logger.debug('In useSearch.ts, performSearch (REAL API) called with:', { maybeQuery, pageNum, pageSize });
-      const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
 
+  // Split: searchPlaces
+  const searchPlaces = useCallback(
+    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
+      logger.debug('In useSearch.ts, searchPlaces called with:', { maybeQuery, pageNum, pageSize });
+      const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
       if (!currentSearchKey || !currentSearchKey.trim()) {
         useSearchStore.getState().clear();
         return;
       }
-
       const filters = {
         cuisines: useFiltersStore.getState().selectedCuisines,
         dietary: useFiltersStore.getState().selectedDietary,
@@ -102,32 +103,15 @@ export const useSearch = () => {
         pageNum,
         pageSize,
       };
-
-      // Only reset results and store filters/searchKey on new search
       if (pageNum === 1) {
-        setSearchData({
-          searchKey: currentSearchKey,
-          filters
-        });
+        setSearchData({ searchKey: currentSearchKey, filters });
       }
-
       setSearchError(null);
       setSearchLoading(true);
       try {
-        // Call real API for places and items
-        const [placesRes, itemsRes] = await Promise.all([
-          doGetPlaces(currentSearchKey, filters),
-          doGetItems(currentSearchKey, filters)
-        ]);
-
-        // Extract data from Axios responses
+        const placesRes = await doGetPlaces(currentSearchKey, filters);
         const placesData = placesRes.data;
-        const itemsData = itemsRes.data;
-        logger.debug('Search results:', {
-          placesData
-          // items: itemsData?.results?.length,
-        });
-        // Handle places pagination
+        logger.debug('searchPlaces results:', { placesData });
         const pagePlaces = (placesData?.places ?? []) as Place[];
         const prevPlaces = (placesResponse?.results ?? []) as Place[];
         const newPlaces = (pageNum > 1 ? [...prevPlaces, ...pagePlaces] : pagePlaces) as Place[];
@@ -138,10 +122,45 @@ export const useSearch = () => {
           total: placesData?.total ?? newPlaces.length,
           hasMore: placesData?.hasMore ?? (pagePlaces.length === pageSize),
         });
+        return pagePlaces;
+      } catch (err: any) {
+        logger.error('searchPlaces API error', err);
+        setSearchError(err?.message || 'Search failed');
+      } finally {
+        setSearchLoading(false);
+      }
+    },
+    [placesResponse, setSearchData, setSearchLoading, setSearchError],
+  );
 
-        // Handle items pagination
+  // Split: searchItems
+  const searchItems = useCallback(
+    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
+      logger.debug('In useSearch.ts, searchItems called with:', { maybeQuery, pageNum, pageSize });
+      const currentSearchKey = typeof maybeQuery === 'string' ? maybeQuery : useSearchStore.getState().searchKey;
+      if (!currentSearchKey || !currentSearchKey.trim()) {
+        useSearchStore.getState().clear();
+        return;
+      }
+      const filters = {
+        cuisines: useFiltersStore.getState().selectedCuisines,
+        dietary: useFiltersStore.getState().selectedDietary,
+        location: useFiltersStore.getState().location,
+        distance: useFiltersStore.getState().radius,
+        pageNum,
+        pageSize,
+      };
+      if (pageNum === 1) {
+        setSearchData({ searchKey: currentSearchKey, filters });
+      }
+      setSearchError(null);
+      setSearchLoading(true);
+      try {
+        const itemsRes = await doGetItems(currentSearchKey, filters);
+        const itemsData = itemsRes.data;
+        logger.debug('searchItems results:', { itemsData });
         const pageItems = (itemsData?.items ?? []) as Item[];
-        const prevItems = (useSearchStore.getState().itemsResponse?.results ?? []) as Item[];
+        const prevItems = (itemsResponse?.results ?? []) as Item[];
         const newItems = (pageNum > 1 ? [...prevItems, ...pageItems] : pageItems) as Item[];
         setItems({
           pageNum,
@@ -150,16 +169,26 @@ export const useSearch = () => {
           total: itemsData?.total ?? newItems.length,
           hasMore: itemsData?.hasMore ?? (pageItems.length === pageSize),
         });
-
-        return { places: pagePlaces, items: pageItems };
+        return pageItems;
       } catch (err: any) {
-        logger.error('performSearch API error', err);
+        logger.error('searchItems API error', err);
         setSearchError(err?.message || 'Search failed');
       } finally {
         setSearchLoading(false);
       }
     },
-    [placesResponse, setSearchData, setSearchLoading, setSearchError],
+    [itemsResponse, setSearchData, setSearchLoading, setSearchError],
+  );
+
+  // Optionally, keep performSearch as a coordinator for both
+  const performSearch = useCallback(
+    async (maybeQuery?: string, pageNum: number = 1, pageSize: number = 10) => {
+      await Promise.all([
+        searchPlaces(maybeQuery, pageNum, pageSize),
+        searchItems(maybeQuery, pageNum, pageSize),
+      ]);
+    },
+    [searchPlaces, searchItems],
   );
 
   /**
@@ -338,6 +367,8 @@ export const useSearch = () => {
 
     // perform the search (writes snapshot into useSearchStore)
     performSearch,
+    searchPlaces,
+    searchItems,
 
     // suburbs related
     getSuburbName,

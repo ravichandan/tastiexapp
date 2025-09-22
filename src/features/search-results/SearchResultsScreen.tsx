@@ -11,11 +11,13 @@ import SearchPlaceCardOrig from './SearchPlaceCard';
 import SmoothText from '@/shared/components/SmoothText';
 import { theme } from '@/shared/theme';
 import SearchItemCardOrig from './SearchItemCard';
+import { useSearch } from '../search/hooks/useSearch';
+import { logger } from '@/shared/utils/logger';
+
+
 // Memoized row components to minimize unnecessary re-renders
 const SearchPlaceCard = React.memo(SearchPlaceCardOrig);
 const SearchItemCard = React.memo(SearchItemCardOrig);
-import { useSearch } from '../search/hooks/useSearch';
-import { logger } from '@/shared/utils/logger';
 
 /**
  * NOTE:
@@ -42,7 +44,7 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
 
   // Use Zustand selectors to only subscribe to the state SearchResultsScreen needs
   const placesResponse = useSearchStore(state => state.placesResponse);
-  const items = useSearchStore(state => state.itemsResponse);
+  const itemsResponse = useSearchStore(state => state.itemsResponse);
   // const searchKey = useSearchStore(state => state.searchKey);
   // const setSearchKey = useSearchStore(state => state.setSearchKey);
   const isLoading = useSearchStore(state => state.isLoading);
@@ -51,7 +53,7 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
   const places: Place[] = (placesResponse.results ?? []) as Place[];
 
   const [isFetchingMore, setIsFetchingMore] = React.useState(false);
-  const { performSearch } = useSearch();
+  const { searchPlaces, searchItems } = useSearch();
 
   // runSearch will use the stores' searchKey and selected filters internally
   // Optionally re-run search when searchKey or filters change:
@@ -70,7 +72,8 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
       // setSearchKey(query);
     // }
     // if (query) {
-      performSearch(query);
+      searchPlaces(query);
+      searchItems(query);
     }
   }, [
     // searchKey, 
@@ -91,14 +94,31 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
     setIsFetchingMore(true);
     try {
       const nextPage = pageNum + 1;
-      const resp = await performSearch(query, nextPage, pageSize);
-      // logger.debug('Fetched more places, response:', resp);
+      await searchPlaces(query, nextPage, pageSize);
     } finally {
       setIsFetchingMore(false);
     }
   };
-  const dishes = (items?.results ?? []) as Item[];
+
+  // Dishes pagination
+  // const itemsResponse = useSearchStore(state => state.itemsResponse);
+  const dishesPageNum = itemsResponse.pageNum || 1;
+  const dishesPageSize = 10;
+  const fetchMoreDishes = async () => {
+    logger.debug('SearchResultsScreen --> fetchMoreDishes() called isFetchingMore:', isFetchingMore, ' !itemsResponse.hasMore', !itemsResponse.hasMore);
+    if (isFetchingMore) return;
+    if (!itemsResponse.hasMore) return;
+    setIsFetchingMore(true);
+    try {
+      const nextPage = dishesPageNum + 1;
+      await searchItems(query, nextPage, dishesPageSize);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
+  const dishes = (itemsResponse?.results ?? []) as Item[];
   // logger.debug('SearchResultsScreen -> places keys:', places.map(p => p._id));
+  logger.debug('SearchResultsScreen -> dishes keys:', dishes.map(d => d._id));
 
   // Memoize renderPlace and renderDish to prevent unnecessary re-renders
   const renderPlace = React.useCallback(({ item: place }: { item: Place }) => {
@@ -116,9 +136,10 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
   const renderDish = React.useCallback(({ item }: { item: Item }) => {
     // logger.debug('renderDish recreated for item._id:', item._id);
     return (
-      <View style={{}}>
+      item.places?.length ? <View style={styles.item}>
         <SearchItemCard item={item}  />
       </View>
+      : null
     );
   }, []);
 
@@ -147,7 +168,6 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
                 data={places}
                 keyExtractor={(item) => item._id}
                 renderItem={renderPlace}
-                // removeClippedSubviews={true}
                 scrollEnabled={true}
                 ListEmptyComponent={
                   <SmoothText className="text-slate-500 text-center my-4">No restaurants found</SmoothText>
@@ -160,36 +180,28 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
                     : null
                 }
                 onEndReached={() => fetchMorePlaces()}
-                // onEndReached={() => {logger.debug('onEndReached called');}}
                 onEndReachedThreshold={0.5}
-
               />
             </View>
           </TabScreen>
 
           <TabScreen label="Dishes">
             <View style={styles.tabContent}>
-              {/* <SmoothText style={styles.itemTitle}>hello dishes</SmoothText> */}
-              {isLoading ? (
-                <ActivityIndicator style={{ marginTop: 24 }} />
-              ) : dishes && dishes.length > 0 ? (
                 <FlashList
                   data={dishes}
                   keyExtractor={(item) => item._id}
                   renderItem={renderDish}
-                  removeClippedSubviews={true}
-                  scrollEnabled={false}
+                  // removeClippedSubviews={true}
+                  scrollEnabled={true}
                   ListEmptyComponent={
                     <SmoothText className="text-slate-500 text-center my-4">No dishes found</SmoothText>
                   }
                   contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
                   ListHeaderComponent={<View style={{ height: 0 }} />}
                   ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
-
+                  onEndReached={() => fetchMoreDishes()}
+                  onEndReachedThreshold={0.5}
                 />
-              ) : (
-                <SmoothText style={styles.emptyText}>No dishes found</SmoothText>
-              )}
             </View>
           </TabScreen>
         </Tabs>

@@ -29,6 +29,7 @@ export const doGetPlaces = async (searchKey: string, filters: any) => {
 };
 
 export const doGetItems = async (searchKey: string, filters: any) => {
+  logger.debug('in searchApi.ts -> doGetItems(), searchKey:', searchKey, ' filters:', filters);
   const itemsEndpoint = API_ENDPOINTS.ITEMS;
   return axios.get(itemsEndpoint, {
     params: {
@@ -39,6 +40,8 @@ export const doGetItems = async (searchKey: string, filters: any) => {
       includeSurroundingSuburbs: true,
       cuisines: filters.cuisines.join(',') || undefined,
       dietary: filters.dietary.join(',') || undefined,
+      pageNum: filters.pageNum || 1,
+      pageSize: filters.pageSize || 10,
     },
   });
 };

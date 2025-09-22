@@ -11,27 +11,27 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 export default function SearchItemCard({ item }: { item: Item }) {
-  const placeItem = item.places?.at(0)?.placeItem;
+  // const placeItem = item.places?.at(0)?.placeItem;
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   
   // logger.debug('item in SearchItemCard', item.places?.at(0));
   return (
     <TouchableOpacity style={styles.card} key={item?._id} onPress={() => navigation.navigate('DishDetail', { placeId: item.places!.at(0)!._id, dishId: item?._id })}>
       <View style={styles.header}>
-        <View>
+        {/* <View> */}
           <SmoothText style={styles.title} className="capitalize">{item.name}</SmoothText>
-          <View style={styles.location}>
+          {/* <View style={styles.location}>
             <MapPin size={14} style={styles.locationIcon} />
             <SmoothText className="capitalize" style={styles.locationText}>{item.places?.at(0)?.address?.suburb}</SmoothText>
-          </View>
-        </View>
+          </View> */}
+        {/* </View> */}
       </View>
 
-      {placeItem && (
-        <View style={styles.dishRow}>
+      {item.places?.map((it) => (
+        <View style={styles.dishRow} key={it._id}>
           <Image
             source={{
-              uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item?.medias?.at(0)?.key,
+              uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + it?.medias?.at(0)?.key,
             }}
             style={styles.dishImage}
           />
@@ -57,63 +57,23 @@ export default function SearchItemCard({ item }: { item: Item }) {
 }
 
 const styles = StyleSheet.create({
-  //   card: {
-  //     // marginBottom: theme.spacing.sm,
-  //     flex: 1,
-  //     // height: 2000,
-  //     backgroundColor: theme.colors.surface,
-  //     // borderBottomEndRadius: theme.radius.sm,
-  //     borderRadius: theme.radius.md,
-  //     borderColor: theme.colors.textSecondary,
-  //     borderWidth: 0.5,
-  //     // borderColor: theme.colors.buttonPrimary,
-  //     // padding: theme.spacing.sm,
-  //         // shadow for iOS
-  //     // shadowColor: "#000",
-  //     // shadowOpacity: 0.1,
-  //     // shadowRadius: 4,
-  //     // shadowOffset: { width: 0, height: 2 },
-
-  //     // shadow for Android
-  //     // elevation: 2,
-  //   },
-  //   header: {
-  //     backgroundColor: theme.colors.backgroundColor,
-  //     borderTopLeftRadius: theme.radius.sm,
-  //     borderTopRightRadius: theme.radius.sm,
-  //     padding: theme.spacing.sm,
-  //     // borderTopWidth: 1,
-  //     flexDirection: "row",
-  //     justifyContent: "space-between",
-  //     borderColor: '#000',
-  //     // marginBottom: theme.spacing.sm,
-  //   },
-  //   title: { fontSize: 16, fontWeight: "bold" },
-  //   location: { flexDirection: "row", alignItems: "center" },
-  //   locationText: { marginLeft: 4, color: "#666" },
-  //   rating: { fontSize: 12, color: "#555" },
-  //   dishRow: { flexDirection: "row", marginTop: 8 },
-  //   dishImage: { width: 50, height: 50, borderRadius: 4, marginRight: 8 },
-  //   dishName: { fontWeight: "600" },
-  //   dishRating: { fontSize: 12, color: "#555" },
   ...theme.card,
   card: {
     ...theme.card.card,
     margin: 0,
   },
+  header: {
+    ...theme.card.header,
+    flexDirection: 'column' as const,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const
+  },
   location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const },
   locationText: { color: theme.colors.textLight, marginLeft: theme.spacing.xs },
   locationIcon: { color: theme.colors.textLight, marginRight: theme.spacing.xs },
-  rating: { color: theme.colors.textLight, fontSize: 12 },
+  rating: { color: theme.colors.textLight, fontSize: 12, justifyContent: 'flex-end', textAlign: 'right' as const },
   dishRow: { flexDirection: 'row' as const, marginTop: theme.spacing.sm, alignItems: 'center' },
   dishImage: { width: 50, height: 50, borderRadius: theme.radius.md, marginHorizontal: theme.spacing.sm },
-  dishName: { fontWeight: '600' as const, textTransform: 'capitalize' },
-  dishRating: {
-    fontSize: 12,
-    flexDirection: 'row' as const,
-    width: '100%',
-    flex: 1,
-    flexGrow: 1,
-    justifyContent: 'space-between',
-  },
+  dishName: { fontWeight: '700' as const, textTransform: 'capitalize' },
+  dishRating: { fontSize: 12, flexDirection: 'row' as const, width: '100%', flex: 1, flexGrow: 1, justifyContent: 'space-between' },
 });
