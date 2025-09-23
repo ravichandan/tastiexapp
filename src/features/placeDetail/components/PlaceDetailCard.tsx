@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { RootStackParamList } from '@/navigation/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { TxImage } from '@/shared/components/TxImage';
 
 const PlaceDetailCard = React.memo(_PlaceDetailCard);
 export default PlaceDetailCard;
@@ -40,10 +41,8 @@ function _PlaceDetailCard({ place, onShowMenu }: { place: Place; onShowMenu: (fl
       </View>
       {/* Image Carousel */}
       <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + place?.medias?.at(0)?.key,
-          }}
+        <TxImage
+          uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + place?.medias?.at(0)?.key}
           style={styles.image}
         />
 

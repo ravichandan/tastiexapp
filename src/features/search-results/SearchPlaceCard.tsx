@@ -9,6 +9,7 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
+import { TxImage } from '@/shared/components/TxImage';
 
 export default function SearchPlaceCard({ place }: { place: Place }) {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -31,10 +32,8 @@ export default function SearchPlaceCard({ place }: { place: Place }) {
 
       {place.items.slice(0, 3).map((item) => (
         <TouchableOpacity key={item._id} style={styles.dishRow} onPress={() => navigation.navigate('DishDetail', { placeId: place!._id, dishId: item?._id })}>
-          <Image
-            source={{
-              uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item.placeItem?.medias?.at(0)?.key,
-            }}
+          <TxImage
+            uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item.placeItem?.medias?.at(0)?.key}
             style={styles.dishImage}
           />
           <View>

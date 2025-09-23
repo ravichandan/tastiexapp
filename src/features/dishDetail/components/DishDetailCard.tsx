@@ -11,6 +11,7 @@ import TxButton from '@/shared/components/TxButton';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
+import TxImage from '@/shared/components/TxImage';
 
 export default function DishDetailCard({ place }: { place: Place }) {
   const placeItem = place.items[0]?.placeItem;
@@ -40,13 +41,10 @@ export default function DishDetailCard({ place }: { place: Place }) {
       </View>
       {/* Image Carousel */}
       <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + placeItem?.media?.key,
-          }}
+        <TxImage
+          uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + placeItem?.media?.key}
           style={styles.image}
-        />
-
+          /> 
         {/* {placeItem?.medias && <Carousel
         width={400}
         height={250}

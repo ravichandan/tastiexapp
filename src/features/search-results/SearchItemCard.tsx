@@ -30,12 +30,12 @@ export default function SearchItemCard({ item }: { item: Item }) {
       </View>
 
       <View className='ms-2'>
-        <SmoothText className='text my-2'>{TEXT_LABELS.SEARCH_RESULTS_SCREEN.DISHES.AVAILABLE_AT_LABEL} </SmoothText>
+        <SmoothText className='text-slate-700 my-2 italic '>{TEXT_LABELS.SEARCH_RESULTS_SCREEN.DISHES.AVAILABLE_AT_LABEL} </SmoothText>
         {item.places?.map((place) => (
           <View style={styles.dishRow} key={place._id}>
             <TxImage
               uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + place.placeItem?.media?.key}
-                  style={styles.dishImage}
+              style={styles.dishImage}
             />
             {/* <Image
               source={{
@@ -44,7 +44,7 @@ export default function SearchItemCard({ item }: { item: Item }) {
               style={styles.dishImage}
             />*/}
             <View> 
-              <SmoothText>{Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + place?.placeItem?.media?.key}</SmoothText>
+              {/* <SmoothText>{Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + place?.placeItem?.media?.key}</SmoothText> */}
 
               <SmoothText style={styles.dishName}>{place.placeName}</SmoothText>
               <View style={styles.location}>
@@ -78,7 +78,7 @@ export default function SearchItemCard({ item }: { item: Item }) {
                     </View>
                   </>
                 ) : (
-                  <SmoothText className='text-sm italic text-gray-500 my-2'>{TEXT_LABELS.NOT_RATED_YET}</SmoothText>
+                  <SmoothText className='text-sm italic text-gray-500 my-2 ms-1'>{TEXT_LABELS.NOT_RATED_YET}</SmoothText>
                 )}
               </View>
             </View>
@@ -101,12 +101,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
   },
-  location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const },
+  location: { color: theme.colors.textLight, flexDirection: 'row' as const, alignItems: 'center' as const, marginTop: 1 },
   locationText: { color: theme.colors.textSecondary, marginLeft: theme.spacing.xs },
   locationIcon: { color: theme.colors.textSecondary, marginRight: theme.spacing.xs },
   rating: { color: theme.colors.textSecondary, fontSize: 12, justifyContent: 'flex-end', textAlign: 'right' as const },
   dishRow: { flexDirection: 'row' as const, marginTop: theme.spacing.sm, alignItems: 'center' },
-  dishImage: { width: 50, height: 50, borderRadius: theme.radius.md, marginHorizontal: theme.spacing.sm },
+  dishImage: { width: 70, height: 70, borderRadius: theme.radius.md, marginHorizontal: theme.spacing.sm },
   dishName: { fontWeight: '700' as const, textTransform: 'capitalize' },
   dishRating: {
     fontSize: 12,

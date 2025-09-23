@@ -194,11 +194,11 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
                 // removeClippedSubviews={true}
                 scrollEnabled={true}
                 ListEmptyComponent={<SmoothText className="text-slate-500 text-center my-4">No dishes found</SmoothText>}
-                contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
+                contentContainerStyle={{ paddingBottom: 24 }}
                 ListHeaderComponent={<View style={{ height: 0 }} />}
                 ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
-                onEndReached={() => fetchMoreDishes()}
-                onEndReachedThreshold={0.9}
+                // onEndReached={() => fetchMoreDishes()}
+                // onEndReachedThreshold={0.9}
               />
             </View>
           </TabScreen>
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
   tabContent: {
     flex: 1,
     padding: 16,
+    
     // give a sensible minHeight so content shows even if items are few
     minHeight: 120,
   },

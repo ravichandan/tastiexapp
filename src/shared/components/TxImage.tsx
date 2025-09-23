@@ -16,7 +16,7 @@ const TxImageComponent: React.FC<TxImageProps> = ({ uri, fallback, ...props }) =
 		<Image
 			source={imageError || !uri ? resolvedFallback : { uri }}
 			onError={() => setImageError(true)}
-			style={{ resizeMode: 'cover', border: '1px solid #ccc' as const }}
+      className='border border-gray-300'
 			{...props}
 		/>
 	);

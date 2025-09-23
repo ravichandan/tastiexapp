@@ -8,6 +8,7 @@ import { RatingStars } from "@/shared/components/RatingStars";
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
 import { LikeDislikeButtons } from "@/shared/components/LikeDislikeButtons";
 import { useAuthStore } from "@/state/useAuthStore";
+import TxImage from "@/shared/components/TxImage";
 
 export default function ReviewItem({ review, onFeedback }: { review: Review, onFeedback: (params: {reviewId: string, action: string}) => void }) {
   const user = useAuthStore((state) => state.user);
@@ -17,11 +18,9 @@ export default function ReviewItem({ review, onFeedback }: { review: Review, onF
 
       {/* First customer pic and name */}
       <View className="flex-row items-center">
-        <Image
-          source={{
-            uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + review.customer?.picture?.key,
-          }}
-           className="w-10 h-10 rounded-full" 
+        <TxImage
+          uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + review.customer?.picture?.key}
+          className="w-10 h-10 rounded-full"
         />
         <SmoothText className="ml-2 font-bold">{review.customer.name}</SmoothText>
       </View>
@@ -51,10 +50,8 @@ export default function ReviewItem({ review, onFeedback }: { review: Review, onF
       </View>
       { review.medias?.map((media) => (
           <View>
-            <Image
-              source={{
-                uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + media?.key,
-              }}
+            <TxImage
+              uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + media?.key}
               className="w-full "
               style={{ height: 220 }}
             />

@@ -9,6 +9,7 @@ import Constants from 'expo-constants';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@/navigation/types';
+import TxImage from '@/shared/components/TxImage';
 
 const MemoizedPopularItemCard = React.memo(PopularItemCard);
 
@@ -26,10 +27,8 @@ function PopularItemCard({ item }: { item: PlaceItem }) {
         <SmoothText style={styles.headerText}>{item.name}</SmoothText>
       </View>
       <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item?.media?.key,
-          }}
+        <TxImage
+          uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item?.media?.key}
           style={styles.image}
         />
       </View>
