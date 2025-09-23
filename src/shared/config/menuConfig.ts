@@ -185,6 +185,21 @@ export const TEXT_LABELS = {
   AMBIENCE: 'Ambience',
   ALLERGENS: 'Allergens',
   CALORIES: 'Calorie Info',
+  NOT_AVAILABLE: 'NA',
+  NOT_REVIEWED_YET: 'Not reviewed yet',
+  NOT_RATED_YET: 'Not rated yet',
+  SEARCH_RESULTS_SCREEN: {
+    PLACES_TAB_LABEL: 'Places',
+    DISHES_TAB_LABEL: 'Dishes',
+    DISHES: {
+      NO_DISHES_FOUND: 'No dishes found',
+      AVAILABLE_AT_LABEL: 'Available at following places',
+    },
+    PLACES: {
+      NO_PLACES_FOUND: 'No restaurants found',
+      POPULAR_ITEMS_LABEL: 'Popular items here',
+    }
+  }
 };
 
 export const ITEM_DETAIL_SHOW_ONLY_IMAGES_LABEL = 'Show only those reviews with images or videos';

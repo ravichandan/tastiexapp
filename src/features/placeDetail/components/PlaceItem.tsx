@@ -2,7 +2,7 @@
 import SmoothText from "@/shared/components/SmoothText";
 import { Item, Review } from "@/types/Types";
 import Constants from 'expo-constants';
-import { Image, View } from "react-native";
+import { View } from "react-native";
 import { format } from 'date-fns'
 import { RatingStars } from "@/shared/components/RatingStars";
 import { TEXT_LABELS } from '@/shared/config/menuConfig';
@@ -10,22 +10,25 @@ import { LikeDislikeButtons } from "@/shared/components/LikeDislikeButtons";
 import { useAuthStore } from "@/state/useAuthStore";
 import React from "react";
 
+import { TxImage } from "@/shared/components/TxImage";
+
 const PlaceItem = React.memo(_PlaceItem);
 export default PlaceItem;
 
 function _PlaceItem({item, onFeedback }: { item: Item, onFeedback: (params: {reviewId: string, action: string}) => void }) {
-  const user = useAuthStore((state) => state.user);
+  // const user = useAuthStore((state) => state.user);
   // logger.debug('item::: ', item);
+
+  
+
   return ( item && 
     <View className=" my-2  flex-row border border-dashed border-gray-300 rounded-lg gap-2">
 
       {/* First customer pic and name */}
       <View className="flex-row items-center w-1/4">
-        <Image
-          source={{
-            uri: Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item?.placeItem?.media?.key,
-          }}
-          className="size-28 rounded-md" 
+        <TxImage
+          uri={Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + item.placeItem?.media?.key}
+          className="size-28 rounded-md"
         />
       </View>
 

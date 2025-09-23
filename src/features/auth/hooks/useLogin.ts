@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { loginUser, LoginPayload } from '../api/authApi';
 import { useAuthStore } from '@/state';
+import { logger } from '@/shared/utils/logger';
 
 export function useLogin(onSuccess?: () => void) {
   const [loading, setLoading] = useState(false);

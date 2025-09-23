@@ -11,6 +11,8 @@ import { useAuthStore } from '@/state';
 import TxButton from './TxButton';
 import { LucideProps } from 'lucide-react-native';
 import SmoothText from './SmoothText';
+import { logger } from '../utils/logger';
+import Constants from 'expo-constants';
 
 export default function OverlayMenu() {
   const { isOpen, closeMenu } = useOverlayMenuStore();
@@ -47,10 +49,12 @@ export default function OverlayMenu() {
               {user ? (
                 <>
                   <Image
-                    source={{ uri: 'https://i.pravatar.cc/100' }} // or your user's profile pic
+                    source={{
+                      uri: user.picture ? (Constants.expoConfig?.extra?.bucketAccessEndpoint + '/' + user.picture?.key) : 'https://i.pravatar.cc/100',
+                    }}
                     className="w-20 h-20 rounded-full mb-2"
                   />
-                  <SmoothText className="text-xl font-semibold">Hi, Chandan 👋</SmoothText>
+                  <SmoothText className="text-xl text-white font-semibold">Hi, {user.name?.split(' ')[0]} 👋</SmoothText>
                 </>
               ) : (
                 <TxButton label="Login" variant="dark-outline" onPress={() => {navigation.navigate('Login'); closeMenu();}}></TxButton>

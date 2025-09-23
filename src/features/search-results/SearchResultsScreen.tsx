@@ -187,21 +187,19 @@ export default function SearchResultsScreen({ query }: SearchResultsScreenProps)
 
           <TabScreen label="Dishes">
             <View style={styles.tabContent}>
-                <FlashList
-                  data={dishes}
-                  keyExtractor={(item) => item._id}
-                  renderItem={renderDish}
-                  // removeClippedSubviews={true}
-                  scrollEnabled={true}
-                  ListEmptyComponent={
-                    <SmoothText className="text-slate-500 text-center my-4">No dishes found</SmoothText>
-                  }
-                  contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
-                  ListHeaderComponent={<View style={{ height: 0 }} />}
-                  ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
-                  onEndReached={() => fetchMoreDishes()}
-                  onEndReachedThreshold={0.5}
-                />
+              <FlashList
+                data={dishes}
+                keyExtractor={(item) => item._id}
+                renderItem={renderDish}
+                // removeClippedSubviews={true}
+                scrollEnabled={true}
+                ListEmptyComponent={<SmoothText className="text-slate-500 text-center my-4">No dishes found</SmoothText>}
+                contentContainerStyle={{ padding: 16, paddingBottom: 24 }}
+                ListHeaderComponent={<View style={{ height: 0 }} />}
+                ListFooterComponent={isLoading ? <ActivityIndicator style={{ margin: 16 }} /> : null}
+                onEndReached={() => fetchMoreDishes()}
+                onEndReachedThreshold={0.9}
+              />
             </View>
           </TabScreen>
         </Tabs>

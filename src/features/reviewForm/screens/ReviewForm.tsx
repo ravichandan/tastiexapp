@@ -162,7 +162,7 @@ const ReviewForm: React.FC = () => {
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <View style={styles.innerContainer}>
         <View style={styles.headerBlock}>
-          <SmoothText style={styles.title}>Welcome Chandan</SmoothText>
+          <SmoothText style={styles.title}>Welcome {user?.name}</SmoothText>
           <SmoothText style={styles.subtitle}>Share your dining experience with us</SmoothText>
         </View>
 

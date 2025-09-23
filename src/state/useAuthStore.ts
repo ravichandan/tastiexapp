@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 import { logger } from '@/shared/utils/logger';
 import * as SecureStore from 'expo-secure-store';
+import { Media } from '@/types/Types';
 
 const TOKEN_KEY = 'auth_token';
 
@@ -10,7 +11,7 @@ type User = {
   id: string;
   name: string;
   email?: string;
-  avatarUrl?: string;
+  picture?: Media;
 
 };
 
