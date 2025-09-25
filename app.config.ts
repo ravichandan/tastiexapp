@@ -43,6 +43,7 @@ export default ({ config }: {config: any}) => {
       bundleIdentifier: 'com.syena.tastiex',
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "We use your location to show nearby places and dishes.",
+        ITSAppUsesNonExemptEncryption: false
       },
       config: {
         googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
