@@ -81,7 +81,7 @@ export default ({ config }: {config: any}) => {
       apiBaseUrl,
       env,
       eas: {
-        projectId: '4951e295-3d7f-410d-af5e-89d1130d5640',
+        projectId: '81f5acf9-3055-425a-819c-7c29e1ebb4ba',
       },
       googleClientId: process.env.googleClientId,
       googleIOsClientId: process.env.googleIOsClientId,
