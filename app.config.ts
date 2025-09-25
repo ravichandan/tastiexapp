@@ -26,8 +26,8 @@ export default ({ config }: {config: any}) => {
 
   return {
     ...config,
-    name: 'foodiexapp',
-    slug: 'foodiexapp',
+    name: 'tastiex',
+    slug: 'tastiex',
     owner: 'chans',
     version: '1.0.1',
     orientation: 'portrait',
@@ -38,9 +38,9 @@ export default ({ config }: {config: any}) => {
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
-    scheme: 'com.syena.foodiexapp',
+    scheme: 'com.syena.tastiex',
     ios: {
-      bundleIdentifier: 'com.syena.foodiexapp',
+      bundleIdentifier: 'com.syena.tastiex',
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "We use your location to show nearby places and dishes.",
       },
@@ -49,12 +49,12 @@ export default ({ config }: {config: any}) => {
       },
     },
     android: {
-      package: 'com.syena.foodiexapp',
+      package: 'com.syena.tastiex',
       intentFilters: [
         {
           action: 'VIEW',
           data: {
-            scheme: 'com.syena.foodiexapp',
+            scheme: 'com.syena.tastiex',
             path: '/oauthredirect',
           },
           category: ['BROWSABLE', 'DEFAULT'],

@@ -32,11 +32,11 @@ export const useGoogleLogin = (onSuccess?: () => void) => {
   // SecureStore key for refresh token
   const REFRESH_TOKEN_KEY = 'google_refresh_token';
 
-  const localRedirectUri = 'https://auth.expo.io/@chans/foodiexapp';
+  const localRedirectUri = 'https://auth.expo.io/@chans/tastiex';
   const isStandalone = Constants.executionEnvironment === ExecutionEnvironment.Standalone;
   const redirectUri = AuthSession.makeRedirectUri({
     // path: 'oauthredirect'
-    native: 'com.syena.foodiexapp:/oauthredirect',
+    native: 'com.syena.tastiex:/oauthredirect',
   }); // → foodiex:/oauthredirect
 
   const request = AuthSession.useAuthRequest(

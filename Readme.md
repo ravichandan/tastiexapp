@@ -2,7 +2,7 @@
 
 ## Folder structure
 
-    Foodiexapp       <- Root folder
+    Tastiex       <- Root folder
     │
     ├── src                    <- source folder containing app component, used to run the widgets in local setup
     │   │
@@ -61,7 +61,7 @@ eas secret:create --name GOOGLE_MAPS_API_KEY_IOS --value "key"
 eas secret:create --name GOOGLE_MAPS_API_KEY_WEB --value "key"
 
 Then navigate to the app in expo to see the env variables (you can't see the values though)
-https://expo.dev/accounts/chans/projects/foodiexapp/environment-variables
+https://expo.dev/accounts/chans/projects/tastiex/environment-variables
 
 ### Edit existing keys
 We cannot edit existing keys. We delete old keys and create new ones

@@ -18,7 +18,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { label: 'Drinks', icon: User, screen: 'Home' },
   { label: 'Vegan Friendly', icon: User, screen: 'Home' },
   { label: 'Contact Us', icon: Settings, screen: 'Settings' },
-  { label: 'T&Cs', icon: Settings, screen: 'Settings' },
+  { label: 'T&Cs', icon: Settings, screen: 'About' },
 ];
 
 export const CUISINES = [

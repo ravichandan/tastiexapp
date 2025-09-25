@@ -80,6 +80,7 @@ export default function App() {
   const queryClient = new QueryClient();
 
   return (
+    <>
     <PaperProvider>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
@@ -87,6 +88,7 @@ export default function App() {
         </QueryClientProvider>
       </SafeAreaProvider>
     </PaperProvider>
+    </>
     // <View className="flex-1 bg-white">
     //   {/* 🔲 Header with logo on black */}
     //     <View className="bg-black items-center justify-center py-6">

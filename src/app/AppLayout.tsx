@@ -18,6 +18,7 @@ import DishDetailScreen from '@/features/dishDetail/screens/DishDetailScreen';
 import PlaceDetailScreen from '@/features/placeDetail/screens/PlaceDetailScreen';
 import ReviewForm from '@/features/reviewForm/screens/ReviewForm';
 import { logger } from '@/shared/utils/logger';
+import About from './about/About';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -74,6 +75,7 @@ export default function AppLayout() {
           <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} />
           <Stack.Screen name="DishDetail" component={DishDetailScreen} />
           <Stack.Screen name="NewReview" component={ReviewForm} />
+          <Stack.Screen name="About" component={About} />
 
         </Stack.Navigator>
 
