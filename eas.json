@@ -43,9 +43,15 @@
         "serviceAccountKeyPath": "./google-play-creds.json"
       },
       "ios": {
-        "appleId": "your-apple-id@example.com"
+        "appleId": "neelima.salesha2000@gmail.com",
+        "ascAppId": "6752925012",
+        "appleTeamId": "YA7N8XK8G9",
+        "ascApiKeyPath": "APPLE_API_KEY",
+        "appleApiKeyId": "9HMP7VN4YD",
+        "appleApiIssuerId": "61d60118-57e8-4118-913e-12098b961a19"
       }
     }
+    
   },
   "cli": {
     "appVersionSource": "remote"
