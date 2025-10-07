@@ -43,6 +43,12 @@ export default ({ config }: {config: any}) => {
       bundleIdentifier: 'com.syena.tastiex',
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "We use your location to show nearby places and dishes.",
+        NSPhotoLibraryUsageDescription:
+          "Tastiex needs access to your photo library to let you upload food images in reviews.",
+        NSCameraUsageDescription:
+          "Tastiex needs camera access so you can take photos of dishes and restaurants.",
+        NSMicrophoneUsageDescription:
+          "Tastiex may use the microphone for video reviews.",
         ITSAppUsesNonExemptEncryption: false
       },
       config: {
