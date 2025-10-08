@@ -46,8 +46,7 @@
         "appleId": "neelima.salesha2000@gmail.com",
         "ascAppId": "6752925012",
         "appleTeamId": "YA7N8XK8G9",
-        "ascApiKeyPath": "APPLE_API_KEY",
-        "appleApiKey": "@env:APPLE_API_KEY_BASE64"
+        "ascApiKeyPath": "APPLE_API_KEY"
       }
     }
     
