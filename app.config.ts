@@ -49,6 +49,7 @@ export default ({ config }: {config: any}) => {
           "Tastiex needs camera access so you can take photos of dishes and restaurants.",
         NSMicrophoneUsageDescription:
           "Tastiex may use the microphone for video reviews.",
+        NSUserTrackingUsageDescription: "Tastiex uses your data to deliver personalized suggestions and improve your experience.",
         ITSAppUsesNonExemptEncryption: false
       },
       config: {

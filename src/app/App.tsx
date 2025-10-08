@@ -32,6 +32,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { logger } from '@/shared/utils/logger';
+import { requestTrackingPermissionsAsync } from 'expo-tracking-transparency';
 
 // import AppLoading from "expo-app-loading"; // optional, for splash while loading
 
@@ -65,6 +66,15 @@ export default function App() {
       .catch((error) => {
         console.error('Error loading fonts:', error);
       });
+  }, []);
+
+  useEffect(() => {
+    async function requestATT() {
+      const { status } = await requestTrackingPermissionsAsync();
+      // You can handle status here (granted, denied, etc.)
+      logger.debug('ATT status:', status);
+    }
+    requestATT();
   }, []);
 
   if (!fontsLoaded) {
